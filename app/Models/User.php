@@ -3,12 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -21,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'rol_id',
     ];
 
     /**
@@ -42,4 +45,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function adminlte_desc(){
+        return 'aqui puedes mostrar el correo electronico';
+    }
+    public function adminlte_image(){
+        /* Aca podemos poner la imagen del usuario */
+        return 'storage/logo.png';
+    }
+    public function adminlte_profile_url()
+    {
+        /* aca redireccionamos al enlace de perfil */
+        return 'profile';
+    }
 }

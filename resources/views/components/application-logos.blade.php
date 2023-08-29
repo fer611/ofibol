@@ -1,7 +1,7 @@
-<img src="{{ asset('storage/logo.png') }}" alt="{{ 'Imagen logo' }}" class="w-60 h-60">
-{{-- <h1 class="text-4xl">
+{{-- <img src="{{ asset('storage/logo.png') }}" alt="{{ 'Imagen logo' }}" class="w-16 h-16"> --}}
+<h1 class="text-4xl">
     Ofi<span class="font-extrabold text-sky-700">Bol</span>
-</h1> --}}
+</h1>
 
 
 <!-- <svg viewBox="0 0 316 316" xmlns="http://www.w3.org/2000/svg" {{ $attributes }}>
