@@ -95,8 +95,13 @@ class CategoriaController extends Controller
     public function destroy(string $id)
     {
         Categoria::find($id)->delete();
-        // Redireccionar con mensaje de éxito
-        session()->flash('mensaje', 'La categoría se eliminó correctamente');
         return redirect()->route('categorias.index');
+
+        /* en el caso de cambiar el estado seria: */
+        /*
+        $categoria = Categoria::find($id);
+        $categoria->estado = 0;
+        $categoria->save();
+         */
     }
 }

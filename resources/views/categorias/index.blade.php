@@ -19,9 +19,9 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-    @if (session()->has('mensaje'))
+     @if (session()->has('mensaje'))
         {{-- Si existe un mensaje --}}
-        <div class="alert alert-success alert-dismissible fade show">
+      <div class="alert alert-success alert-dismissible fade show">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             {{ session('mensaje') }}
         </div>
@@ -83,12 +83,18 @@
                                             <td>{{ $categoria->nombre }}</td>
                                             <td>{{ $categoria->descripcion }}</td>
                                             <td class="d-flex align-items-center">
-                                                <a href="{{ route('categorias.edit', $categoria->id) }}" class="btn btn-warning btn-sm mr-1"><i class="fas fa-pen"></i></a>
-                                                
-                                                <form action="{{ route('categorias.destroy', $categoria->id) }}" method="post" class="mb-0">
+                                                <a href="{{ route('categorias.edit', $categoria->id) }}"
+                                                    class="btn btn-warning btn-sm mr-1"><i class="fas fa-pen"></i></a>
+
+                                                <form id="deleteForm-{{ $categoria->id }}"
+                                                    action="{{ route('categorias.destroy', $categoria->id) }}"
+                                                    method="post" class="mb-0">
                                                     @method('DELETE')
                                                     @csrf
-                                                    <button type="submit" onclick="confirm('Esta seguro?')" class="btn btn-outline-danger btn-sm delete-button"><i class="fas fa-trash-alt"></i></button>
+                                                    <button type="button"
+                                                        class="btn btn-outline-danger btn-sm delete-button"
+                                                        data-id="{{ $categoria->id }}"><i
+                                                            class="fas fa-trash-alt"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -155,5 +161,50 @@
 @stop
 
 @section('js')
-    <script></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteButtons = document.querySelectorAll('.delete-button');
+            deleteButtons.forEach(function(deleteButton) {
+                deleteButton.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: "No podrás revertir esto!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, eliminar!'
+                    }).then((result) => {
+                        /* if (result.isConfirmed) {
+                            document.getElementById(`deleteForm-${id}`).submit();
+                            Swal.fire(
+                                'Eliminado!',
+                                'La categoría ha sido eliminada.',
+                                'success'
+                            )
+                        } */
+                        if (result.isConfirmed) {
+                            sessionStorage.setItem('deleted', 'true');
+                            document.getElementById(`deleteForm-${id}`).submit();
+                        }
+                    })
+                });
+            });
+            
+            // Verificar si se debe mostrar el segundo SweetAlert
+            if (sessionStorage.getItem('deleted') === 'true') {
+                Swal.fire(
+                    'Eliminado!',
+                    'La categoría ha sido eliminada.',
+                    'success'
+                );
+                sessionStorage.removeItem('deleted'); // Limpiar la variable para futuras recargas
+            }
+        });
+
+    </script>
+
+
 @stop
