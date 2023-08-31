@@ -38,7 +38,7 @@ Route::get('/categorias/create',[CategoriaController::class, 'create'])->middlew
 Route::post('/categorias',[CategoriaController::class,'store'])->middleware(['auth','verified','rol.administrador'])->name('categorias.store');
 Route::get('/categorias/{categoria}/edit', [CategoriaController::class, 'edit'])->middleware(['auth', 'verified','rol.administrador'])->name('categorias.edit');
 Route::delete('/categorias/{categoria}', [CategoriaController::class, 'destroy'])->middleware(['auth', 'verified','rol.administrador'])->name('categorias.destroy');
-Route::patch('/categorias/{categoria}',[CategoriaController::class, 'update'])->middleware(['auth', 'verified','rol.administrador'])->name('categorias.update');
+Route::put('/categorias/{categoria}',[CategoriaController::class, 'update'])->middleware(['auth', 'verified','rol.administrador'])->name('categorias.update');
 
 
 Route::middleware('auth')->group(function () {

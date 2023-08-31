@@ -18,8 +18,8 @@ class CategoriaController extends Controller
             $categorias = DB::table('categorias')
                 ->where('nombre', 'LIKE', '%' . $query . '%')
                 ->orWhere('descripcion', 'LIKE', '%' . $query . '%')  // Línea agregada
-                ->orderBy('id', 'asc')
-                ->paginate(5);
+                ->orderBy('id', 'desc')
+                ->paginate(7);
             return view('categorias.index', ["categorias" => $categorias, "texto" => $query]);
         }
     }
@@ -44,6 +44,8 @@ class CategoriaController extends Controller
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
         ]);
+        // Redireccionar con mensaje de éxito
+        session()->flash('mensaje', 'La categoría se registró correctamente');
         return redirect()->route('categorias.index');
     }
 

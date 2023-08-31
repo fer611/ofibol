@@ -33,7 +33,7 @@
                         </div>
                         <div class="card-body">
                             <form action="{{ route('categorias.update', $categoria->id) }}" method="post">
-                                @method('PATCH')
+                                @method('PUT')
                                 @csrf
                                 <div class="form-group">
                                     <label for="nombre">Nombre</label>
