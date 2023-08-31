@@ -46,10 +46,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-    public function adminlte_desc(){
+    public function adminlte_desc()
+    {
         return 'aqui puedes mostrar el correo electronico';
     }
-    public function adminlte_image(){
+    public function adminlte_image()
+    {
         /* Aca podemos poner la imagen del usuario */
         return 'storage/logo.png';
     }
@@ -57,5 +59,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         /* aca redireccionamos al enlace de perfil */
         return 'profile';
+    }
+
+    //si dice rol espera rol_id
+    public function rol()
+    {
+        //pertenece a
+        return $this->belongsTo(Rol::class);
     }
 }

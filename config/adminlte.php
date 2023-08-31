@@ -341,6 +341,33 @@ return [
             'label'       => 4,
             'label_color' => 'success',
         ],
+        /* ALMACEN */
+        ['header' => 'ALMACEN'],
+        [
+            'text'    => 'Productos',
+            'icon'    => 'fas fa-fw fa-share',
+            'submenu' => [
+                [
+                    'text' => 'lista de productos',
+                    'url'  => 'productos',
+                ],
+            ],
+        ],
+        [
+            'text'    => 'Categorias',
+            'icon'    => 'fas fa-fw fa-share',
+            'submenu' => [
+                [
+                    'text' => 'lista de Categorias',
+                    'url'  => 'categorias',
+                ],
+                [
+                    'text' => 'level_one',
+                    'url'  => '#',
+                ],
+            ],
+        ],
+
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
@@ -489,7 +516,7 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',

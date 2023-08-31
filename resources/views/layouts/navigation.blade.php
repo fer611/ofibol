@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('home') }}">
                         <x-application-logos class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
@@ -21,28 +21,32 @@
                     
                 </div> --}}
 
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                {{-- <div class="hidden space-x-2 items-center sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                
-                    <div x-data="{ open: false }" @click.away="open = false" class="relative mt-5">
-                        <div @click="open = !open" class="cursor-pointer justify-center">
+                    <div x-data="{ open: false }" @click.away="open = false" class="">
+                        <div @click="open = !open" class="cursor-pointer ">
                             <x-nav-link :active="request()->routeIs('productos.*')">
                                 {{ __('Productos') }}
                             </x-nav-link>
                         </div>
-                        <ul x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute z-10 mt-2 w-48 py-2 bg-white border border-gray-300 rounded shadow-xl">
-                            <li class="text-center">
-                                <a href="{{ route('productos.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">
+                        <ul x-show="open" x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
+                            x-transition:leave-end="opacity-0"
+                            class="absolute z-10 mt-2 w-48 py-2 bg-white border border-gray-300 rounded shadow-xl">
+                            <li class="">
+                                <a href="{{ route('productos.index') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">
                                     Listar Productos
                                 </a>
                             </li>
                         </ul>
                     </div>
-                </div>
-                
-                
+                </div> --}}
+
+
 
             </div>
 
@@ -50,12 +54,16 @@
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                        <button
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ml-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
                                 </svg>
                             </div>
                         </button>
@@ -71,7 +79,7 @@
                             @csrf
 
                             <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                                onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Cerrar Sesión') }}
                             </x-dropdown-link>
@@ -82,10 +90,14 @@
 
             <!-- Hamburger -->
             <div class="-mr-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                <button @click="open = ! open"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -93,7 +105,7 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
@@ -117,7 +129,7 @@
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
+                        onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Cerrar Sesión') }}
                     </x-responsive-nav-link>
