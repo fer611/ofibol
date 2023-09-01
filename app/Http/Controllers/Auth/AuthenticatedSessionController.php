@@ -17,6 +17,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
+
         return view('auth.login');
     }
 
@@ -25,13 +26,31 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        // Intenta autenticar al usuario
+        if (Auth::attempt($request->only('email', 'password'))) {
+            // Obtiene el usuario autenticado
+            $user = Auth::user();
 
-        $request->session()->regenerate();
+            // Verifica el estado del usuario
+            if ($user->estado === '1') { // Activo
+                $request->session()->regenerate();
+                return redirect()->intended(RouteServiceProvider::HOME);
+            } else { // Inactivo
+                // Desconecta al usuario
+                Auth::logout();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+                // Regenera la sesión
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                // Redirige al formulario de inicio de sesión con un mensaje de error
+                return redirect()->route('login')->withErrors(['email' => 'Tu cuenta está inactiva.']);
+            }
+        }
+
+        // Si la autenticación falla, redirige al formulario de inicio de sesión
+        return redirect()->route('login')->withErrors(['email' => 'Las credenciales proporcionadas no coinciden con nuestros registros.']);
     }
-
     /**
      * Destroy an authenticated session.
      */

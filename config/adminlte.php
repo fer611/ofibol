@@ -321,49 +321,28 @@ return [
         ],
         // Sidebar items:
         [
-            'type' => 'sidebar-menu-search',
-            'text' => 'buscar',
-        ],
-        [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
-        [
-            'text'   => 'Login',
-            'url'    => '/',
-            'target' => '_blank',
-        ],
-        [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
+            'text'    => 'Administrar',
+            'icon'    => 'fas fa-fw fa-lock',
+            'submenu' => [
+                [
+                    'text' => 'Usuarios',
+                    'url'  => 'usuarios',
+                ]
+            ],
         ],
         /* ALMACEN */
         ['header' => 'ALMACEN'],
         [
-            'text'    => 'Productos',
-            'icon'    => 'fas fa-fw fa-share',
+            'text'    => 'Almacen',
+            'icon'    => 'fas fa-fw fa-boxes',
             'submenu' => [
                 [
-                    'text' => 'lista de productos',
+                    'text' => 'Productos',
                     'url'  => 'productos',
                 ],
-            ],
-        ],
-        [
-            'text'    => 'Categorias',
-            'icon'    => 'fas fa-fw fa-share',
-            'submenu' => [
                 [
-                    'text' => 'lista de Categorias',
+                    'text' => 'Categorias',
                     'url'  => 'categorias',
-                ],
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
                 ],
             ],
         ],

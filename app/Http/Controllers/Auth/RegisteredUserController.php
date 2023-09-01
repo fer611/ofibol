@@ -41,8 +41,9 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'rol_id' => 2,
-        ]);
+            'rol_id' => 2, //por defecto se permite la creacion como cliente
+            'estado' => 1, //aca lo mismo por defecto la cuenta estará activa
+         ]);
 
         event(new Registered($user));
 
