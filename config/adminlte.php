@@ -132,7 +132,7 @@ return [
     'usermenu_enabled' => true,
     'usermenu_header' => true,
     'usermenu_header_class' => 'bg-light',
-    'usermenu_image' => true,
+    'usermenu_image' => false,
     'usermenu_desc' => true,
     'usermenu_profile_url' => true,
 
@@ -215,7 +215,7 @@ return [
     'sidebar_collapse' => true,
     'sidebar_collapse_auto_size' => true,
     'sidebar_collapse_remember' => true,
-    'sidebar_collapse_remember_no_transition' => true,
+    'sidebar_collapse_remember_no_transition' => false,
     'sidebar_scrollbar_theme' => 'os-theme-light',
     'sidebar_scrollbar_auto_hide' => 'n',
     'sidebar_nav_accordion' => true,
@@ -299,7 +299,7 @@ return [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-        [
+        /* [
             'type'         => 'navbar-notification',
             'id'           => 'my-notification',      // An ID attribute (required).
             'icon'         => 'fas fa-bell',          // A font awesome icon (required).
@@ -314,24 +314,34 @@ return [
                 'url' => 'notifications/get',         // The url to periodically fetch new data (optional).
                 'period' => 30,                       // The update period for get new data (in seconds, optional).
             ]
-        ],
+        ], */
         [
             'type'         => 'darkmode-widget',
             'topnav_right' => true, // Or "topnav => true" to place on the left.
         ],
         // Sidebar items:
+        //Dashboard
         [
-            'text'    => 'Administrar',
-            'icon'    => 'fas fa-fw fa-lock',
+            'text' => 'Dashboard',
+            'url'  => '/',
+            'icon' => 'fas fa-fw fa-tachometer-alt',
+        ],
+        //Administracion
+        [
+            'text'    => 'Administración',
+            'icon'    => 'fas fa-fw fa-user-tie',
             'submenu' => [
                 [
                     'text' => 'Usuarios',
                     'url'  => 'usuarios',
+                ],
+                [
+                    'text' => 'Roles',
+                    'url'  => 'roles',
                 ]
             ],
         ],
         /* ALMACEN */
-        ['header' => 'ALMACEN'],
         [
             'text'    => 'Almacen',
             'icon'    => 'fas fa-fw fa-boxes',
@@ -346,7 +356,21 @@ return [
                 ],
             ],
         ],
-
+        /* COMPRAS */
+        [
+            'text'    => 'Compras',
+            'icon'    => 'fas fa-fw fa-shopping-cart',
+            'submenu' => [
+                [
+                    'text' => 'Compras',
+                    'url'  => 'compras',
+                ],
+                [
+                    'text' => 'Proveedores',
+                    'url'  => 'proveedores',
+                ],
+            ],
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
@@ -485,7 +509,7 @@ return [
             ],
         ],
         'Chartjs' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -566,5 +590,5 @@ return [
     |
     */
 
-    'livewire' => false,
+    'livewire' => true,
 ];

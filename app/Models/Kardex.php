@@ -5,12 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Categoria extends Model
+class Kardex extends Model
 {
     use HasFactory;
-    protected $table = 'categorias';
+    protected $table = 'kardex';
     protected $fillable = [
-        'nombre',
-        'descripcion',
+        'entradas',
+        'salidas',
+        'producto_id',
+        'almacen_id',
+        'precio_producto'
     ];
 }

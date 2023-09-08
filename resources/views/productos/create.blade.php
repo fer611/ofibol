@@ -3,7 +3,21 @@
 @section('title', 'Agregar Producto')
 
 @section('content_header')
-    <h1 class="text-center mb-5">Agregar Producto</h1>
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Agregar Producto</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Inicio</a></li>
+                        <li class="breadcrumb-item active">Productos</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('content')
@@ -12,22 +26,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
-                        <form action="#" method="post" novalidate>
-                            @csrf
-                            <div class="mb-4">
-                                <label for="descripcion" class="form-label">Descripción</label>
-                                <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" rows="3"
-                                    name="descripcion">{{ old('descripcion') }}</textarea>
-                                @error('descripcion')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                            <!-- Aquí otros campos -->
-                            <!-- ... -->
-                            <button type="submit" class="btn btn-primary w-100">Crear Producto</button>
-                        </form>
+                        <livewire:crear-producto />
                     </div>
                 </div>
             </div>
@@ -35,8 +34,8 @@
     </div>
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+@section('css'){{-- 
+    <link rel="stylesheet" href="/css/admin_custom.css"> --}}
     <style>
         .card {
             border-radius: 15px;
@@ -46,7 +45,5 @@
 @stop
 
 @section('js')
-    <script>
-        console.log('Hi!');
-    </script>
+
 @stop

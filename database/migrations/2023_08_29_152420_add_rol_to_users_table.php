@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            
+
             $table->foreignId('rol_id')->constrained('roles')->onDelete('cascade'); //relacionando con la tabla roles
         });
     }
@@ -23,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('rol_id');
+            $table->dropForeign(['rol_id']);  // Eliminar la clave externa primero
+            $table->dropColumn('rol_id');  // Luego eliminar la columna
         });
     }
 };

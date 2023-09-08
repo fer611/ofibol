@@ -12,7 +12,7 @@ class UsuarioController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request) {
+        /* if ($request) {
             $query = trim($request->get('texto'));
             $usuarios = User::with('rol')  // Carga la relación 'rol' para cada usuario
                 ->where('name', 'LIKE', '%' . $query . '%')
@@ -23,7 +23,9 @@ class UsuarioController extends Controller
                 ->orderBy('id', 'desc')
                 ->paginate(7);
             return view('usuarios.index', ["usuarios" => $usuarios, "texto" => $query]);
-        }
+        } */
+        $usuarios = User::all();
+        return view('usuarios.index', ["usuarios" => $usuarios]);
     }
     /**
      * Show the form for creating a new resource.
@@ -54,6 +56,7 @@ class UsuarioController extends Controller
             'password' => $request->password,  // Encriptar la contraseña
             'rol_id' => $request->rol_id,
             'email_verified_at' => Carbon::now(),
+            'estado' => '1',
         ]);
         // Redireccionar con mensaje de éxito
         session()->flash('mensaje', 'El usuario se registró correctamente');

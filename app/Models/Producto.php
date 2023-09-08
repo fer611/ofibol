@@ -9,13 +9,36 @@ class Producto extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'nombre',
         'descripcion',
-        'marca',
-        'origen',
+        'marca_id',
+        'origen_id',
         'unidad_medida',
-        'precio',
-        'stock',
+        'cantidad_unidad',
+        'stock_minimo',
+        'costo_actual',
+        'porcentaje_margen',
+        'precio_venta',
+        'imagen',
+        'estado',
         'categoria_id',
-        'almacen_id',
     ];
+
+    //Relaciones
+    public function categoria()
+    {
+        //pertenece a
+        return $this->belongsTo(Categoria::class);
+    }
+
+    public function marca()
+    {
+        //pertenece a
+        return $this->belongsTo(Marca::class);
+    }
+    public function origen()
+    {
+        //pertenece a
+        return $this->belongsTo(Origen::class);
+    }
 }
