@@ -325,21 +325,24 @@ return [
             'text' => 'Dashboard',
             'url'  => '/',
             'icon' => 'fas fa-fw fa-tachometer-alt',
+
         ],
         //Administracion
         [
             'text'    => 'Administración',
-            'icon'    => 'fas fa-fw fa-user-tie',
+            'icon'    => 'fas fa-fw fa-users',
             'submenu' => [
                 [
                     'text' => 'Usuarios',
-                    'url'  => 'usuarios',
+                    'route' => 'usuarios.index',
+                    'can' => 'usuarios.index'
                 ],
                 [
                     'text' => 'Roles',
                     'url'  => 'roles',
                 ]
             ],
+            'can' => 'usuarios.index'
         ],
         /* ALMACEN */
         [

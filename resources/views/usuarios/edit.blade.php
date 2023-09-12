@@ -19,20 +19,19 @@
                                 @method('put')
                                 @csrf
                                 <div class="form-group">
-                                    <label for="rol">Rol</label>
-                                    <select class="form-control @error('rol_id') is-invalid @enderror" id="rol"
-                                        name="rol_id">
+                                    <label for="rol">Roles</label>
+                                    <div class="form-check">
                                         @foreach ($roles as $rol)
-                                            <option value="{{ $rol->id }}"
-                                                {{ $usuario->rol_id == $rol->id ? 'selected' : '' }}>
+                                            <input type="checkbox" class="form-check-input" id="role{{ $rol->id }}" name="roles[]" value="{{ $rol->id }}" @if($usuario->roles->pluck('id')->contains($rol->id)) checked @endif>
+                                            <label class="form-check-label" for="role{{ $rol->id }}">
                                                 {{ $rol->name }}
-                                            </option>
+                                            </label><br>
                                         @endforeach
-                                    </select>
+                                    </div>
                                     @error('rol_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                </div>
+                                </div>                                
                                 <div class="form-group">
                                     <label for="name">Nombre</label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"

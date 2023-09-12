@@ -5,7 +5,8 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <!-- Botón para abrir el modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevoProductoModal">
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#nuevoProductoModal">
                             Nuevo Producto
                         </button>
                     </div>
@@ -15,15 +16,10 @@
                                 <thead class="">
                                     <tr>
                                         <th>Id</th>
-                                        <th>Categoria</th>
-                                        <th>Marca</th>
-                                        <th>Origen</th>
-                                        <th>Nombre</th>
                                         <th>Descripcion</th>
+                                        <th>Stock</th>
                                         <th>Unidad Medida</th>
                                         <th>Cantidad Cja/pqte</th>
-                                        <th>Precio Compra</th>
-                                        <th>Margen</th>
                                         <th>Precio_venta</th>
                                         <th>Imagen</th>
                                         <th>Estado</th>
@@ -34,17 +30,15 @@
                                     @foreach ($productos as $producto)
                                         <tr>
                                             <td>{{ $producto->id }}</td>
-                                            <td>{{ $producto->categoria->nombre }}</td>
-                                            <td>{{ $producto->marca->nombre }}</td>
-                                            <td>{{ $producto->origen->nombre }}</td>
-                                            <td>{{ $producto->nombre }}</td>
                                             <td>{{ $producto->descripcion }}</td>
+                                            <td>{{ $producto->stock }}</td>
                                             <td>{{ $producto->unidad_medida }}</td>
                                             <td>{{ $producto->cantidad_unidad }}</td>
-                                            <td>{{ $producto->costo_actual }}</td>
-                                            <td>{{ $producto->porcentaje_margen }}</td>
-                                            <td>{{ $producto->costo_actual + ($producto->costo_actual * $producto->porcentaje_margen / 100) }}</td>
-                                            <td><img src="{{ asset('storage/productos/' . $producto->imagen) }}" alt="{{ 'Imagen producto ' . $producto->nombre }}" class="img-fluid w-60 img-thumbnail my-custom-img"></td>
+                                            <td>{{ $producto->costo_actual + ($producto->costo_actual * $producto->porcentaje_margen) / 100 }}
+                                            </td>
+                                            <td><img src="{{ asset('storage/productos/' . $producto->imagen) }}"
+                                                    alt="{{ 'Imagen producto ' . $producto->nombre }}"
+                                                    class="img-fluid w-60 img-thumbnail my-custom-img"></td>
                                             <td>
                                                 <span
                                                     class="badge badge-{{ $producto->estado === '1' ? 'success' : 'danger' }}">
@@ -52,12 +46,15 @@
                                                 </span>
                                             </td>
                                             <td class="d-flex align-items-center ">
-                                                <a href="{{ route('productos.edit', $producto->id) }}"
-                                                    class="btn btn-warning btn-sm mr-1 mb-1"><i class="fas fa-pen"></i></a>
-                                            
+                                                <a href="{{ route('productos.show', $producto->id) }}"
+                                                    class="btn btn-outline-primary  btn-sm mr-1"><i class="fas fa-eye"></i></a>
+                                                <a class="btn btn-warning btn-sm mr-1 mb-1 edit-button"
+                                                    href="{{ route('productos.edit', $producto->id) }}"><i
+                                                        class="fas fa-pen"></i></a>
+
                                                 <form id="deleteForm-{{ $producto->id }}"
-                                                    action="{{ route('productos.destroy', $producto->id) }}" method="post"
-                                                    class="mb-1">
+                                                    action="{{ route('productos.destroy', $producto->id) }}"
+                                                    method="post" class="mb-1">
                                                     @method('DELETE')
                                                     @csrf
                                                     <button type="button"
@@ -68,7 +65,7 @@
                                                     </button>
                                                 </form>
                                             </td>
-                                            
+
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -79,8 +76,9 @@
             </div>
         </div>
     </section>
-{{-- Modal para crear productos --}}
-    <div class="modal fade" id="nuevoProductoModal" tabindex="-1" role="dialog" aria-labelledby="nuevoProductoModalLabel" aria-hidden="true">
+    {{-- Modal para crear productos --}}
+    <div class="modal fade" id="nuevoProductoModal" tabindex="-1" role="dialog"
+        aria-labelledby="nuevoProductoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">

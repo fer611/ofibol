@@ -22,11 +22,24 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
-            'rol_id' => $this->faker->randomElement([1, 2, 3]),
             'estado' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function ($user) {
+            $roles = ['Admin', 'Operador', 'Cliente'];
+            $role = $roles[array_rand($roles)];
+            $user->assignRole($role);
+        });
     }
 
     /**

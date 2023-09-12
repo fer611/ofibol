@@ -8,22 +8,12 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
+use Spatie\Permission\Models\Role;
+
 class UsuarioController extends Controller
 {
     public function index(Request $request)
     {
-        /* if ($request) {
-            $query = trim($request->get('texto'));
-            $usuarios = User::with('rol')  // Carga la relación 'rol' para cada usuario
-                ->where('name', 'LIKE', '%' . $query . '%')
-                ->orWhere('email', 'LIKE', '%' . $query . '%')
-                ->orWhereHas('rol', function ($q) use ($query) {
-                    $q->where('name', 'LIKE', '%' . $query . '%');
-                })
-                ->orderBy('id', 'desc')
-                ->paginate(7);
-            return view('usuarios.index', ["usuarios" => $usuarios, "texto" => $query]);
-        } */
         $usuarios = User::all();
         return view('usuarios.index', ["usuarios" => $usuarios]);
     }
@@ -32,7 +22,7 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        $roles = Rol::all();
+        $roles = Role::all();
         return view('usuarios.create', ["roles" => $roles]);
     }
 
@@ -77,7 +67,8 @@ class UsuarioController extends Controller
      */
     public function edit(User $usuario)
     {
-        $roles = Rol::all();
+        /* Obtenienod los roles */
+        $roles = Role::all();
         return view('usuarios.edit', [
             'usuario' => $usuario,
             'roles' => $roles,
@@ -97,13 +88,11 @@ class UsuarioController extends Controller
             'name' => ['required', 'string', 'max:80'],
             /* con excluimos el correo del usuario que se esta editando pero no del nuevo correo que se le asigna, es decir si lo actualizamos por uno nuevo que ya existe nos da un error de validacion */
             'email' => ['required', 'string', 'email', 'max:50', Rule::unique('users')->ignore($usuario->id)],
-            'rol_id' => ['required', 'exists:roles,id'],
             'new_password' => ['nullable', 'min:8', 'confirmed'],
         ]);
 
         $usuario->name = $request->name;
         $usuario->email = $request->email;
-        $usuario->rol_id = $request->rol_id;
 
         // Si se proporciona una nueva contraseña, actualizarla
         if ($request->new_password) {
@@ -112,6 +101,8 @@ class UsuarioController extends Controller
 
         $usuario->save();
 
+        /* Asignando los roles al usuario */
+        $usuario->roles()->sync($request->roles);
         // Redireccionar con mensaje de éxito
         session()->flash('mensaje', 'El usuario se actualizó correctamente');
         return redirect()->route('usuarios.index');

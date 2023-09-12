@@ -74,6 +74,11 @@
                             {{ __('Perfil') }}
                         </x-dropdown-link>
 
+                        @can('dashboard')
+                            <x-dropdown-link :href="route('dashboard')">
+                                {{ __('Administración') }}
+                            </x-dropdown-link>
+                        @endcan
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -124,6 +129,9 @@
                     {{ __('Perfil') }}
                 </x-responsive-nav-link>
 
+                <x-responsive-nav-link :href="route('dashboard')">
+                    {{ __('Administración') }}
+                </x-responsive-nav-link>
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

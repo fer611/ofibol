@@ -31,12 +31,13 @@ Route::get('/home', function () {
     return view('home');
 })->middleware(['auth', 'verified','estado'])->name('home');
 
-Route::get('/dashboard',[DashboardController::class, 'index'])->middleware(['auth', 'verified','rol.administrador','estado'])->name('dashboard');
+Route::get('/dashboard',[DashboardController::class, 'index'])->middleware(['auth', 'verified','estado','rol.cliente'])->name('dashboard');
 
 Route::get('datatable/users',[DatatableController::class,'user'])->name('datatable.user');
 
 
-Route::middleware(['auth', 'verified', 'rol.administrador', 'estado'])->group(function () {
+Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function () {
+    
     // Rutas de usuarios
     Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index'); 
     Route::get('/usuarios/create', [UsuarioController::class, 'create'])->name('usuarios.create');
@@ -57,6 +58,7 @@ Route::middleware(['auth', 'verified', 'rol.administrador', 'estado'])->group(fu
     Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
     Route::get('/productos/create', [ProductoController::class, 'create'])->name('productos.create');
     Route::post('/productos', [ProductoController::class,'store'])->name('productos.store');
+    Route::get('/productos/{producto}', [ProductoController::class, 'show'])->name('productos.show');
     Route::get('/productos/{producto}/edit', [ProductoController::class, 'edit'])->name('productos.edit');
     Route::put('/productos/{producto}', [ProductoController::class, 'update'])->name('productos.update');
     Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
@@ -80,10 +82,6 @@ Route::middleware(['auth', 'verified', 'rol.administrador', 'estado'])->group(fu
 
     //rutas de clientes
 });
-/* //productos
-Route::get('/productos',[ProductoController::class, 'index'])->middleware(['auth','verified','rol.administrador','estado'])->name('productos.index');
-Route::get('/productos/create',[ProductoController::class, 'create'])->middleware(['auth','verified','rol.administrador','estado'])->name('productos.create');
- */
 
 
 Route::middleware('auth')->group(function () {
