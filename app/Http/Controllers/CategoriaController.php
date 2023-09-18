@@ -8,9 +8,14 @@ use Illuminate\Support\Facades\DB;
 
 class CategoriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        /* El middelwire solo se aplica en el index */
+        $this->middleware('can:categorias.index')->only('index');
+        $this->middleware('can:categorias.edit')->only('edit','update');
+        $this->middleware('can:categorias.create')->only('create','store');
+        $this->middleware('can:categorias.destroy')->only('destroy');
+    }
     public function index(Request $request)
     {
         if ($request) {

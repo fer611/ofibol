@@ -8,9 +8,14 @@ use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        /* El middelwire solo se aplica en el index */
+        $this->middleware('can:productos.index')->only('index');
+        $this->middleware('can:productos.edit')->only('edit', 'update');
+        $this->middleware('can:productos.create')->only('create', 'store');
+        $this->middleware('can:productos.destroy')->only('destroy');
+    }
     public function index()
     {
         // Obtener todos los productos
@@ -29,7 +34,7 @@ class ProductoController extends Controller
 
         // Asignar el stock a cada producto en la colección $productos
         foreach ($productos as $producto) {
-             // Usar el stock del mapa si está disponible, de lo contrario usar 0
+            // Usar el stock del mapa si está disponible, de lo contrario usar 0
             $producto->stock = $stockMap[$producto->id] ?? 0;
         }
 
@@ -58,7 +63,7 @@ class ProductoController extends Controller
      */
     public function show(Producto $producto)
     {
-        return view('productos.show',[
+        return view('productos.show', [
             'producto' => $producto
         ]);
     }

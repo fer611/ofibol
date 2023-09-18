@@ -31,10 +31,9 @@ Route::get('/home', function () {
     return view('home');
 })->middleware(['auth', 'verified','estado'])->name('home');
 
-Route::get('/dashboard',[DashboardController::class, 'index'])->middleware(['auth', 'verified','estado','rol.cliente'])->name('dashboard');
+Route::get('/dashboard',[DashboardController::class, 'index'])->middleware(['auth', 'verified','estado','rol.cliente','can:dashboard'])->name('dashboard');
 
 Route::get('datatable/users',[DatatableController::class,'user'])->name('datatable.user');
-
 
 Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function () {
     
