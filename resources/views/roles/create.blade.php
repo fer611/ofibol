@@ -21,10 +21,23 @@
                                     <label for="nombre">Nombre</label>
                                     <input type="text" class="form-control @error('nombre') is-invalid @enderror"
                                         id="nombre" name="nombre" value="{{ old('nombre') }}"
-                                        placeholder="Nombre del rol">
+                                        placeholder="Ingrese el nombre del rol">
                                     @error('nombre')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                </div>
+                                <!-- Sección para los permisos -->
+                                <div class="form-group">
+                                    <label>Permisos</label>
+                                    @foreach ($permisos as $permiso)
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input mr-1" name="permisos[]"
+                                                    value="{{ $permiso->id }}">
+                                                {{ $permiso->description }}
+                                            </label>
+                                        </div>
+                                    @endforeach
                                 </div>
                                 <div class="row">
                                     <div

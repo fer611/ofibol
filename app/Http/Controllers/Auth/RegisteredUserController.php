@@ -32,19 +32,20 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            //'rol' => ['required', 'numeric', 'in:2'] /* aca por el momento solo admitimos que se pueda crear como cliente */
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'rol_id' => 2, //por defecto se permite la creacion como cliente
             'estado' => 1, //aca lo mismo por defecto la cuenta estará activa
-         ]);
+        ]);
 
+        // Asignar el rol de 'cliente' al usuario nuevo
+        $user->assignRole('cliente');
+        
         event(new Registered($user));
 
         Auth::login($user);

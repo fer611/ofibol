@@ -163,7 +163,7 @@
                     <label for="imagen" class="font-weight-bold">Imagen del Producto</label>
                     <div class="custom-file">
                         <input type="file" class="custom-file-input @error('imagen') is-invalid @enderror"
-                            id="imagen" wire:model="imagen" >
+                            id="imagen" wire:model="imagen" accept="image/*">
                         <label class="custom-file-label" for="imagen">Elegir imagen</label>
                         @error('imagen')
                             <div class="invalid-feedback">{{ $message }}</div>

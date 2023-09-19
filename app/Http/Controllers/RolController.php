@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rol;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolController extends Controller
 {
@@ -28,7 +30,10 @@ class RolController extends Controller
      */
     public function create()
     {
-        return view('roles.create');
+        $permisos = Permission::all();
+        return view('roles.create', [
+            'permisos' => $permisos,
+        ]);
     }
 
     /**
@@ -39,9 +44,15 @@ class RolController extends Controller
         $this->validate($request, [
             'nombre' => ['required', 'max:50'],
         ]);
-        Rol::create([
-            'name' => $request->nombre,
+
+        // Creamos el rol con los campos enviados del formulario
+        $rol = Role::create([
+            'name' => $request->input('nombre'),  // Aquí especificas el campo 'nombre' del formulario
         ]);
+
+        // Asignando distintos permisos al rol que acabamos de crear
+        $rol->permissions()->sync($request->input('permisos'));
+
         // Redireccionar con mensaje de éxito
         session()->flash('mensaje', 'El nuevo rol se registró correctamente');
         return redirect()->route('roles.index');
@@ -50,18 +61,19 @@ class RolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Rol $rol)
+    public function show(Role $rol)
     {
-        
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Rol $rol)
+    public function edit(Role $rol)
     {
+        $permisos = Permission::all();
         return view('roles.edit', [
-            'rol' => $rol
+            'rol' => $rol,
+            'permisos' => $permisos
         ]);
     }
 
@@ -74,23 +86,33 @@ class RolController extends Controller
         $request->validate([
             'nombre' => 'required|max:50',
         ]);
-        // 2. Buscar categoría
-        $rol = Rol::find($id);
+
+        // 2. Buscar el rol
+        $rol = Role::find($id);
+
         // 3. Actualizar campos
         $rol->name = $request->input('nombre');
+
         // 4. Guardar cambios
         $rol->save();
-        // Redireccionar con mensaje de éxito
+
+        // 5. Sincronizar permisos
+        $rol->permissions()->sync($request->input('permisos'));
+
+        // 6. Redireccionar con mensaje de éxito
         session()->flash('mensaje', 'El rol se actualizó correctamente');
         return redirect()->route('roles.index');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        Rol::find($id)->delete();
+        Role::find($id)->delete();
+        // 6. Redireccionar con mensaje de éxito
+        session()->flash('mensaje', 'El rol se eliminó correctamente');
         return redirect()->route('roles.index');
     }
 }

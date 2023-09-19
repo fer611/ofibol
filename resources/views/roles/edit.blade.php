@@ -1,7 +1,6 @@
-
 @extends('adminlte::page')
 
-@section('title', 'Productos')
+@section('title', 'Roles')
 
 @section('content')
 
@@ -28,6 +27,20 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <!-- Sección para los permisos -->
+                                <div class="form-group">
+                                    <label>Permisos</label>
+                                    @foreach ($permisos as $permiso)
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="permiso_{{ $permiso->id }}"
+                                                name="permisos[]" value="{{ $permiso->id }}"
+                                                {{ $rol->permissions->pluck('id')->contains($permiso->id) ? 'checked' : '' }}>
+                                            <label class="form-check-label"
+                                                for="permiso_{{ $permiso->id }}">{{ $permiso->description }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
+
                                 <div class="row">
                                     <div
                                         class="col-md-6 offset-md-6 d-flex flex-md-row flex-column justify-content-between">
@@ -50,6 +63,5 @@
 @stop
 
 @section('js')
-<script>
-</script>
+    <script></script>
 @stop
