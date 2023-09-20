@@ -21,7 +21,7 @@
                                         <th>Unidad Medida</th>
                                         <th>Cantidad Cja/pqte</th>
                                         <th>Precio_venta</th>
-                                        <th>Imagen</th>
+                                        {{-- <th>Imagen</th> --}}
                                         <th>Estado</th>
                                         <th>Opciones</th>
                                     </tr>
@@ -36,9 +36,9 @@
                                             <td>{{ $producto->cantidad_unidad }}</td>
                                             <td>{{ $producto->costo_actual + ($producto->costo_actual * $producto->porcentaje_margen) / 100 }}
                                             </td>
-                                            <td><img src="{{ asset('storage/productos/' . $producto->imagen) }}"
+                                            {{-- <td><img src="{{ asset('storage/productos/' . $producto->imagen) }}"
                                                     alt="{{ 'Imagen producto ' . $producto->nombre }}"
-                                                    class="img-fluid w-60 img-thumbnail my-custom-img"></td>
+                                                    class="img-fluid w-60 img-thumbnail my-custom-img"></td> --}}
                                             <td>
                                                 <span
                                                     class="badge badge-{{ $producto->estado === '1' ? 'success' : 'danger' }}">
@@ -48,6 +48,7 @@
                                             <td class="d-flex align-items-center ">
                                                 <a href="{{ route('productos.show', $producto->id) }}"
                                                     class="btn btn-outline-primary  btn-sm mr-1"><i class="fas fa-eye"></i></a>
+                                                    {{-- Editar --}}
                                                 <a class="btn btn-warning btn-sm mr-1 mb-1 edit-button"
                                                     href="{{ route('productos.edit', $producto->id) }}"><i
                                                         class="fas fa-pen"></i></a>
@@ -97,3 +98,4 @@
         </div>
     </div>
 </div>
+

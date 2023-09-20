@@ -11,16 +11,6 @@ class MostrarProducto extends Component
 {
     public $producto;
     public $stocks;
-    public $origen;
-    public $destino;
-    public $cantidad;
-
-    protected $rules = [
-        'origen' => 'required|exists:almacenes,id',
-        'destino' => 'required|exists:almacenes,id',
-        'cantidad' => 'required|numeric|min:0',
-    ];
-
     public function mount($producto)
     {
         $this->producto = $producto;
@@ -31,17 +21,10 @@ class MostrarProducto extends Component
                            GROUP BY a.id", [$producto->id]);
     }
 
-    public function realizarTraspaso()
-    {
-       dd('relizando traspaso....');
-        
-    }
+
 
     public function render()
     {
-        $almacenes = Almacen::all();
-        return view('livewire.mostrar-producto', [
-            'almacenes' => $almacenes
-        ]);
+        return view('livewire.mostrar-producto');
     }
 }

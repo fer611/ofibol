@@ -192,10 +192,11 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    /* Aca cambiamos el fondo del slidebar  el light por dark*/
-    'classes_sidebar' => 'sidebar-light-primary elevation-4',
-    'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
+    /* Aca cambiamos el fondo del slidebar izquierdo  el light por dark*/
+    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
+    'classes_sidebar_nav' => 'nav-child-indent nav-legacy',
+    /* Barra de navegacion superior */
+    'classes_topnav' => 'navbar-light',
     'classes_topnav_nav' => 'navbar-expand',
     'classes_topnav_container' => 'container',
 
@@ -211,14 +212,16 @@ return [
     |
     */
 
-    'sidebar_mini' => false, //'lg' /cuando se minimiza se pierte el sidebar mini
+    'sidebar_mini' => 'xs', // /cuando se minimiza aparece un mini sidebar
     'sidebar_collapse' => true,
     'sidebar_collapse_auto_size' => true,
     'sidebar_collapse_remember' => true,
     'sidebar_collapse_remember_no_transition' => false,
     'sidebar_scrollbar_theme' => 'os-theme-light',
     'sidebar_scrollbar_auto_hide' => 'n',
-    'sidebar_nav_accordion' => true,
+    /* Si está activado (true), solo un menú puede estar expandido a la vez. Al expandir un nuevo menú, el menú previamente abierto se contraerá automáticamente.
+    Si está desactivado (false), puedes tener múltiples menús expandidos a la vez. Al expandir un nuevo menú, los demás menús abiertos permanecerán como están. */
+    'sidebar_nav_accordion' => false,
     'sidebar_nav_animation_speed' => 300,
 
     /*

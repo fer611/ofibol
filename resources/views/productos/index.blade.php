@@ -29,8 +29,8 @@
     <livewire:mostrar-productos :productos="$productos" />
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+@section('css'){{-- 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.bootstrap4.min.css">
@@ -98,5 +98,26 @@
             });
             table.buttons().container().appendTo('#productos_wrapper .col-md-6:eq(0)');
         });
+    </script>
+    <script>
+        // El siguiente código es el Alert utilizado
+        /* Swal.fire({
+            title: '¡Estas seguro?',
+            text: "El producto pasará a un estado inactivo!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, inactivar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        }) */
     </script>
 @stop
