@@ -47,26 +47,20 @@
                                             </td>
                                             <td class="d-flex align-items-center ">
                                                 <a href="{{ route('productos.show', $producto->id) }}"
-                                                    class="btn btn-outline-primary  btn-sm mr-1"><i class="fas fa-eye"></i></a>
-                                                    {{-- Editar --}}
+                                                    class="btn btn-outline-primary  btn-sm mr-1"><i
+                                                        class="fas fa-eye"></i></a>
+                                                {{-- Editar --}}
                                                 <a class="btn btn-warning btn-sm mr-1 mb-1 edit-button"
                                                     href="{{ route('productos.edit', $producto->id) }}"><i
                                                         class="fas fa-pen"></i></a>
-
-                                                <form id="deleteForm-{{ $producto->id }}"
-                                                    action="{{ route('productos.destroy', $producto->id) }}"
-                                                    method="post" class="mb-1">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                    <button type="button"
+                                                {{-- Eliminar --}}
+                                                <button type="button"
                                                         class="btn btn-outline-{{ $producto->estado === '1' ? 'danger' : 'success' }} btn-sm delete-button"
                                                         data-id="{{ $producto->id }}"
                                                         data-estado="{{ $producto->estado }}"><i
                                                             class="fas {{ $producto->estado === '1' ? 'fa-trash-alt' : 'fa-check' }}"></i>
                                                     </button>
-                                                </form>
                                             </td>
-
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -98,4 +92,3 @@
         </div>
     </div>
 </div>
-

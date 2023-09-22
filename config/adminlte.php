@@ -362,10 +362,27 @@ return [
                 ],
             ],
         ],
-        /* COMPRAS */
+       
+        /* VENTAS */
         [
-            'text'    => 'Compras',
+            'text'    => 'Ventas',
             'icon'    => 'fas fa-fw fa-shopping-cart',
+            'submenu' => [
+                [
+                    'text' => 'Ventas',
+                    'url'  => 'ventas',
+                ],
+                [
+                    'text' => 'Clientes',
+                    'url'  => 'clientes',
+                ],
+            ],
+        ],
+
+         /* COMPRAS */
+         [
+            'text'    => 'Compras',
+            'icon'    => 'fas fa-fw fa-shopping-bag',
             'submenu' => [
                 [
                     'text' => 'Compras',
@@ -377,6 +394,8 @@ return [
                 ],
             ],
         ],
+
+
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

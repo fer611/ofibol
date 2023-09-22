@@ -1,18 +1,18 @@
 @extends('adminlte::page')
 
-@section('title', 'productos')
+@section('title', 'clientes')
 
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">LISTADO DE PRODUCTOS</h1>
+                    <h1 class="m-0">LISTADO DE CLIENTES</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Inicio</a></li>
-                        <li class="breadcrumb-item active">productos</li>
+                        <li class="breadcrumb-item active">clientes</li>
                     </ol>
                 </div>
             </div>
@@ -26,7 +26,8 @@
         </div>
     @endif
 
-    <livewire:mostrar-productos />
+    {{-- Aca el componente livewire --}}
+    <livewire:mostrar-clientes />
 @stop
 
 @section('css'){{-- 
@@ -62,8 +63,9 @@
     <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
     <script>
         $(document).ready(function() {
-            var table = $('#productos').DataTable({
+            var table = $('#clientes').DataTable({
                 fixedHeader: true,
+                pageLength: 10, // Cantidad inicial de registros por página
                 responsive: true,
                 autoWidth: false,
                 "language": {
@@ -106,19 +108,19 @@
                                 // Exportar solo las filas que están actualmente en la vista (las que se muestran)
                                 page: 'current'
                             },
-                            columns: ':not(:eq(7))' //excluyendo la fila de opciones
+                            columns: ':not(:eq(6))' //excluyendo la fila de opciones
                         },
                     },
                     {
                         extend: 'pdf',
-                        orientation: 'landscape', // Orientación horizontal
+                        //orientation: 'landscape', // Orientación horizontal
                         pageSize: 'A4', // Tamaño del papel
                         exportOptions: {
                             modifier: {
                                 // Exportar solo las filas que están actualmente en la vista (las que se muestran)
                                 page: 'current'
                             },
-                            columns: ':not(:eq(7))' // Excluye la columna 11 y 13 (0-indexadas)
+                            columns: ':not(:eq(6))' // Excluye la columna 11 y 13 (0-indexadas)
                         }
                     }, {
                         extend: 'print',
@@ -128,37 +130,18 @@
                                 // Exportar solo las filas que están actualmente en la vista (las que se muestran)
                                 page: 'current'
                             },
-                            columns: ':not(:eq(7))' //excluyendo la fila de opcionesF
+                            columns: ':not(:eq(6))' //excluyendo la fila de opcionesF
                         },
-                    },{
+                    }, {
                         extend: 'colvis',
                         text: 'Ver Columnas',
                     },
                 ]
             });
-            table.buttons().container().appendTo('#productos_wrapper .col-md-6:eq(0)');
+            table.buttons().container().appendTo('#clientes_wrapper .col-md-6:eq(0)');
+
+            console.log(table);
         });
     </script>
-    <script>
-        // El siguiente código es el Alert utilizado
-        /* Swal.fire({
-            title: '¡Estas seguro?',
-            text: "El producto pasará a un estado inactivo!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, inactivar!',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
-            }
-        }) */
-
-    </script>
+    <script></script>
 @stop
