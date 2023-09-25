@@ -5,8 +5,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <!-- Botón para abrir el modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                            data-target="#nuevoClienteModal">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevoClienteModal">
                             Registrar Cliente
                         </button>
                     </div>
@@ -46,26 +45,24 @@
                                                     href="{{ route('clientes.edit', $cliente->id) }}"><i
                                                         class="fas fa-pen"></i></a>
                                                 {{-- Eliminar --}}
-                                                <button type="button"
-                                                        class="btn btn-outline-{{ $cliente->estado === '1' ? 'danger' : 'success' }} btn-sm delete-button"
-                                                        data-id="{{ $cliente->id }}"
-                                                        data-estado="{{ $cliente->estado }}"><i
-                                                            class="fas {{ $cliente->estado === '1' ? 'fa-trash-alt' : 'fa-check' }}"></i>
-                                                    </button>
+                                                <button wire:click="$dispatch('prueba', {id: {{ $cliente->id }}})" class="btn btn-outline-danger btn-sm delete-button">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                                
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </section>
     {{-- Modal para crear clientes --}}
     <div class="modal fade" id="nuevoClienteModal" tabindex="-1" role="dialog"
         aria-labelledby="nuevoClienteModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog modal-xs" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="nuevoClienteModalLabel">Registrar Cliente</h5>
@@ -75,7 +72,7 @@
                 </div>
                 <div class="modal-body">
                     {{-- Aca vamos a llamar al componente livewire para registrar un nuevo cliente --}}
-                    {{-- <livewire:crear-producto / --}}
+                    <livewire:crear-cliente />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -84,4 +81,3 @@
         </div>
     </div>
 </div>
-

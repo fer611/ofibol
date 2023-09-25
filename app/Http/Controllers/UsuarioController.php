@@ -17,8 +17,8 @@ class UsuarioController extends Controller
     {
         /* El middelwire solo se aplica en el index */
         $this->middleware('can:usuarios.index')->only('index');
-        $this->middleware('can:usuarios.edit')->only('edit','update');
-        $this->middleware('can:usuarios.create')->only('create','store');
+        $this->middleware('can:usuarios.edit')->only('edit', 'update');
+        $this->middleware('can:usuarios.create')->only('create', 'store');
         $this->middleware('can:usuarios.destroy')->only('destroy');
     }
 
@@ -50,14 +50,18 @@ class UsuarioController extends Controller
         ]);
 
         // Crear el nuevo usuario
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,  // Encriptar la contraseña
-            'rol_id' => $request->rol_id,
             'email_verified_at' => Carbon::now(),
             'estado' => '1',
         ]);
+
+        // Buscar el rol por ID y asignarlo al usuario
+        $role = Role::findById($request->rol_id);  // Usar findById en lugar de findByName
+        $user->assignRole($role);  // Asignar rol
+
         // Redireccionar con mensaje de éxito
         session()->flash('mensaje', 'El usuario se registró correctamente');
         return redirect()->route('usuarios.index');

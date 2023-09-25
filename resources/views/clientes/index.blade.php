@@ -37,12 +37,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.bootstrap4.min.css">
     {{-- Encabezados fijos --}}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
-    <style>
-        .my-custom-img {
-            max-width: 100px;
-            max-height: 100px;
-        }
-    </style>
 @stop
 
 @section('js')
@@ -140,8 +134,9 @@
             });
             table.buttons().container().appendTo('#clientes_wrapper .col-md-6:eq(0)');
 
-            console.log(table);
         });
     </script>
-    <script></script>
+    <script>
+        
+    </script>
 @stop
