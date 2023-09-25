@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Http\Livewire;
 
 use App\Models\Almacen;
 use App\Models\Categoria;
@@ -75,8 +75,8 @@ class CrearProducto extends Component
             'producto_id' => $producto->id,
             'almacen_id' => $datos['almacen'],
             'entradas' => $datos['stock'],
-            'salidas' => 0, 
-            'precio_producto'=> $datos['costo_actual'],
+            'salidas' => 0,
+            'precio_producto' => $datos['costo_actual'],
         ]);
 
         //Crear un mensaje

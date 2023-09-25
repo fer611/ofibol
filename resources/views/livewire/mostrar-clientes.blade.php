@@ -45,10 +45,12 @@
                                                     href="{{ route('clientes.edit', $cliente->id) }}"><i
                                                         class="fas fa-pen"></i></a>
                                                 {{-- Eliminar --}}
-                                                <button wire:click="$dispatch('prueba', {id: {{ $cliente->id }}})" class="btn btn-outline-danger btn-sm delete-button">
+                                                <button 
+                                                wire:click="$emit('mostrarAlerta',{{ $cliente->id }})" 
+                                                class="btn btn-outline-danger btn-sm delete-button">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
-                                                
+
                                             </td>
                                         </tr>
                                     @endforeach
