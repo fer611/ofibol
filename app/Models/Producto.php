@@ -41,4 +41,10 @@ class Producto extends Model
         //pertenece a
         return $this->belongsTo(Origen::class);
     }
+
+    /* Relacion de N a N */
+    public function detallesIngreso()
+    {   
+        return $this->hasMany(DetalleIngreso::class, 'producto_id');
+    }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\RolController;
@@ -29,7 +30,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 //esto para redireccionar a usuarios cliente
 Route::get('/home', function () {
-    return view('home');
+    return view('home'); 
 })->middleware(['auth', 'verified','estado'])->name('home');
 
 Route::get('/dashboard',[DashboardController::class, 'index'])->middleware(['auth', 'verified','estado','rol.cliente','can:dashboard'])->name('dashboard');
@@ -37,6 +38,7 @@ Route::get('/dashboard',[DashboardController::class, 'index'])->middleware(['aut
 Route::get('datatable/users',[DatatableController::class,'user'])->name('datatable.user');
 
 Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function () {
+
     
     // Rutas de usuarios
     Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index'); 
@@ -87,6 +89,16 @@ Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function
     Route::get('/clientes/{cliente}/edit', [ClienteController::class, 'edit'])->name('clientes.edit');
     Route::delete('/clientes/{cliente}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
     Route::put('/clientes/{cliente}', [ClienteController::class, 'update'])->name('clientes.update');
+
+    //rutas de ingresos
+    Route::get('/ingresos',[IngresoController::class, 'index'])->name('ingresos.index');
+    Route::get('/ingresos/create',[IngresoController::class, 'create'])->name('ingresos.create');
+    Route::post('/ingresos', [IngresoController::class,'store'])->name('ingresos.store');
+    Route::get('/ingresos/{ingreso}', [IngresoController::class, 'show'])->name('ingresos.show');
+    Route::get('/ingresos/{cliente}/edit', [IngresoController::class, 'edit'])->name('ingresos.edit');
+    Route::delete('/ingresos/{cliente}', [IngresoController::class, 'destroy'])->name('ingresos.destroy');
+    Route::put('/ingresos/{cliente}', [IngresoController::class, 'update'])->name('ingresos.update');
+
 
 });
 

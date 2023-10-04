@@ -11,13 +11,12 @@ class UpgradeToHttpsUnderNgrok
 {
     public function handle(Request $request, Closure $next): Response
     {
-        // Verifica si la solicitud es de Livewire
-        if (!$request->is('livewire/*')) {
             // Solo forzar HTTPS bajo ciertas condiciones
             if (str_ends_with($request->getHost(), '.ngrok-free.app')) {
                 URL::forceScheme('https');
             }
-        }
+            
+        
 
         return $next($request);
     }

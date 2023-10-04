@@ -1,18 +1,18 @@
 @extends('adminlte::page')
 
-@section('title', 'clientes')
+@section('title', 'ingresos')
 
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">LISTADO DE CLIENTES</h1>
+                    <h1 class="m-0">LISTADO DE INGRESOS</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Inicio</a></li>
-                        <li class="breadcrumb-item active">clientes</li>
+                        <li class="breadcrumb-item active">Ingresos</li>
                     </ol>
                 </div>
             </div>
@@ -27,7 +27,7 @@
     @endif
 
     {{-- Aca el componente livewire --}}
-    <livewire:mostrar-clientes />
+    <livewire:mostrar-ingresos />
 @stop
 
 @section('css')
@@ -60,7 +60,7 @@
         // Crear una variable global para almacenar la instancia de DataTables
         var table;
         $(document).ready(function() {
-            table = $('#clientes').DataTable({
+            table = $('#ingresos').DataTable({
                 fixedHeader: true,
                 pageLength: 10, // Cantidad inicial de registros por página
                 responsive: true,
@@ -135,7 +135,7 @@
                     },
                 ]
             });
-            table.buttons().container().appendTo('#clientes_wrapper .col-md-6:eq(0)');
+            table.buttons().container().appendTo('#ingresos_wrapper .col-md-6:eq(0)');
 
         });
 
@@ -158,7 +158,7 @@
                     $(document).ready(function() {
                         table.destroy(); // Destruye la instancia actual de DataTables
                         // Vuelve a inicializar la DataTable con los datos actualizados
-                        table = $('#clientes').DataTable({
+                        table = $('#ingresos').DataTable({
 
                             fixedHeader: true,
                             pageLength: 10, // Cantidad inicial de registros por página

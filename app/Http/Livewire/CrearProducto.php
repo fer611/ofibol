@@ -31,8 +31,8 @@ class CrearProducto extends Component
     /* Habilitar subida de archivos */
     use WithFileUploads;
     protected $rules = [
-        'nombre' => 'required|string',
-        'descripcion' => 'nullable|string',
+        'nombre' => 'required|string|max:255',
+        'descripcion' => 'nullable|string|255',
         'marca' => 'required|exists:marcas,id',
         'origen' => 'required|exists:origenes,id',
         'unidad_medida' => 'required|string',

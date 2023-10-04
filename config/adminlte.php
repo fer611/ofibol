@@ -212,9 +212,9 @@ return [
     |
     */
 
-    'sidebar_mini' => 'xs', // /cuando se minimiza aparece un mini sidebar
+    'sidebar_mini' => 'null', // /xs,lg ...cuando se minimiza aparece un mini sidebar
     'sidebar_collapse' => true,
-    'sidebar_collapse_auto_size' => true,
+    'sidebar_collapse_auto_size' => false,
     'sidebar_collapse_remember' => true,
     'sidebar_collapse_remember_no_transition' => false,
     'sidebar_scrollbar_theme' => 'os-theme-light',
@@ -381,18 +381,16 @@ return [
 
          /* COMPRAS */
          [
-            'text'    => 'Compras',
+            'text'    => 'Ingresos',
             'icon'    => 'fas fa-fw fa-shopping-bag',
-            'submenu' => [
-                [
-                    'text' => 'Compras',
-                    'url'  => 'compras',
-                ],
-                [
-                    'text' => 'Proveedores',
-                    'url'  => 'proveedores',
-                ],
-            ],
+            'url' => 'ingresos'
+        ],
+
+        /* PROVEEDORES */
+        [
+            'text'    => 'Proveedores',
+            'icon'    => 'fas fa-fw fa-shopping-bag',
+            'url' => 'proveedores'
         ],
 
 

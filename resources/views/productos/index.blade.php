@@ -31,11 +31,16 @@
 
 @section('css'){{-- 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> --}}
+
+    {{-- El cdn de select con buscador --}}
+    <link rel="stylesheet" href="{{ asset('dist/css/bootstrap-select.min.css') }}">
+
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.bootstrap4.min.css">
     {{-- Encabezados fijos --}}
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
     <style>
         .my-custom-img {
             max-width: 100px;
@@ -45,6 +50,8 @@
 @stop
 
 @section('js')
+{{-- El script de select con buscador --}}
+    <script src="{{ asset('dist/js/bootstrap-select.min.js') }}"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
@@ -130,7 +137,7 @@
                             },
                             columns: ':not(:eq(7))' //excluyendo la fila de opcionesF
                         },
-                    },{
+                    }, {
                         extend: 'colvis',
                         text: 'Ver Columnas',
                     },
@@ -159,6 +166,5 @@
                 )
             }
         }) */
-
     </script>
 @stop
