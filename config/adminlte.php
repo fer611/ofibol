@@ -367,18 +367,15 @@ return [
         [
             'text'    => 'Ventas',
             'icon'    => 'fas fa-fw fa-shopping-cart',
-            'submenu' => [
-                [
-                    'text' => 'Ventas',
-                    'url'  => 'ventas',
-                ],
-                [
-                    'text' => 'Clientes',
-                    'url'  => 'clientes',
-                ],
-            ],
+            'url' => 'ventas'
         ],
 
+        /* CLIENTES */
+        [
+            'text'    => 'Clientes',
+            'icon'    => 'fas fa-fw fa-shopping-cart',
+            'url' => 'clientes'
+        ],
          /* COMPRAS */
          [
             'text'    => 'Ingresos',

@@ -81,10 +81,10 @@
             <div class="col-lg-4">
                 <!-- Nombre del producto -->
                 <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre"
-                        wire:model="nombre" placeholder="Ingrese el nombre del producto">
-                    @error('nombre')
+                    <label for="barcode">Codigo de Barra</label>
+                    <input type="text" class="form-control @error('barcode') is-invalid @enderror" id="barcode"
+                        wire:model="barcode" placeholder="Ingrese el barcode del producto">
+                    @error('barcode')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>

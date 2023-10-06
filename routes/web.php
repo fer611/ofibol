@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\VentaController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -95,11 +96,18 @@ Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function
     Route::get('/ingresos/create',[IngresoController::class, 'create'])->name('ingresos.create');
     Route::post('/ingresos', [IngresoController::class,'store'])->name('ingresos.store');
     Route::get('/ingresos/{ingreso}', [IngresoController::class, 'show'])->name('ingresos.show');
-    Route::get('/ingresos/{cliente}/edit', [IngresoController::class, 'edit'])->name('ingresos.edit');
-    Route::delete('/ingresos/{cliente}', [IngresoController::class, 'destroy'])->name('ingresos.destroy');
-    Route::put('/ingresos/{cliente}', [IngresoController::class, 'update'])->name('ingresos.update');
+    Route::get('/ingresos/{ingreso}/edit', [IngresoController::class, 'edit'])->name('ingresos.edit');
+    Route::delete('/ingresos/{ingreso}', [IngresoController::class, 'destroy'])->name('ingresos.destroy');
+    Route::put('/ingresos/{ingreso}', [IngresoController::class, 'update'])->name('ingresos.update');
 
-
+    //Rutas de ventas
+    Route::get('/ventas',[VentaController::class, 'index'])->name('ventas.index');
+    Route::get('/ventas/create',[VentaController::class, 'create'])->name('ventas.create');
+    Route::post('/ventas', [VentaController::class,'store'])->name('ventas.store');
+    Route::get('/ventas/{venta}', [VentaController::class, 'show'])->name('ventas.show');
+    Route::get('/ventas/{venta}/edit', [VentaController::class, 'edit'])->name('ventas.edit');
+    Route::delete('/ventas/{venta}', [VentaController::class, 'destroy'])->name('ventas.destroy');
+    Route::put('/ventas/{venta}', [VentaController::class, 'update'])->name('ventas.update');
 });
 
 

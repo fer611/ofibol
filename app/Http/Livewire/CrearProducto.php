@@ -13,7 +13,7 @@ use Livewire\WithFileUploads;
 
 class CrearProducto extends Component
 {
-    public $nombre;
+    public $barcode;
     public $descripcion;
     public $marca;
     public $origen;
@@ -31,8 +31,8 @@ class CrearProducto extends Component
     /* Habilitar subida de archivos */
     use WithFileUploads;
     protected $rules = [
-        'nombre' => 'required|string|max:255',
-        'descripcion' => 'nullable|string|255',
+        'barcode' => 'required|string|max:50|unique:productos,barcode',
+        'descripcion' => 'nullable|string|max:255',
         'marca' => 'required|exists:marcas,id',
         'origen' => 'required|exists:origenes,id',
         'unidad_medida' => 'required|string',
@@ -55,7 +55,7 @@ class CrearProducto extends Component
         $datos['imagen'] = str_replace('public/productos/', '', $imagen);
         //Crear El producto
         $producto = Producto::create([
-            'nombre' => $datos['nombre'],
+            'barcode' => $datos['barcode'],
             'descripcion' => $datos['descripcion'],
             'marca_id' => $datos['marca'],
             'origen_id' => $datos['origen'],

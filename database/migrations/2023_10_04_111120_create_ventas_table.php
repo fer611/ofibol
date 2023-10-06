@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('ventas', function (Blueprint $table) {
             $table->id();
+            $table->decimal('total', 10, 2);
+            /* La cantidad de productos que se venden */
+            $table->integer('items');
+            /* Es la cantidad que el cliente paga */
+            $table->decimal('cash', 10, 2);
+            /* El cambio que se le da de vuelto al cliente */
+            $table->decimal('cambio', 10, 2);
+            $table->enum('estado', ['pagado', 'pendiente', 'cancelado'])->default('pagado');
+            /* La relacion con users */
+            $table->foreignId('user_id')->constrained();
+
             $table->timestamps();
         });
     }

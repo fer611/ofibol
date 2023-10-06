@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('productos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('categoria_id');  // ID de la categoría relacionada
-            $table->string('nombre');  // Nombre del producto
+            $table->string('barcode',50)->nullable();  // Codigo de barra del producto
             $table->text('descripcion')->nullable();  // Descripción del producto, puede ser nulo
             $table->string('unidad_medida');  // Unidad de medida (caja, bolsa, etc.)
             $table->decimal('cantidad_unidad',10,2);  // Cantidad por caja/bolsa etc....
