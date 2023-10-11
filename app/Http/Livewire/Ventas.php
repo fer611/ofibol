@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Denominacion;
 use App\Models\DetalleVenta;
+use App\Models\Kardex;
 use App\Models\Producto;
 use App\Models\Venta;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
@@ -54,17 +55,29 @@ class Ventas extends Component
         /* Buscando el producto */
         $producto = Producto::where('barcode', $barcode)->first();
 
+
         if ($producto == null || empty($producto)) {
-            $this->emit('scan-notfound', 'El producto no esta registrado');
+            /*  $this->emit('scan-notfound', 'El producto no esta registrado'); */
+            //Crear un mensaje
+            session()->flash('mensaje', 'El producto no esta registrado');
         } else {
             if ($this->InCart($producto->id)) {
                 /* En el caso de que el producto ya existe en el carrito */
                 $this->increaseQty($producto->id);
                 return;
             }
+            /* Obteniendo el stock deed producto */
+            $stock = DB::table('kardex')
+                ->where('producto_id', $producto->id)
+                ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
+                ->groupBy('producto_id')
+                ->value('stock');
             /* validar si las existencias del producto son suficientes,por el momento lo ponemos en stock minimo(calcular entradas - salidas)  */
-            if ($producto->stock_minimo < 1) {
-                $this->emit('no-stock', 'Stock insuficiente :/');
+
+            if ($stock < 1) {
+                /* $this->emit('no-stock', 'Stock insuficiente :/'); */
+                //Crear un mensaje
+                session()->flash('mensaje', 'Stock insuficientes :/');
                 return;
             }
             /* Añadiendo el producto al carrito */
@@ -93,10 +106,14 @@ class Ventas extends Component
     {
         $titulo = '';
         $producto = Producto::find($productId);
-
+        $stock = DB::table('kardex')
+            ->where('producto_id', $producto->id)
+            ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
+            ->groupBy('producto_id')
+            ->value('stock');
         /* Si el producto existe actualizamos la cantidad */
         $existe = Cart::get($productId);
-        
+
         if ($existe) {
             $titulo = 'Cantidad Actualizado';
         } else {
@@ -105,8 +122,10 @@ class Ventas extends Component
 
         if ($existe) {
             /* Validamos nuevamente el stock ya existente y mas lo que nos envian */
-            if ($producto->stock_minimo < ($cant + $existe->quantity)) {
-                $this->emit('no-stock', 'Stock insuficiente :/');
+            if ($stock < ($cant + $existe->quantity)) {
+                /* $this->emit('no-stock', 'Stock insuficiente :/'); */
+                //Crear un mensaje
+                session()->flash('mensaje', 'Stock insuficiente :/');
                 return;
             }
         }
@@ -124,6 +143,12 @@ class Ventas extends Component
     {
         $titulo = '';
         $producto = Producto::find($productId);
+        /* aca volvemos a obtener el stock */
+        $stock = DB::table('kardex')
+            ->where('producto_id', $producto->id)
+            ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
+            ->groupBy('producto_id')
+            ->value('stock');
         $existe = Cart::get($productId);
         /* Si el producto existe actualizamos la cantidad */
         if ($existe) {
@@ -134,8 +159,10 @@ class Ventas extends Component
 
         if ($existe) {
             /* verificamos el stock nuevamente */
-            if ($producto->stock_minimo < $cant) {
-                $this->emit('no-stock', 'Stock insuficiente :/');
+            if ($stock < $cant) {
+                /* $this->emit('no-stock', 'Stock insuficiente :/'); */
+                //Crear un mensaje
+                session()->flash('mensaje', 'Stock insuficiente :/');
                 return;
             }
         }
@@ -147,9 +174,12 @@ class Ventas extends Component
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
 
-            $this->emit('scan-ok', $titulo);
+            /* $this->emit('scan-ok', $titulo); */
+            session()->flash('mensaje', $titulo);
         } else {
             /* Aca podemos notificar al usuario que la cantidad debe ser mayor a 0 */
+            //Crear un mensaje
+            session()->flash('mensaje', 'La cantidad debe ser mayor a 0');
         }
     }
 
@@ -161,7 +191,9 @@ class Ventas extends Component
         $this->total = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
 
-        $this->emit('scan-ok', 'Producto eliminado');
+        /*  $this->emit('scan-ok', 'Producto eliminado'); */
+        //Crear un mensaje
+        session()->flash('mensaje', 'Producto Eliminados');
     }
 
     public function decreaseQty($productId)
@@ -194,7 +226,8 @@ class Ventas extends Component
         $this->total = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
 
-        $this->emit('scan-ok', 'Carrito Vacío');
+        //Crear un mensaje
+        session()->flash('mensaje', 'Carrito Vacío');
     }
 
     public function guardarVenta()
@@ -202,17 +235,21 @@ class Ventas extends Component
         /* dd($this->total.'|'.$this->efectivo.'|'.$this->itemsQuantity.'|'.$this->cambio.'|'.auth()->user()->id); */
 
         if ($this->total <= 0) {
-            $this->emit('sale-error', 'AGREGA PRODUCTOS A LA VENTA');
+            /* $this->emit('sale-error', 'AGREGA PRODUCTOS A LA VENTA'); */
+            session()->flash('mensaje', 'AGREGA PRODUCTOS A LA VENTA');
             return;
         }
         if ($this->efectivo <= 0) {
-            $this->emit('sale-error', 'INGRESA EL EFECTIVO');
+            /* $this->emit('sale-error', 'INGRESA EL EFECTIVO'); */
+            session()->flash('mensaje', 'INGRESA EL EFECTIVO');
             return;
         }
 
         /* El total que estamos intentando pagar es mayor a lo que el cliente nos entrega */
         if ($this->total > $this->efectivo) {
-            $this->emit('sale-error', 'EL EFECTIVO DEBE SER MAYOR O IGUAL AL TOTAL');
+            /* $this->emit('sale-error', 'EL EFECTIVO DEBE SER MAYOR O IGUAL AL TOTAL'); */
+            //Crear un mensaje
+            session()->flash('mensaje', 'EL EFECTIVO DEBE SER MAYOR O IGUAL AL TOTAL');
             return;
         }
 
@@ -230,7 +267,7 @@ class Ventas extends Component
             if ($venta) {
                 $items = Cart::getContent();
 
-               
+
                 foreach ($items as $item) {
                     /* guardando los detalles */
                     DetalleVenta::create([
@@ -241,6 +278,16 @@ class Ventas extends Component
                     ]);
                     /* Actualizando el stock */
                     /* aca podemos registrar una salida de este producto */
+                    Kardex::create([
+                        'producto_id' => $item->id,
+                        'entradas' => 0,
+                        'salidas' => $item->quantity,
+                        /* Aca por defecto la salida debe ser del almacen punto de venta Ofibol*/
+                        'almacen_id' => 3,
+                        'precio_producto' => $item->price,
+                        'user_id' => auth()->user()->id,
+                    ]);
+
                     $producto = Producto::find($item->id);
                     $producto->stock_minimo = $producto->stock_minimo - $item->quantity;
                     $producto->save();
@@ -256,12 +303,15 @@ class Ventas extends Component
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
 
-            $this->emit('sale-ok', 'Venta registrada con éxito');
-
+            /* $this->emit('sale-ok', 'Venta registrada con éxito'); */
+            //Crear un mensaje
+            session()->flash('mensaje', 'Venta registrada con éxito');
+            //Redireccionar al usuario
+            return redirect()->route('ventas.index');
             /* Evento para imprimir el ticket */
-           /*  $this->emit('print-ticket', $venta->id); */
+            /*  $this->emit('print-ticket', $venta->id); */
 
-           /* Redirigimos al usuario con un mensaje de exito */
+            /* Redirigimos al usuario con un mensaje de exito */
         } catch (Exception $e) {
             /* Haciendo un rollback para mantener la consistencia de datos */
             DB::rollback();
@@ -280,5 +330,13 @@ class Ventas extends Component
     {
         /* La aplicacion en C# lo detecta.... */
         return Redirect::to("print://$venta->id");
+    }
+
+    /* Esta funcion elimina le input de efectivo ponienod el efectivo en 0 y tambien el cambio */
+
+    public function limpiarEntrada()
+    {
+        $this->efectivo = 0;
+        $this->cambio = 0;
     }
 }

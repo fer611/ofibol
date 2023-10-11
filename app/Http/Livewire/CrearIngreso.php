@@ -34,7 +34,7 @@ class CrearIngreso extends Component
         $this->total += $subtotal;
         // Agrega el producto y sus detalles a la lista de productos seleccionados.
         $this->productosSeleccionados[] = [
-            'nombre' => $producto_seleccionado->nombre, // Asegúrate de tener el nombre del producto en tu modelo.
+            'nombre' => $producto_seleccionado->descripcion, // Asegúrate de tener el nombre del producto en tu modelo.
             'cantidad' => $this->cantidad,
             'precio_compra' => $this->precio_compra,
             'precio_venta' => $this->precio_venta,
@@ -50,8 +50,8 @@ class CrearIngreso extends Component
 
     public function crearIngreso()
     {
+        dd('Registrando el ingreso....');
 
-        
         // Verifica que haya productos seleccionados.
         if (empty($this->productosSeleccionados)) {
             // Puedes mostrar un mensaje de error o tomar la acción adecuada aquí.
@@ -71,9 +71,9 @@ class CrearIngreso extends Component
         // Puedes mostrar un mensaje de éxito o realizar otras acciones necesarias aquí.
         session()->flash('success', 'Ingreso creado con éxito.');
     }
-
     public function eliminarProducto($index)
     {
+        dd('Eliminando....');
         // Verifica si el índice existe en el array $productosSeleccionados.
         if (isset($this->productosSeleccionados[$index])) {
             // Obtiene el subtotal del producto antes de eliminarlo.
@@ -91,6 +91,7 @@ class CrearIngreso extends Component
             /* session()->flash('success', 'Producto eliminado con éxito'); */
         }
     }
+   
 
     private function resetCampos()
     {

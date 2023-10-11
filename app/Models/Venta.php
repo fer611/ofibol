@@ -18,4 +18,12 @@ class Venta extends Model
         'estado',
         'user_id'
     ];
+
+
+    //Relaciones
+    public function user()
+    {
+        //pertenece a
+        return $this->belongsTo(User::class);
+    }
 }

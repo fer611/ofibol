@@ -50,7 +50,6 @@
                                                 class="btn btn-outline-danger btn-sm delete-button">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
-
                                             </td>
                                         </tr>
                                     @endforeach

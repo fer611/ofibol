@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('cambio', 10, 2);
             $table->enum('estado', ['pagado', 'pendiente', 'cancelado'])->default('pagado');
             /* La relacion con users */
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });

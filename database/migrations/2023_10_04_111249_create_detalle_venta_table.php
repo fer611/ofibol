@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('cantidad',10,2);
             /* Como nuestra tabla no es products, es decir no estamoos usando las convenciones, entonces lo especificamos en el constrained */
             $table->foreignId('producto_id')->constrained('productos');
-            $table->foreignId('venta_id')->constrained('ventas');
+            $table->foreignId('venta_id')->constrained('ventas')->onDelete('cascade');
 
             $table->timestamps();
         });

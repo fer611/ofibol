@@ -29,7 +29,7 @@
                                 class="form-control text-center" value="{{ $efectivo }}" style="height: 50px;">
 
                             <div class="input-group-append">
-                                <span wire:click="$set('efectivo',0)" class="input-group-text"
+                                <span wire:click.prevent="limpiarEntrada" class="input-group-text"
                                     style="background: #3B3F5C; color: white">
                                     <i class="fas fa-backspace fa-2x"></i>
                                 </span>

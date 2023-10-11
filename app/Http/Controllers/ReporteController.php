@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class VentaController extends Controller
+class ReporteController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('ventas.index');
+        return view('reportes.index');
     }
 
     /**
@@ -19,7 +19,7 @@ class VentaController extends Controller
      */
     public function create()
     {
-        return view ('ventas.create');
+        //
     }
 
     /**

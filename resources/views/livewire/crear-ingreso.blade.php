@@ -138,7 +138,7 @@
                                                         <td>{{ $producto['precio_venta'] }}</td>
                                                         <td>{{ $producto['subtotal'] }}</td>
                                                         <td>
-                                                            <button wire:click="eliminarProducto({{ $index }})"
+                                                            <button wire:click.prevent="eliminarProducto({{ $index }})"
                                                                 class="btn btn-danger btn-sm">Eliminar</button>
                                                         </td>
                                                     </tr>

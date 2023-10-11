@@ -16,4 +16,18 @@ class DetalleVenta extends Model
         'producto_id',
         'venta_id',
     ];
+
+
+    //Relaciones
+    public function venta()
+    {
+        //pertenece a
+        return $this->belongsTo(Venta::class);
+    }
+
+    public function producto()
+    {
+        //pertenece a
+        return $this->belongsTo(Producto::class);
+    }
 }

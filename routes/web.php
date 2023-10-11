@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VentaController;
@@ -108,6 +109,15 @@ Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function
     Route::get('/ventas/{venta}/edit', [VentaController::class, 'edit'])->name('ventas.edit');
     Route::delete('/ventas/{venta}', [VentaController::class, 'destroy'])->name('ventas.destroy');
     Route::put('/ventas/{venta}', [VentaController::class, 'update'])->name('ventas.update');
+
+    //Rutas de Reportes
+    Route::get('/reportes',[ReporteController::class, 'index'])->name('reportes.index');
+    Route::get('/reportes/create',[ReporteController::class, 'create'])->name('reportes.create');
+    Route::post('/reportes', [ReporteController::class,'store'])->name('reportes.store');
+    Route::get('/reportes/{reporte}', [ReporteController::class, 'show'])->name('reportes.show');
+    Route::get('/reportes/{reporte}/edit', [ReporteController::class, 'edit'])->name('reportes.edit');
+    Route::delete('/reportes/{reporte}', [ReporteController::class, 'destroy'])->name('reportes.destroy');
+    Route::put('/reportes/{reporte}', [ReporteController::class, 'update'])->name('reportes.update');
 });
 
 

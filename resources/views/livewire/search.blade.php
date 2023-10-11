@@ -10,7 +10,7 @@
             </svg>
             <form action="form-inline search-full form-inline search" role="search">
                 <div class="search-bar">
-                    <input id="code" type="text" wire:keydown.enter.prevent="$emit('scan-code', $('#code').val())" class="form-control search-form-control ml-lg-auto" placeholder="Search...">
+                    <input id="code" type="text" wire:keydown.enter.prevent="$emit('scan-code', $('#code').val())" class="form-control search-form-control ml-lg-auto" placeholder="Ingresa el codigo de barras del producto">
                 </div>
             </form>
             
