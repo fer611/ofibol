@@ -61,33 +61,25 @@
                 <!-- Stock Inicial -->
                 <div class="form-group">
                     <label for="stock">Stock Inicial</label>
-                    <input type="number" class="form-control @error('stock') is-invalid @enderror" id="stock" wire:model="stock"
-                        placeholder="Ingrese el stock inicial">
-                        @error('stock')
+                    <input type="number" class="form-control @error('stock') is-invalid @enderror" id="stock"
+                        wire:model="stock" placeholder="Ingrese el stock inicial">
+                    @error('stock')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <!-- Stock Mínimo -->
                 <div class="form-group">
                     <label for="stock_minimo">Stock Mínimo</label>
-                    <input type="number" class="form-control @error('stock') is-invalid @enderror" id="stock_minimo" wire:model="stock_minimo"
-                        placeholder="Ingrese el stock minimo">
-                        @error('stock_minimo')
+                    <input type="number" class="form-control @error('stock') is-invalid @enderror" id="stock_minimo"
+                        wire:model="stock_minimo" placeholder="Ingrese el stock minimo">
+                    @error('stock_minimo')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
             <!-- Segunda columna -->
             <div class="col-lg-4">
-                <!-- Nombre del producto -->
-                <div class="form-group">
-                    <label for="barcode">Codigo de Barra</label>
-                    <input type="text" class="form-control @error('barcode') is-invalid @enderror" id="barcode"
-                        wire:model="barcode" placeholder="Ingrese el barcode del producto">
-                    @error('barcode')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+               
                 <!-- Descripción -->
                 <div class="form-group">
                     <label for="descripcion">Descripción</label>
@@ -111,7 +103,7 @@
                 </div>
                 <!-- Cantidad por Unidad de Medida -->
                 <div class="form-group">
-                    <label for="cantidad_unidad">Cantidad por Unidad de Medida</label>
+                    <label for="cantidad_unidad">Cantidad por Unidad de Medida (Opcional)</label>
                     <input type="text" class="form-control @error('cantidad_unidad') is-invalid @enderror"
                         id="cantidad_unidad" wire:model="cantidad_unidad"
                         placeholder="Ingrese la cantidad por caja/paquete etc.">
@@ -133,28 +125,45 @@
                         @enderror
                     </div>
                 </div>
-                
+
                 <!-- Porcentaje de Margen -->
                 <div class="form-group">
                     <label for="porcentaje_margen">Porcentaje de Margen</label>
                     <input type="number" class="form-control @error('porcentaje_margen') is-invalid @enderror"
                         id="porcentaje_margen" wire:model="porcentaje_margen"
-                        placeholder="Ingrese el porcentaje de margen">
+                        placeholder="Ingrese el porcentaje de margen" value="{{ $porcentaje_margen }}">
                     @error('porcentaje_margen')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
-            <!-- Tercera columna -->
-            <div class="col-lg-4">
-
-
                 <!-- Precio de Venta -->
                 <div class="form-group">
                     <label for="precio_venta">Precio de Venta</label>
                     <input type="number" class="form-control @error('precio_venta') is-invalid @enderror"
                         id="precio_venta" wire:model="precio_venta" readonly>
                     @error('precio_venta')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <!-- Tercera columna -->
+            <div class="col-lg-4">
+                
+                 <!-- Codigo de barras del producto -->
+                 <div class="form-group">
+                    <label for="barcode">Codigo de Barras</label>
+                    <input type="text" class="form-control @error('barcode') is-invalid @enderror" id="barcode"
+                        wire:model="barcode" placeholder="Ingrese el barcode del producto">
+                    @error('barcode')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                {{-- Fecha de vencimiento del producto --}}
+                <div class="form-group">
+                    <label for="fecha_vencimiento">Fecha de Vencimiento (Opcional)</label>
+                    <input type="date" class="form-control @error('fecha_vencimiento') is-invalid @enderror" id="fecha_vencimiento"
+                        wire:model="fecha_vencimiento" placeholder="Ingrese la fecha de vencimiento del producto">
+                    @error('fecha_vencimiento')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>

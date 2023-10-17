@@ -48,16 +48,16 @@
                                 </button>
 
                                 <a class="btn btn-dark btn-block {{ count($data) < 1 ? 'disabled' : '' }}"
-                                    href="{{ url('report/pdf' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}" target="_blank">Generar PDF</a>
+                                    href="{{ url('reportes/pdf' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}" target="_blank">Generar PDF</a>
                                 <a class="btn btn-dark btn-block {{ count($data) < 1 ? 'disabled' : '' }}"
-                                    href="{{ url('report/excel' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}" target="_blank">Exportar a Excel</a>
+                                    href="{{ url('reportes/excel' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}" target="_blank">Exportar a Excel</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-9">
                         {{-- TABLA --}}
                         <div class="table-responsive">
-                            <table class="table table-bordered striped mt-1">
+                            <table class="table table-bordered table-striped mt-1 table-hover">
                                 <thead class="text-white" style="background: #3B3F5C">
                                     <tr>
                                         <th class="table-th text-white text-center">FOLIO</th>
@@ -82,7 +82,7 @@
                                             <td class="text-center">
                                                 <h6>{{ $d->id }}</h6>
                                             </td>
-                                            <td class="text-center">
+                                            <td class="text-right">
                                                 <h6>{{ number_format($d->total, 2) }}</h6>
                                             </td>
                                             <td class="text-center">

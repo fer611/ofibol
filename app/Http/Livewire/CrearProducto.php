@@ -22,21 +22,22 @@ class CrearProducto extends Component
     public $stock;
     public $stock_minimo;
     public $costo_actual;
-    public $porcentaje_margen;
+    public $porcentaje_margen = 30;
     public $precio_venta;
     public $categoria;
     public $almacen;
     public $imagen;
+    public $fecha_vencimiento;
     public $errorImagen = false;
     /* Habilitar subida de archivos */
     use WithFileUploads;
     protected $rules = [
         'barcode' => 'required|string|max:50|unique:productos,barcode',
-        'descripcion' => 'nullable|string|max:255',
+        'descripcion' => 'required|string|max:255',
         'marca' => 'required|exists:marcas,id',
         'origen' => 'required|exists:origenes,id',
         'unidad_medida' => 'required|string',
-        'cantidad_unidad' => 'required|numeric|min:0',
+        'cantidad_unidad' => 'nullable|numeric|min:0',
         'stock' => ['required', 'numeric', 'min:0'],
         'stock_minimo' => 'required|numeric|min:0',
         'costo_actual' => 'required|numeric|min:0',
@@ -44,6 +45,7 @@ class CrearProducto extends Component
         'precio_venta' => 'required|numeric|min:0',
         'categoria' => 'required|exists:categorias,id',
         'almacen' => 'required|exists:almacenes,id',
+        'fecha_vencimiento' => 'nullable|date',
         'imagen' => 'required|image|mimes:jpeg,png,jpg|max:1024',
     ];
     public function crearProducto()
@@ -54,6 +56,7 @@ class CrearProducto extends Component
         $imagen = $this->imagen->store('public/productos');
         $datos['imagen'] = str_replace('public/productos/', '', $imagen);
         //Crear El producto
+
         $producto = Producto::create([
             'barcode' => $datos['barcode'],
             'descripcion' => $datos['descripcion'],
@@ -65,11 +68,11 @@ class CrearProducto extends Component
             'costo_actual' => $datos['costo_actual'],
             'porcentaje_margen' => $datos['porcentaje_margen'],
             'precio_venta' => $datos['precio_venta'],
+            'fecha_vencimiento' => $datos['fecha_vencimiento'],
             'imagen' => $datos['imagen'],
             'estado' => '1',
             'categoria_id' => $datos['categoria'],
         ]);
-
         //registrando una nueva entrada
         Kardex::create([
             'producto_id' => $producto->id,

@@ -22,6 +22,7 @@ class Producto extends Model
         'imagen',
         'estado',
         'categoria_id',
+        'fecha_vencimiento'
     ];
 
     //Relaciones

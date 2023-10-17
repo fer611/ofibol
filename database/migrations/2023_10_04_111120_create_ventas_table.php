@@ -23,6 +23,8 @@ return new class extends Migration
             $table->enum('estado', ['pagado', 'pendiente', 'cancelado'])->default('pagado');
             /* La relacion con users */
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            /* Agregamos la columna cliente_id como clave foránea */
+            $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
 
             $table->timestamps();
         });

@@ -54,31 +54,6 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                <!-- Nombre del producto -->
-                <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre"
-                        wire:model="nombre" placeholder="Ingrese el nombre del producto">
-                    @error('nombre')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            <!-- Segunda columna -->
-            <div class="col-lg-4">
-
-                <!-- Descripción -->
-                <div class="form-group">
-                    <label for="descripcion">Descripción</label>
-                    <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" wire:model="descripcion"
-                        placeholder="Ingrese una descripción"></textarea>
-                    @error('descripcion')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-
-
                 <!-- Unidad de Medida -->
                 <div class="form-group">
                     <label for="unidad_medida">Unidad de Medida</label>
@@ -98,6 +73,20 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+            </div>
+            <!-- Segunda columna -->
+            <div class="col-lg-4">
+
+                <!-- Descripción -->
+                <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" wire:model="descripcion"
+                        placeholder="Ingrese una descripción"></textarea>
+                    @error('descripcion')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                
                 <!-- Precio de Compra -->
                 <div class="form-group">
                     <label for="costo_actual">Costo Actual (Bs.)</label>
@@ -129,6 +118,24 @@
                     <input type="number" class="form-control @error('precio_venta') is-invalid @enderror"
                         id="precio_venta" wire:model="precio_venta" readonly>
                     @error('precio_venta')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <!-- Codigo de barras del producto -->
+                <div class="form-group">
+                    <label for="barcode">Codigo de Barras</label>
+                    <input type="text" class="form-control @error('barcode') is-invalid @enderror" id="barcode"
+                        wire:model="barcode" placeholder="Ingrese el barcode del producto">
+                    @error('barcode')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                {{-- Fecha de vencimiento del producto --}}
+                <div class="form-group">
+                    <label for="fecha_vencimiento">Fecha de Vencimiento (Opcional)</label>
+                    <input type="date" class="form-control @error('fecha_vencimiento') is-invalid @enderror" id="fecha_vencimiento"
+                        wire:model="fecha_vencimiento" placeholder="Ingrese la fecha de vencimiento del producto">
+                    @error('fecha_vencimiento')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>

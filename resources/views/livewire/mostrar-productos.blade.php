@@ -16,12 +16,12 @@
                                 <thead class="">
                                     <tr>
                                         <th>Id</th>
+                                        <th>Imagen</th>
                                         <th>Descripcion</th>
                                         <th>Stock</th>
                                         <th>Unidad Medida</th>
-                                        <th>Cantidad Cja/pqte</th>
+                                        <th>Fecha de Vencimiento</th>
                                         <th>Precio_venta</th>
-                                        {{-- <th>Imagen</th> --}}
                                         <th>Estado</th>
                                         <th>Opciones</th>
                                     </tr>
@@ -30,15 +30,23 @@
                                     @foreach ($productos as $producto)
                                         <tr>
                                             <td>{{ $producto->id }}</td>
+
+                                            <td><img src="{{ asset('storage/productos/' . $producto->imagen) }}"
+                                                    alt="{{ 'Imagen producto ' . $producto->nombre }}"
+                                                    class="img-fluid w-60 img-thumbnail my-custom-img"></td>
                                             <td>{{ $producto->descripcion }}</td>
                                             <td>{{ $producto->stock }}</td>
                                             <td>{{ $producto->unidad_medida }}</td>
-                                            <td>{{ $producto->cantidad_unidad }}</td>
+
+                                            <td class="{{ $producto->fecha_vencimiento && now()->greaterThan($producto->fecha_vencimiento) ? 'text-danger' : '' }}">
+                                                @if ($producto->fecha_vencimiento)
+                                                    {{ \Carbon\Carbon::parse($producto->fecha_vencimiento)->format('d/n/Y') }}
+                                                @else
+                                                    No Aplica
+                                                @endif
+                                            </td>
                                             <td>{{ $producto->costo_actual + ($producto->costo_actual * $producto->porcentaje_margen) / 100 }}
                                             </td>
-                                            {{-- <td><img src="{{ asset('storage/productos/' . $producto->imagen) }}"
-                                                    alt="{{ 'Imagen producto ' . $producto->nombre }}"
-                                                    class="img-fluid w-60 img-thumbnail my-custom-img"></td> --}}
                                             <td>
                                                 <span
                                                     class="badge badge-{{ $producto->estado === '1' ? 'success' : 'danger' }}">
@@ -55,11 +63,11 @@
                                                         class="fas fa-pen"></i></a>
                                                 {{-- Eliminar --}}
                                                 <button type="button"
-                                                        class="btn btn-outline-{{ $producto->estado === '1' ? 'danger' : 'success' }} btn-sm delete-button"
-                                                        data-id="{{ $producto->id }}"
-                                                        data-estado="{{ $producto->estado }}"><i
-                                                            class="fas {{ $producto->estado === '1' ? 'fa-trash-alt' : 'fa-check' }}"></i>
-                                                    </button>
+                                                    class="btn btn-outline-{{ $producto->estado === '1' ? 'danger' : 'success' }} btn-sm delete-button"
+                                                    data-id="{{ $producto->id }}"
+                                                    data-estado="{{ $producto->estado }}"><i
+                                                        class="fas {{ $producto->estado === '1' ? 'fa-trash-alt' : 'fa-check' }}"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use Illuminate\Http\Request;
 
 class ReporteController extends Controller
@@ -17,9 +19,11 @@ class ReporteController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function test()
     {
-        //
+        $users = User::all();
+        $pdf = SnappyPdf::loadView('pdf.test', compact('users'));
+        return $pdf->inline('test.pdf');
     }
 
     /**

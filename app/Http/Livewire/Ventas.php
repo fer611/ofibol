@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Cliente;
 use App\Models\Denominacion;
 use App\Models\DetalleVenta;
 use App\Models\Kardex;
@@ -15,7 +16,7 @@ use Livewire\Component;
 
 class Ventas extends Component
 {
-    public $total, $itemsQuantity, $efectivo, $cambio;
+    public $total, $itemsQuantity, $efectivo, $cambio, $razon_social, $nit, $venta_sin_datos = false, $nitIsValid = true;
 
     public function mount()
     {
@@ -26,10 +27,8 @@ class Ventas extends Component
     }
     public function render()
     {
-        $denominaciones = Denominacion::orderBy('valor', 'desc')->get();
         $carrito = Cart::getContent()->sortBy('barcode');
         return view('livewire.ventas.componente', [
-            'denominaciones' => $denominaciones,
             'carrito' => $carrito,
         ]);
     }
@@ -55,37 +54,39 @@ class Ventas extends Component
         /* Buscando el producto */
         $producto = Producto::where('barcode', $barcode)->first();
 
-
         if ($producto == null || empty($producto)) {
-            /*  $this->emit('scan-notfound', 'El producto no esta registrado'); */
+            $this->emit('scan-notfound', 'El producto no esta registrado');
             //Crear un mensaje
-            session()->flash('mensaje', 'El producto no esta registrado');
+            /* session()->flash('mensaje', 'El producto no esta registrado'); */
         } else {
             if ($this->InCart($producto->id)) {
                 /* En el caso de que el producto ya existe en el carrito */
                 $this->increaseQty($producto->id);
                 return;
             }
-            /* Obteniendo el stock deed producto */
+            /* Obteniendo el stock del producto */
             $stock = DB::table('kardex')
                 ->where('producto_id', $producto->id)
                 ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
                 ->groupBy('producto_id')
                 ->value('stock');
             /* validar si las existencias del producto son suficientes,por el momento lo ponemos en stock minimo(calcular entradas - salidas)  */
-
             if ($stock < 1) {
-                /* $this->emit('no-stock', 'Stock insuficiente :/'); */
+                $this->emit('no-stock', 'Stock insuficiente :/');
                 //Crear un mensaje
-                session()->flash('mensaje', 'Stock insuficientes :/');
                 return;
             }
+            /* Aca validamos si el producto esta activo */
+            if ($producto->estado == '0') {
+                $this->emit('no-stock', 'El producto esta Inactivo');
+            }
+
             /* Añadiendo el producto al carrito */
             Cart::add($producto->id, $producto->descripcion, $producto->precio_venta, $cant, $producto->imagen);
 
             /* Actualizando el total */
             $this->total = Cart::getTotal();
-
+            $this->itemsQuantity = Cart::getTotalQuantity();
             /* Finalmente emitimos el evento */
             $this->emit('scan-ok', 'Producto Agregado');
         }
@@ -123,9 +124,8 @@ class Ventas extends Component
         if ($existe) {
             /* Validamos nuevamente el stock ya existente y mas lo que nos envian */
             if ($stock < ($cant + $existe->quantity)) {
-                /* $this->emit('no-stock', 'Stock insuficiente :/'); */
+                $this->emit('no-stock', 'Stock insuficiente :/');
                 //Crear un mensaje
-                session()->flash('mensaje', 'Stock insuficiente :/');
                 return;
             }
         }
@@ -160,9 +160,8 @@ class Ventas extends Component
         if ($existe) {
             /* verificamos el stock nuevamente */
             if ($stock < $cant) {
-                /* $this->emit('no-stock', 'Stock insuficiente :/'); */
+                $this->emit('no-stock', 'Stock insuficiente :/');
                 //Crear un mensaje
-                session()->flash('mensaje', 'Stock insuficiente :/');
                 return;
             }
         }
@@ -174,12 +173,11 @@ class Ventas extends Component
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
 
-            /* $this->emit('scan-ok', $titulo); */
-            session()->flash('mensaje', $titulo);
+            $this->emit('scan-ok', $titulo);
         } else {
             /* Aca podemos notificar al usuario que la cantidad debe ser mayor a 0 */
             //Crear un mensaje
-            session()->flash('mensaje', 'La cantidad debe ser mayor a 0');
+            $this->emit('no-stock', 'La cantidad debe ser mayor a 0');
         }
     }
 
@@ -191,9 +189,8 @@ class Ventas extends Component
         $this->total = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
 
-        /*  $this->emit('scan-ok', 'Producto eliminado'); */
+        $this->emit('scan-ok', 'Producto eliminado');
         //Crear un mensaje
-        session()->flash('mensaje', 'Producto Eliminados');
     }
 
     public function decreaseQty($productId)
@@ -227,13 +224,21 @@ class Ventas extends Component
         $this->itemsQuantity = Cart::getTotalQuantity();
 
         //Crear un mensaje
-        session()->flash('mensaje', 'Carrito Vacío');
+        /*  session()->flash('mensaje', 'Carrito Vacío'); */
+        $this->emit('scan-ok', 'Carrito Vacío');
     }
 
     public function guardarVenta()
     {
         /* dd($this->total.'|'.$this->efectivo.'|'.$this->itemsQuantity.'|'.$this->cambio.'|'.auth()->user()->id); */
-
+       
+        /* Validando que se ingrese un nit que existe en el campo de clientes */
+        $clienteExiste = Cliente::where('nit', $this->nit)->first();
+        if (!$clienteExiste && !$this->venta_sin_datos) {
+            $this->addError('nit', 'El cliente no está registrado');
+            $this->addError('razon_social', 'El cliente no está registrado');
+            return;
+        }
         if ($this->total <= 0) {
             /* $this->emit('sale-error', 'AGREGA PRODUCTOS A LA VENTA'); */
             session()->flash('mensaje', 'AGREGA PRODUCTOS A LA VENTA');
@@ -256,6 +261,9 @@ class Ventas extends Component
         /* ABRIMOS UNA TRANSACCION PARA EL PROCESO DE VENTA */
         DB::beginTransaction();
 
+        //obteniendo al cliente
+        $cliente = Cliente::where('nit', $this->nit)->first();
+       
         try {
             $venta = Venta::create([
                 'total' => $this->total,
@@ -263,6 +271,7 @@ class Ventas extends Component
                 'cash' => $this->efectivo,
                 'cambio' => $this->cambio,
                 'user_id' => auth()->user()->id,
+                'cliente_id' => $cliente->id,
             ]);
             if ($venta) {
                 $items = Cart::getContent();
@@ -319,6 +328,26 @@ class Ventas extends Component
         }
     }
 
+    public function buscarCliente()
+    {
+        /* Aca buscamos por nit */
+        $cliente = Cliente::where('nit', $this->nit)->first();
+        if ($cliente) {
+            /* Cliente encontrado, llenamos el campo de razon social */
+            $this->razon_social = $cliente->razon_social;
+            $this->nitIsValid = true; // Agregamos una propiedad para indicar que el campo es válido
+        } else {
+            session()->flash('mensaje', 'El cliente no esta registrado');
+        }
+    }
+
+
+    public function exacto()
+    {
+        $this->efectivo = $this->total;
+        $this->cambio = 0;
+    }
+
     // update change when keyboard typing
     public function updatedEfectivo($value)
     {
@@ -338,5 +367,18 @@ class Ventas extends Component
     {
         $this->efectivo = 0;
         $this->cambio = 0;
+    }
+
+
+    /* Venta sin datos */
+    public function updatedVentaSinDatos()
+    {
+        if ($this->venta_sin_datos) {
+            $this->nit = 'S/N';
+            $this->razon_social = 'S/N';
+        } else {
+            $this->nit = '';
+            $this->razon_social = '';
+        }
     }
 }

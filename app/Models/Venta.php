@@ -16,7 +16,8 @@ class Venta extends Model
         'cash',
         'cambio',
         'estado',
-        'user_id'
+        'user_id',
+        'cliente_id'
     ];
 
 
@@ -25,5 +26,11 @@ class Venta extends Model
     {
         //pertenece a
         return $this->belongsTo(User::class);
+    }
+
+    public function cliente()
+    {
+        //pertenece a
+        return $this->belongsTo(Cliente::class);
     }
 }

@@ -16,7 +16,7 @@
                                 <th class="table-th text-white text-center">PRODUCTO</th>
                                 <th class="table-th text-white text-center">PRECIO</th>
                                 <th class="table-th text-white text-center">CANTIDAD</th>
-                                <th class="table-th text-white text-center">IMPORTE</th>
+                                <th class="table-th text-white text-center">SUB TOTAL</th>
                         </thead>
                         <tbody>
                             @foreach ($detalles as $d)
@@ -28,13 +28,13 @@
                                         <h6>{{ $d->producto }}</h6>
                                     </td>
                                     <td>
-                                        <h6>{{ number_format($d->precio, 2) }}</h6>
+                                        <h6 class="text-right">{{ number_format($d->precio, 2) }}</h6>
                                     </td>
                                     <td>
-                                        <h6>{{ number_format($d->cantidad, 2) }}</h6>
+                                        <h6 class="text-right">{{ number_format($d->cantidad, 2) }}</h6>
                                     </td>
                                     <td>
-                                        <h6>{{ number_format($d->precio * $d->cantidad, 2) }}</h6>
+                                        <h6 class="text-right">{{ number_format($d->precio * $d->cantidad, 2) }}</h6>
                                     </td>
                                 </tr>
                             @endforeach
@@ -43,14 +43,14 @@
                         <tfoot>
                             <tr>
                                 <td colspan="3">
-                                    <h5 class="text-center font-weight-bold"><b>TOTALES</b></h5>
+                                    <h5 class="text-right font-weight-bold"><b>TOTALES</b></h5>
                                 </td>
                                 <td>
-                                    <h5 class="text-center"><b>{{ $countDetails }}</b></h5>
+                                    <h5 class="text-right"><b>{{ $countDetails }}</b></h5>
                                 </td>
                                 <td>
-                                    <h5 class="text-center">
-                                        ${{ number_format($sumDetails, 2) }}</h5>
+                                    <h5 class="text-right">
+                                        Bs. {{ number_format($sumDetails, 2) }}</h5>
                                 </td>
                             </tr>
                         </tfoot>

@@ -37,7 +37,6 @@ class Reportes extends Component
 
     public function VentasPorFecha()
     {
-
         if ($this->reportType == 0) { //Ventas del dia
 
             $from = Carbon::parse(Carbon::now())->format('Y-m-d') . ' 00:00:00';

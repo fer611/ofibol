@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
@@ -112,12 +113,16 @@ Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function
 
     //Rutas de Reportes
     Route::get('/reportes',[ReporteController::class, 'index'])->name('reportes.index');
-    Route::get('/reportes/create',[ReporteController::class, 'create'])->name('reportes.create');
-    Route::post('/reportes', [ReporteController::class,'store'])->name('reportes.store');
-    Route::get('/reportes/{reporte}', [ReporteController::class, 'show'])->name('reportes.show');
-    Route::get('/reportes/{reporte}/edit', [ReporteController::class, 'edit'])->name('reportes.edit');
-    Route::delete('/reportes/{reporte}', [ReporteController::class, 'destroy'])->name('reportes.destroy');
-    Route::put('/reportes/{reporte}', [ReporteController::class, 'update'])->name('reportes.update');
+    Route::get('/reportes2',[ReporteController::class, 'test'])->name('reportes.test');
+    /* Aca creamos un controlador propio para exportar los reportes  */
+    //Reportes PDF
+    /* Esta parte se puede optimizar pero por falta de tiempo solo queda usar la logica, no podemos mandar la fecha directamente
+    en el formato d/m/Y ya que laravel pensara que le enviamos parametros, entonces lo que haremos será obtener mas parametros es decir
+    8 en total separando el dia/mes/año y ya en el controlador lo volvemos a concatenar */
+    Route::get('/reportes/pdf/{user}/{type}/{dia1}/{mes1}/{year1}/{dia2}/{mes2}/{year2}',[ExportController::class, 'reportPDF']);
+    Route::get('/reportes/pdf/{user}/{type}',[ExportController::class, 'reportPDF']);
+
+    //Reportes EXCEL
 });
 
 

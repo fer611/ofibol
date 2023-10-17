@@ -32,7 +32,8 @@
                         <div class="icon">
                             <i class="ion ion-bag"></i>
                         </div>
-                        <a href="#" class="small-box-footer">Más Información <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer">Más Información <i
+                                class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
@@ -46,7 +47,8 @@
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
                         </div>
-                        <a href="#" class="small-box-footer">Más Información <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer">Más Información <i
+                                class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
@@ -402,61 +404,64 @@
 @section('js')
     <script>
         $(function() {
-    var salesChartCanvas = document.getElementById('revenue-chart-canvas').getContext('2d');
+            var salesChartCanvas = document.getElementById('revenue-chart-canvas').getContext('2d');
 
-    var entradas = @json($entradas);
-    var labels = entradas.map(function(e) { return e.mes; });
-    var data = entradas.map(function(e) { return e.total_entrada; });
+            var entradas = @json($entradas);
+            var labels = entradas.map(function(e) {
+                return e.mes;
+            });
+            var data = entradas.map(function(e) {
+                return e.total_entrada;
+            });
 
-    var salesChartData = {
-        labels: labels,
-        datasets: [{
-            label: 'Entradas',
-            backgroundColor: 'rgba(60,141,188,0.9)',
-            borderColor: 'rgba(60,141,188,0.8)',
-            pointRadius: false,
-            pointColor: '#3b8bba',
-            pointStrokeColor: 'rgba(60,141,188,1)',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(60,141,188,1)',
-            data: data
-        }]
-    };
+            var salesChartData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Entradas',
+                    backgroundColor: 'rgba(60,141,188,0.9)',
+                    borderColor: 'rgba(60,141,188,0.8)',
+                    pointRadius: false,
+                    pointColor: '#3b8bba',
+                    pointStrokeColor: 'rgba(60,141,188,1)',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(60,141,188,1)',
+                    data: data
+                }]
+            };
 
-    var salesChartOptions = {
-        maintainAspectRatio: false,
-        responsive: true,
-        legend: {
-            display: false
-        },
-        scales: {
-            xAxes: [{
-                gridLines: {
-                    display: false,
-                    drawBorder: false
+            var salesChartOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+                legend: {
+                    display: false
                 },
-                ticks: {
-                    fontSize: 20
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            fontSize: 20
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            fontSize: 20
+                        }
+                    }]
                 }
-            }],
-            yAxes: [{
-                gridLines: {
-                    display: false,
-                    drawBorder: false
-                },
-                ticks: {
-                    fontSize: 20
-                }
-            }]
-        }
-    };
+            };
 
-    var salesChart = new Chart(salesChartCanvas, {
-        type: 'line',
-        data: salesChartData,
-        options: salesChartOptions
-    });
-});
-
+            var salesChart = new Chart(salesChartCanvas, {
+                type: 'line',
+                data: salesChartData,
+                options: salesChartOptions
+            });
+        });
     </script>
 @stop

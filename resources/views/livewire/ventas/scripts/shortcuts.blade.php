@@ -4,15 +4,13 @@
     /* F9 para guardar la venta */
     listener.simple_combo("f9", function() {
         /* Emitimos el evento */
-        console.log('f9')
         livewire.emit('guardarVenta');
     });
 
     listener.simple_combo("f8", function() {
         /* Limpiamos la cajja de texto y poner el foco */
-        document.getElementById('hiddenTotal').value = ''
-        document.getElementById('cash').value = ''
-        document.getElementById('cash').focus()
+        console.log('f8');
+        livewire.emit('exacto');
     });
 
     listener.simple_combo("f4", function() {

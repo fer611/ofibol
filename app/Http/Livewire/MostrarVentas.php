@@ -24,4 +24,9 @@ class MostrarVentas extends Component
         Venta::find($id)->delete();
         
     }
+
+    public function reportPDF(Venta $venta)
+    {
+        
+    }
 }

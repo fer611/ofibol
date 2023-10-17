@@ -16,11 +16,12 @@ class CrearCliente extends Component
 
     protected $rules = [
         'razon_social' => 'required|max:255',
-        'nit' => 'required|numeric|min:0',
+        'nit' => 'required|numeric|min:0|unique:clientes',
         'telefono' => 'nullable|numeric|min:0',
         'direccion' => 'nullable|string',
-        'email' => 'nullable|email'
+        'email' => 'nullable|email',
     ];
+    
     public function crearCliente()
     {
         $datos = $this->validate();

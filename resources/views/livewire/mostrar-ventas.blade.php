@@ -43,19 +43,16 @@
                                                 </span>
                                             </td>
                                             <td class="d-flex align-items-center ">
-                                                <a href="{{ route('ventas.show', $venta->id) }}"
-                                                    class="btn btn-outline-primary  btn-sm mr-1"><i
-                                                        class="fas fa-eye"></i></a>
-                                                {{-- Editar --}}
-                                                <a class="btn btn-warning btn-sm mr-1 mb-1 edit-button"
-                                                    href="{{ route('ventas.edit', $venta->id) }}"><i
-                                                        class="fas fa-pen"></i></a>
+                                                <button wire:click="reportPDF({{ $venta->id }})"
+                                                    class="btn btn-outline-danger  btn-sm mr-1"><i
+                                                        class="fas fa-file-pdf"></i> PDF</button>
+
                                                 {{-- Eliminar --}}
-                                                <button type="button"
+                                                {{-- <button type="button"
                                                     class="btn btn-outline-danger btn-sm delete-button"
                                                     wire:click="$emit('mostrarAlerta',{{ $venta->id }})"><i
                                                         class="fas fa-trash-alt"></i>
-                                                </button>
+                                                </button> --}}
                                             </td>
                                         </tr>
                                     @endforeach

@@ -10,6 +10,7 @@
             {{ session('mensaje') }}
         </div>
     @endif
+    
 
     {{-- Aca el componente livewire --}}
     <livewire:ventas />

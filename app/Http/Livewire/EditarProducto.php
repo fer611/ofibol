@@ -26,24 +26,28 @@ class EditarProducto extends Component
     public $precio_venta;
     public $imagen;
     public $imagen_nueva;
-
+    public $barcode;
+    public $fecha_vencimiento;
     use WithFileUploads;
-
-    protected $rules = [
-        'nombre' => 'required|string',
-        'descripcion' => 'nullable|string',
+    
+    public function rules()
+    {
+        return [
+            'barcode' => 'required|string|max:50|unique:productos,barcode,' . $this->producto_id,
+        'descripcion' => 'required|string',
         'marca' => 'required|exists:marcas,id',
         'origen' => 'required|exists:origenes,id',
         'unidad_medida' => 'required|string',
-        'cantidad_unidad' => 'required|numeric|min:0',
+        'cantidad_unidad' => 'nullable|numeric|min:0',
         'stock_minimo' => 'required|numeric|min:0',
         'costo_actual' => 'required|numeric|min:0',
         'porcentaje_margen' => 'required|numeric|min:0',
         'precio_venta' => 'required|numeric|min:0',
+        'fecha_vencimiento' => 'nullable|date',
         'categoria' => 'required|exists:categorias,id',
         'imagen_nueva' => 'nullable|image|mimes:jpeg,png,jpg|max:1024',
-    ];
-
+        ];
+    }
     /* creando un ciclo de vida de producto */
     public function mount(Producto $producto)
     {
@@ -51,7 +55,7 @@ class EditarProducto extends Component
         $this->categoria = $producto->categoria_id;
         $this->origen = $producto->origen_id;
         $this->marca = $producto->marca_id;
-        $this->nombre = $producto->nombre;
+        $this->barcode = $producto->barcode;
         $this->stock_minimo = $producto->stock_minimo;
         $this->descripcion = $producto->descripcion;
         $this->unidad_medida = $producto->unidad_medida;
@@ -60,6 +64,7 @@ class EditarProducto extends Component
         $this->porcentaje_margen = $producto->porcentaje_margen;
         $this->precio_venta = $this->costo_actual + ($this->costo_actual * $this->porcentaje_margen / 100);
         $this->imagen = $producto->imagen;
+        $this->fecha_vencimiento = $producto->fecha_vencimiento;
     }
 
     public function editarProducto()
@@ -78,7 +83,7 @@ class EditarProducto extends Component
         $producto->categoria_id = $datos['categoria'];
         $producto->origen_id = $datos['origen'];
         $producto->marca_id = $datos['marca'];
-        $producto->nombre = $datos['nombre'];
+        $producto->barcode = $datos['barcode'];
         $producto->stock_minimo = $datos['stock_minimo'];
         $producto->descripcion = $datos['descripcion'];
         $producto->unidad_medida = $datos['unidad_medida'];
@@ -86,6 +91,7 @@ class EditarProducto extends Component
         $producto->costo_actual = $datos['costo_actual'];
         $producto->porcentaje_margen = $datos['porcentaje_margen'];
         $producto->precio_venta = $datos['precio_venta'];
+        $producto->fecha_vencimiento = $datos['fecha_vencimiento'];
         /* Aca reescribimos, pero comprobamos si el usuario subio una nueva imagen asignamos el valor de producto y si no la misma imagen que tiene almacenada */
         $producto->imagen = $datos['imagen'] ?? $producto->imagen;
         //Guardar la vacante

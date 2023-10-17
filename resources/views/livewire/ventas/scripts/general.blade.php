@@ -7,8 +7,8 @@
         cursorborderradius: 3
     })
 
-    
-    function Confirm(id, eventName, text){
+
+    function Confirm(id, eventName, text) {
         Swal.fire({
             title: 'CONFIRMAR',
             text: text,
@@ -17,15 +17,24 @@
             cancelButtonText: 'Cerrar',
             confirmButtonColor: '#3B3F5C',
             confirmButtonText: 'Aceptar'
-        }).then(function(result){
+        }).then(function(result) {
             if (result.value) {
-                window.livewire.emit(eventName,id)
+                window.livewire.emit(eventName, id)
                 swal.close()
             }
         })
     }
 
-    function noty(text){
-        console.log(text);
+
+    /* Notificaciones */
+    function noty(msg, option = 1) {
+
+        Snackbar.show({
+            text: msg.toUpperCase(),
+            actionText: 'CERRAR',
+            actionTextColor: '#ffff',
+            backGroundColor: option == 1 ? '3b#3f5c' : '#e7515a',
+            pos: 'top_right'
+        });
     }
 </script>

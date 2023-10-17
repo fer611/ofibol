@@ -113,3 +113,5 @@ Livewire.on('mostrarAlerta', ventaId => {
         }
     })
 });
+
+
