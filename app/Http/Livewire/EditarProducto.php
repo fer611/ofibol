@@ -29,23 +29,23 @@ class EditarProducto extends Component
     public $barcode;
     public $fecha_vencimiento;
     use WithFileUploads;
-    
+
     public function rules()
     {
         return [
             'barcode' => 'required|string|max:50|unique:productos,barcode,' . $this->producto_id,
-        'descripcion' => 'required|string',
-        'marca' => 'required|exists:marcas,id',
-        'origen' => 'required|exists:origenes,id',
-        'unidad_medida' => 'required|string',
-        'cantidad_unidad' => 'nullable|numeric|min:0',
-        'stock_minimo' => 'required|numeric|min:0',
-        'costo_actual' => 'required|numeric|min:0',
-        'porcentaje_margen' => 'required|numeric|min:0',
-        'precio_venta' => 'required|numeric|min:0',
-        'fecha_vencimiento' => 'nullable|date',
-        'categoria' => 'required|exists:categorias,id',
-        'imagen_nueva' => 'nullable|image|mimes:jpeg,png,jpg|max:1024',
+            'descripcion' => 'required|string',
+            'marca' => 'required|exists:marcas,id',
+            'origen' => 'required|exists:origenes,id',
+            'unidad_medida' => 'required|string',
+            'cantidad_unidad' => 'nullable|numeric|min:0',
+            'stock_minimo' => 'required|numeric|min:0',
+            'costo_actual' => 'required|numeric|min:0',
+            'porcentaje_margen' => 'required|numeric|min:0',
+            'precio_venta' => 'required|numeric|min:0',
+            'fecha_vencimiento' => 'nullable|date',
+            'categoria' => 'required|exists:categorias,id',
+            'imagen_nueva' => 'nullable|image|mimes:jpeg,png,jpg|max:1024',
         ];
     }
     /* creando un ciclo de vida de producto */
@@ -75,6 +75,12 @@ class EditarProducto extends Component
             $imagen = $this->imagen_nueva->store('public/productos');
             /* Aca almacenamos solo el nombre de la imagen en datos */
             $datos['imagen'] = str_replace('public/productos/', '', $imagen);
+        }
+        /* Si el usuario manda una fecha vacia es decir eliminia el input de la fecha de 12/10/2023 a dd/mm*aaaa entonces como
+       valor no llega un dato null, sino que llega "" entonces el campo puede ir nulo pero no puede ir como "" cadena vacia por que
+       solo se acepta datos de tipo date o nullo */
+        if ($datos['fecha_vencimiento'] == "") {
+            $datos['fecha_vencimiento'] = null;
         }
 
         //Encontrar el producto a editar

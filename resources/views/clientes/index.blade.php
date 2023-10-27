@@ -97,7 +97,7 @@
                                 page: 'current'
                             }
                         },
-                    }, , 'csv', {
+                    }, 'csv', {
                         extend: 'excel',
                         text: 'Excel',
                         exportOptions: {
@@ -140,7 +140,7 @@
         });
 
 
-        Livewire.on('mostrarAlerta', clienteId => {
+        Livewire.on('alertaInactivar', clienteId => {
             Swal.fire({
                 title: '¿Estás seguro de desactivar este cliente?',
                 text: "El cliente pasará a un estado inactivo y no se podrá utilizar.",
@@ -153,14 +153,41 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     //Eliminar cliente, emitiendo el evento y pasandole el id
-                    Livewire.emit('eliminarCliente', clienteId);
+                    Livewire.emit('inactivarCliente', clienteId);
                     /* Datatabla no se carga a partir de este punto */
-
                     Swal.fire(
                         'Cliente desactivado',
                         'El cliente ha sido cambiado a estado inactivo.',
                         'success'
-                    )
+                    ).then(() => {
+                        // Actualizar la página para volver a renderizar la vista
+                        location.reload();
+                    });
+                }
+            })
+        })
+        Livewire.on('alertaActivar', clienteId => {
+            Swal.fire({
+                title: '¿Estás seguro de activar este cliente?', // Cambiado el mensaje
+                text: "El cliente pasará a un estado activo y estará disponible para su uso.", // Cambiado el mensaje
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, activar cliente', // Cambiado el texto del botón
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    //Aca llamamos a la funcion activarCLiente
+                    Livewire.emit('activarCliente', clienteId);
+                    Swal.fire(
+                        'Cliente activado', // Cambiado el mensaje
+                        'El cliente ha sido cambiado a estado activo.', // Cambiado el mensaje
+                        'success'
+                    ).then(() => {
+                        // Actualizar la página para volver a renderizar la vista
+                        location.reload();
+                    });
                 }
             })
         })

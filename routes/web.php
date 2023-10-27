@@ -67,6 +67,8 @@ Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function
     Route::get('/productos/{producto}/edit', [ProductoController::class, 'edit'])->name('productos.edit');
     Route::put('/productos/{producto}', [ProductoController::class, 'update'])->name('productos.update');
     Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+    /* Ruta para el kardex de cada producto */
+    Route::get('/productos/{producto}/kardex', [ProductoController::class, 'kardex'])->name('productos.kardex');
 
 
     // Rutas de categorías
@@ -121,6 +123,8 @@ Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function
     8 en total separando el dia/mes/año y ya en el controlador lo volvemos a concatenar */
     Route::get('/reportes/pdf/{user}/{type}/{dia1}/{mes1}/{year1}/{dia2}/{mes2}/{year2}',[ExportController::class, 'reportPDF']);
     Route::get('/reportes/pdf/{user}/{type}',[ExportController::class, 'reportPDF']);
+    /* Esto desde la vista de ventas */
+    Route::get('/ventas/pdf/{venta}',[ExportController::class, 'reporteNotaVenta'])->name('ventas.pdf');
 
     //Reportes EXCEL
 });

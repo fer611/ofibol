@@ -13,7 +13,8 @@ class MostrarVentas extends Component
     ];
     public function render()
     {
-        $ventas = Venta::all();
+        /* Obtener las ventas y ordenar por id */
+        $ventas = Venta::orderBy('id', 'desc')->get();
         return view('livewire.mostrar-ventas',[
             'ventas' => $ventas
         ]);

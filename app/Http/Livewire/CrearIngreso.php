@@ -5,111 +5,170 @@ namespace App\Http\Livewire;
 use App\Models\Producto;
 use App\Models\Proveedor;
 use Livewire\Component;
+use Darryldecode\Cart\Facades\CartFacade as Cart;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class CrearIngreso extends Component
 {
-    public $productosSeleccionados = [];
-    public $producto;
-    public $proveedor, $cantidad, $precio_compra, $precio_venta;
+    public $buscar = '', $itemsQuantity;
+    /* Proveedor */
+    public $venta_sin_datos = false, $nombre, $representante;
+    public $productos, $producto;
+    public $proveedor, $cantidad, $precio_compra;
     public $total = 0.00;
+
+    protected $listeners = [
+        'scan-code' => 'ScanCode',
+        'removeItem' => 'removeItem',
+        'clearCart' => 'clearCart',
+        'saveSale' => 'saveSale',
+    ];
+    public function mount()
+    {
+        $carritoNombre = 'ingresos'; // Nombre del carrito de ingresos
+        $this->total = Cart::session($carritoNombre)->getTotal();
+        $this->itemsQuantity = Cart::session($carritoNombre)->getTotalQuantity();
+    }
 
     protected $rules = [
         'proveedor' => 'required|exists:proveedores,id',
+        'representante' => 'required|string|max:255',
     ];
-    public function agregarProducto()
+
+    public function buscarProducto()
     {
-
-        $producto_seleccionado = Producto::find($this->producto);
-        // Verifica que se haya seleccionado un producto válido.
-        if (!$this->producto || $this->cantidad <= 0 || $this->precio_compra <= 0 || $this->precio_venta <= 0) {
-            // Puedes mostrar un mensaje de error o tomar la acción adecuada aquí.
-            $this->addError('agregar', 'Los campos no son válidos o están incompletos.');
-            return;
-        }
-
-        // Calcula el subtotal para el producto actual.
-        $subtotal = $this->cantidad * $this->precio_compra;
-
-        /* calculando el total */
-        $this->total += $subtotal;
-        // Agrega el producto y sus detalles a la lista de productos seleccionados.
-        $this->productosSeleccionados[] = [
-            'nombre' => $producto_seleccionado->descripcion, // Asegúrate de tener el nombre del producto en tu modelo.
-            'cantidad' => $this->cantidad,
-            'precio_compra' => $this->precio_compra,
-            'precio_venta' => $this->precio_venta,
-            'subtotal' => $subtotal,
-        ];
-
-        // Limpiando los campos del formulario después de agregar el producto.
-        $this->resetCampos();
-
-        // Puedes mostrar un mensaje de éxito o realizar otras acciones necesarias aquí.
+        dd('buscando producto....');
     }
 
-
-    public function crearIngreso()
+    public function agregarProducto(Producto $producto, $cant = 1)
     {
-        dd('Registrando el ingreso....');
-
-        // Verifica que haya productos seleccionados.
-        if (empty($this->productosSeleccionados)) {
-            // Puedes mostrar un mensaje de error o tomar la acción adecuada aquí.
-            $this->addError('crear_ingreso', 'Debes seleccionar al menos un producto.');
+        $carritoNombre = 'ingresos'; // Nombre del carrito de ingresos
+        if ($this->InCart($producto->id, $carritoNombre)) {
+            /* En el caso de que el producto ya existe en el carrito */
+            $this->increaseQty($producto->id, $carritoNombre);
             return;
         }
-        // Aquí puedes realizar la lógica para guardar el ingreso en tu base de datos.
+        /* Añadiendo el producto al carrito de ingresos */
+        Cart::session($carritoNombre)->add($producto->id, $producto->descripcion, $producto->costo_actual == null ? 0.00 : $producto->costo_actual, $cant, $producto->imagen);
+    }
+    /* Este metodo valida si el producto ya existe en el carrito */
+    function InCart($productId, $carritoNombre)
+    {
+        $existe = Cart::session($carritoNombre)->get($productId);
+        return $existe ? true : false;
+    }
+    public function clearCart()
+    {
+        $carritoNombre = 'ingresos'; // Nombre del carrito de ingresos
+
+        if (!Cart::session($carritoNombre)->isEmpty()) {
+            /* El carrito no está vacío, por lo tanto, lo limpiamos */
+            Cart::session($carritoNombre)->clear();
+            $this->total = Cart::session($carritoNombre)->getTotal();
+            $this->itemsQuantity = Cart::session($carritoNombre)->getTotalQuantity();
+
+            $this->emit('scan-ok', 'Carrito Vacío');
+        } else {
+            $this->emit('scan-ok', 'Carrito ya está Vacío'); // Puedes ajustar el mensaje según tus necesidades
+        }
+    }
+
+    public function increaseQty($productId, $carritoNombre, $cant = 1)
+    {
+        $titulo = '';
+        $producto = Producto::find($productId);
+        $stock = DB::table('kardex')
+            ->where('producto_id', $producto->id)
+            ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
+            ->groupBy('producto_id')
+            ->value('stock');
+        /* Si el producto existe actualizamos la cantidad */
+        $existe = Cart::session($carritoNombre)->get($productId);
+
+        if ($existe) {
+            $titulo = 'Cantidad Actualizado';
+        } else {
+            $titulo = 'Producto Agregado';
+        }
+
+        if ($existe) {
+            /* Validamos nuevamente el stock ya existente y más lo que nos envían */
+            if ($stock < ($cant + $existe->quantity)) {
+                $this->emit('no-stock', 'Stock insuficiente :/');
+                //Crear un mensaje
+                return;
+            }
+        }
+        /* Actualiza la información en caso de que el producto ya exista en el carrito, en caso de que no exista lo inserta */
+        Cart::session($carritoNombre)->add($producto->id, $producto->descripcion, $producto->costo_actual == null ? 0.00 : $producto->costo_actual, $cant, $producto->imagen);
+
+        $this->total = Cart::session($carritoNombre)->getTotal();
+        $this->itemsQuantity = Cart::session($carritoNombre)->getTotalQuantity();
+
+        $this->emit('scan-ok', $titulo);
+    }
+
+    public function guardarIngreso()
+    {
+
         $datos = $this->validate();
-        // Por ejemplo, puedes crear un nuevo registro en tu tabla de ingresos y luego
-        // guardar los detalles de los productos en una tabla relacionada.
+        dd($datos);
+        $carritoNombre = 'ingresos'; // Nombre del carrito de ingresos
 
-        // Después de guardar la información con éxito, puedes limpiar la lista de productos seleccionados.
-        $this->productosSeleccionados = [];
+        $carrito = Cart::session($carritoNombre)->getContent();
+        // Procesar los elementos del carrito y registrar el ingreso aquí
 
-        // Limpia otros campos o realiza otras acciones necesarias.
-
-        // Puedes mostrar un mensaje de éxito o realizar otras acciones necesarias aquí.
-        session()->flash('success', 'Ingreso creado con éxito.');
+        dd('Registrando el ingreso....');
     }
+
     public function eliminarProducto($index)
     {
-        dd('Eliminando....');
-        // Verifica si el índice existe en el array $productosSeleccionados.
-        if (isset($this->productosSeleccionados[$index])) {
-            // Obtiene el subtotal del producto antes de eliminarlo.
-            $subtotal = $this->productosSeleccionados[$index]['subtotal'];
+        $carritoNombre = 'ingresos'; // Nombre del carrito de ingresos
 
-            // Elimina el producto del array utilizando el índice.
-            unset($this->productosSeleccionados[$index]);
+        $item = Cart::session($carritoNombre)->get($index);
 
-            // Resta el subtotal del producto eliminado al total.
-            $this->total -= $subtotal;
-
-            // Puedes realizar otras acciones necesarias aquí después de eliminar el producto.
-
-            // Puedes mostrar un mensaje de éxito o realizar otras acciones necesarias aquí.
-            /* session()->flash('success', 'Producto eliminado con éxito'); */
+        if ($item) {
+            Cart::session($carritoNombre)->remove($index);
         }
+
+        $this->total = Cart::session($carritoNombre)->getTotal();
+        $this->itemsQuantity = Cart::session($carritoNombre)->getTotalQuantity();
+
+        dd('Eliminando....');
     }
-   
 
     private function resetCampos()
     {
-        $this->producto = null;
-        $this->cantidad = null;
-        $this->precio_compra = null;
-        $this->precio_venta = null;
+        // Aquí puedes restablecer campos si es necesario.
     }
 
     public function render()
     {
+        if (empty($this->buscar)) {
+            $this->productos = Producto::where('descripcion', $this->buscar)->get();
+        } else {
+            $this->productos = Producto::where('descripcion', 'like', '%' . $this->buscar . '%')->get();
+        }
         /* Aca solo recolectamos a los proveedores activos */
         $proveedores = Proveedor::where('estado', '1')->get();
+        $carritoNombre = 'ingresos'; // Nombre del carrito de ingresos
+        $carrito = Cart::session($carritoNombre)->getContent()->sortBy('barcode');
         /* Aca lo mismo, solo productos activos */
-        $productos = Producto::where('estado', '1')->get();
-        return view('livewire.crear-ingreso', [
+        return view('livewire.ingresos.crear-ingreso', [
             'proveedores' => $proveedores,
-            'productos' => $productos
+            'carrito' => $carrito
         ]);
     }
+     /* Venta sin datos */
+     public function updatedVentaSinDatos()
+     {
+        $proveedor = Proveedor::where('nombre', 'S/N')->first();
+         if ($this->venta_sin_datos) {
+            $this->proveedor = $proveedor->id;
+         } else {
+            $this->proveedor = "";
+         }
+     }
 }

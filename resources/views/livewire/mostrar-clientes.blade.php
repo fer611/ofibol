@@ -45,10 +45,11 @@
                                                     href="{{ route('clientes.edit', $cliente->id) }}"><i
                                                         class="fas fa-pen"></i></a>
                                                 {{-- Eliminar --}}
-                                                <button 
-                                                wire:click="$emit('mostrarAlerta',{{ $cliente->id }})" 
-                                                class="btn btn-outline-danger btn-sm delete-button">
-                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                                <button type="button"
+                                                    wire:click="$emit('{{ $cliente->estado === '1' ? 'alertaInactivar' : 'alertaActivar' }}',{{ $cliente->id }})"
+                                                    class="btn btn-outline-{{ $cliente->estado === '1' ? 'danger' : 'success' }} btn-sm delete-button"><i
+                                                        class="fas {{ $cliente->estado === '1' ? 'fa-trash-alt' : 'fa-check' }}"></i>
                                                 </button>
                                             </td>
                                         </tr>

@@ -13,41 +13,27 @@ use Livewire\WithFileUploads;
 
 class CrearProducto extends Component
 {
-    public $barcode;
-    public $descripcion;
-    public $marca;
-    public $origen;
-    public $unidad_medida;
-    public $cantidad_unidad;
-    public $stock;
-    public $stock_minimo;
-    public $costo_actual;
-    public $porcentaje_margen = 30;
-    public $precio_venta;
-    public $categoria;
-    public $almacen;
+    public $categoria, $origen,$marca,$stock_minimo,$unidad_medida,$cantidad_unidad,$descripcion,$fecha_vencimiento,$barcode;
+
     public $imagen;
-    public $fecha_vencimiento;
     public $errorImagen = false;
     /* Habilitar subida de archivos */
     use WithFileUploads;
     protected $rules = [
-        'barcode' => 'required|string|max:50|unique:productos,barcode',
-        'descripcion' => 'required|string|max:255',
-        'marca' => 'required|exists:marcas,id',
+        'categoria' => 'required|exists:categorias,id',
         'origen' => 'required|exists:origenes,id',
+        'marca' => 'required|exists:marcas,id',
+        'stock_minimo' => 'required|numeric|min:0',
         'unidad_medida' => 'required|string',
         'cantidad_unidad' => 'nullable|numeric|min:0',
-        'stock' => ['required', 'numeric', 'min:0'],
-        'stock_minimo' => 'required|numeric|min:0',
-        'costo_actual' => 'required|numeric|min:0',
-        'porcentaje_margen' => 'required|numeric|min:0',
-        'precio_venta' => 'required|numeric|min:0',
-        'categoria' => 'required|exists:categorias,id',
-        'almacen' => 'required|exists:almacenes,id',
+        'descripcion' => 'required|string|max:255',
         'fecha_vencimiento' => 'nullable|date',
+        'barcode' => 'required|string|max:50|unique:productos,barcode',
         'imagen' => 'required|image|mimes:jpeg,png,jpg|max:1024',
     ];
+    public function crearProductos(){
+        
+    }
     public function crearProducto()
     {
         $datos = $this->validate();
@@ -61,25 +47,14 @@ class CrearProducto extends Component
             'barcode' => $datos['barcode'],
             'descripcion' => $datos['descripcion'],
             'marca_id' => $datos['marca'],
+            'categoria_id' => $datos['categoria'],
             'origen_id' => $datos['origen'],
             'unidad_medida' => $datos['unidad_medida'],
             'cantidad_unidad' => $datos['cantidad_unidad'],
             'stock_minimo' => $datos['stock_minimo'],
-            'costo_actual' => $datos['costo_actual'],
-            'porcentaje_margen' => $datos['porcentaje_margen'],
-            'precio_venta' => $datos['precio_venta'],
             'fecha_vencimiento' => $datos['fecha_vencimiento'],
             'imagen' => $datos['imagen'],
             'estado' => '1',
-            'categoria_id' => $datos['categoria'],
-        ]);
-        //registrando una nueva entrada
-        Kardex::create([
-            'producto_id' => $producto->id,
-            'almacen_id' => $datos['almacen'],
-            'entradas' => $datos['stock'],
-            'salidas' => 0,
-            'precio_producto' => $datos['costo_actual'],
         ]);
 
         //Crear un mensaje
@@ -105,7 +80,7 @@ class CrearProducto extends Component
 
 
 
-    public function updated($field)
+   /*  public function updated($field)
     {
         if ($field === 'costo_actual' || $field === 'porcentaje_margen') {
             $this->calcularPrecioVenta();
@@ -117,7 +92,7 @@ class CrearProducto extends Component
         if ($this->costo_actual && $this->porcentaje_margen) {
             $this->precio_venta = $this->costo_actual + ($this->costo_actual * $this->porcentaje_margen / 100);
         }
-    }
+    } */
     public function updatedImagen()
     {
         try {

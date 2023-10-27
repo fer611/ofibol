@@ -21,6 +21,7 @@
                                         <th>Pago</th>
                                         <th>Cambio</th>
                                         <th>Vendedor</th>
+                                        <th>Cliente</th>
                                         <th>Estado</th>
                                         <th>Opciones</th>
                                     </tr>
@@ -35,6 +36,7 @@
                                             <td>Bs. {{ $venta->cash }} </td>
                                             <td>Bs. {{ $venta->cambio }}</td>
                                             <td>{{ $venta->user->name }}</td>
+                                            <td>{{ $venta->cliente->razon_social }}</td>
                                             </td>
                                             <td>
                                                 <span
@@ -43,9 +45,9 @@
                                                 </span>
                                             </td>
                                             <td class="d-flex align-items-center ">
-                                                <button wire:click="reportPDF({{ $venta->id }})"
+                                                <a href="{{ route('ventas.pdf',$venta) }}"
                                                     class="btn btn-outline-danger  btn-sm mr-1"><i
-                                                        class="fas fa-file-pdf"></i> PDF</button>
+                                                        class="fas fa-file-pdf"></i> PDF</a>
 
                                                 {{-- Eliminar --}}
                                                 {{-- <button type="button"

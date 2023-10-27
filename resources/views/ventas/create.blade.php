@@ -29,7 +29,7 @@
     <link rel="stylesheet" type="text/css"
         href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
 
-    {{-- Estilos de la platina lw pos --}}
+    {{-- Estilos de la plantilla lw pos --}}
     <link rel="stylesheet" href="{{ asset('apps/scrumboard.css') }}">
     <link rel="stylesheet" href="{{ asset('apps/notes.css') }}">
 

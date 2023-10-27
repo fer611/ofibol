@@ -10,7 +10,7 @@ use Barryvdh\Snappy\Facades\SnappyPdf;
 use App\Models\User;
 
 use Illuminate\Support\Facades\App;
-
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -64,5 +64,16 @@ class ExportController extends Controller
         //esto para visualizarlo en el navegador
         /* return $pdf->stream('ReporteVentas.pdf'); */
         /* return $pdf->download('ReporteVentas.pdf'); */ //Esto en caso de descargar el pdf
+    }
+
+
+    public function reporteNotaVenta(Venta $venta){
+        $data = DetalleVenta::join('productos as p', 'p.id', '=', 'detalle_venta.producto_id')
+        ->select('detalle_venta.*', 'p.descripcion as producto', DB::raw('detalle_venta.precio * detalle_venta.cantidad as total'))
+        ->where('venta_id', $venta->id)
+        ->orderBy('detalle_venta.created_at', 'desc')
+        ->get();
+        $pdf = SnappyPdf::loadView('pdf.notaVenta', compact('data', 'venta'));
+        return $pdf->inline('NotaVenta.pdf');
     }
 }

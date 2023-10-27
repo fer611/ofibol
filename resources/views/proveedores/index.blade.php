@@ -3,21 +3,6 @@
 @section('title', 'Proveedores')
 
 @section('content')
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">LISTADO DE PROVEEDORES</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Inicio</a></li>
-                        <li class="breadcrumb-item active">Proveedores</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
 
     @if (session()->has('mensaje'))
         <div class="alert alert-success alert-dismissible fade show">
@@ -26,77 +11,7 @@
         </div>
     @endif
 
-    <section class="section">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3 class="card-title">Proveedores</h3>
-                        </div>
-                        <div>
-                            <a href="#" class="btn btn-info">Exportar a PDF</a>
-                            <a href="#" class="btn btn-success">Exportar a Excel</a>
-                            <a href="{{ route('proveedores.create') }}" class="btn btn-primary">Nuevo Proveedor</a>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0" id="proveedores">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Nombre</th>
-                                        <th>Representante</th>
-                                        <th>Dirección</th>
-                                        <th>Teléfono</th>
-                                        <th>Correo</th>
-                                        <th>Estado</th>
-                                        <th>Opciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($proveedores as $proveedor)
-                                        <tr>
-                                            <td>{{ $proveedor->id }}</td>
-                                            <td>{{ $proveedor->nombre }}</td>
-                                            <td>{{ $proveedor->representante }}</td>
-                                            <td>{{ $proveedor->direccion }}</td>
-                                            <td>{{ $proveedor->telefono }}</td>
-                                            <td>{{ $proveedor->correo }}</td>
-                                            <td>
-                                                <span
-                                                    class="badge badge-{{ $proveedor->estado === '1' ? 'success' : 'danger' }}">
-                                                    {{ $proveedor->estado === '1' ? 'Activo' : 'Inactivo' }}
-                                                </span>
-                                            </td>
-                                            <td class="d-flex align-items-center">
-                                                <a href="{{ route('proveedores.edit', $proveedor->id) }}"
-                                                    class="btn btn-warning btn-sm mr-1"><i class="fas fa-pen"></i></a>
-
-                                                <form id="deleteForm-{{ $proveedor->id }}"
-                                                    action="{{ route('proveedores.destroy', $proveedor->id) }}"
-                                                    method="post" class="mb-0">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                    <button type="button"
-                                                        class="btn btn-outline-{{ $proveedor->estado === '1' ? 'danger' : 'success' }} btn-sm delete-button"
-                                                        data-id="{{ $proveedor->id }}"
-                                                        data-estado="{{ $proveedor->estado }}"><i
-                                                            class="fas {{ $proveedor->estado === '1' ? 'fa-trash-alt' : 'fa-check' }}"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <livewire:mostrar-proveedores />
 @stop
 
 @section('css')

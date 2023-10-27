@@ -21,23 +21,12 @@
 @stop
 
 @section('content')
-    <div class="container-fluid mt-4">
-        <div class="row justify-content-start">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header" style="background-color: #2E86C1; color: #fff;">
-                        <h4 class="mb-0">Nuevo Ingreso</h4>
-                    </div>
-                    <div class="card-body">
-                        <livewire:crear-ingreso />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <livewire:crear-ingreso />
 @stop
 
 @section('css')
+    {{-- SweetAler --}}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {{-- CDN select2 --}}
     <link rel="stylesheet" href="{{ asset('dist/css/bootstrap-select.min.css') }}">
     {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
@@ -47,6 +36,10 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
     </style>
+    {{-- Estilos de la plantilla lw pos --}}
+    <link rel="stylesheet" href="{{ asset('apps/scrumboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('apps/notes.css') }}">
+
 @stop
 
 @section('js')

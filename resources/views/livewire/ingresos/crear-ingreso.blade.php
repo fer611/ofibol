@@ -4,15 +4,15 @@
         <div class="col-sm-12 col-md-9">
             {{-- BUSCADOR --}}
             <h5>Seleccione el producto</h5>
-            <livewire:search-controller />
+            @include('livewire.ingresos.partials.busqueda')
             {{-- DETALLES --}}
-            @include('livewire.ventas.partials.detalles')
+            @include('livewire.ingresos.partials.detalles')
         </div>
         <div class="col-sm-12 col-md-3">
             {{-- CLIENTE --}}
-            @include('livewire.ventas.partials.cliente')
+            @include('livewire.ingresos.partials.proveedor')
             {{-- TOTAL  --}}
-            @include('livewire.ventas.partials.total')
+            @include('livewire.ingresos.partials.total')
 
         </div>
     </div>
@@ -27,7 +27,7 @@
     <script src="{{ asset('plugins/notification/snackbar/snackbar.min.js') }}"></script>
     @include('livewire.ventas.scripts.shortcuts')
     @include('livewire.ventas.scripts.events')
-    @include('livewire.ventas.scripts.general')
+    @include('livewire.ingresos.scripts.general')
     @include('livewire.ventas.scripts.scan')
     <style>
         .alert-container {

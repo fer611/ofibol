@@ -5,18 +5,19 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <!-- Botón para abrir el modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                        <button type="button" class="btn" style="background: #3B3F5C; color:white" data-toggle="modal"
                             data-target="#nuevoProductoModal">
-                            Nuevo Producto
+                            <li class="fa fa-plus"></li> Nuevo Producto
                         </button>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped" id="productos">
-                                <thead class="">
+                                <thead style="background: #3B3F5C; color:white">
                                     <tr>
                                         <th>Id</th>
                                         <th>Imagen</th>
+                                        <th>Codigo de Barras</th>
                                         <th>Descripcion</th>
                                         <th>Stock</th>
                                         <th>Unidad Medida</th>
@@ -34,11 +35,13 @@
                                             <td><img src="{{ asset('storage/productos/' . $producto->imagen) }}"
                                                     alt="{{ 'Imagen producto ' . $producto->nombre }}"
                                                     class="img-fluid w-60 img-thumbnail my-custom-img"></td>
-                                            <td>{{ $producto->descripcion }}</td>
+                                            <td>{{ $producto->barcode }}</td>
+                                            <td><a href="{{ route('productos.kardex', $producto) }}">
+                                                    {{ $producto->descripcion }} </a></td>
                                             <td>{{ $producto->stock }}</td>
                                             <td>{{ $producto->unidad_medida }}</td>
-
-                                            <td class="{{ $producto->fecha_vencimiento && now()->greaterThan($producto->fecha_vencimiento) ? 'text-danger' : '' }}">
+                                            <td
+                                                class="{{ $producto->fecha_vencimiento && now()->greaterThan($producto->fecha_vencimiento) ? 'bg-danger' : '' }}">
                                                 @if ($producto->fecha_vencimiento)
                                                     {{ \Carbon\Carbon::parse($producto->fecha_vencimiento)->format('d/n/Y') }}
                                                 @else
@@ -63,9 +66,8 @@
                                                         class="fas fa-pen"></i></a>
                                                 {{-- Eliminar --}}
                                                 <button type="button"
-                                                    class="btn btn-outline-{{ $producto->estado === '1' ? 'danger' : 'success' }} btn-sm delete-button"
-                                                    data-id="{{ $producto->id }}"
-                                                    data-estado="{{ $producto->estado }}"><i
+                                                    wire:click="$emit('{{ $producto->estado === '1' ? 'alertaInactivar' : 'alertaActivar' }}',{{ $producto->id }})"
+                                                    class="btn btn-outline-{{ $producto->estado === '1' ? 'danger' : 'success' }} btn-sm delete-button"><i
                                                         class="fas {{ $producto->estado === '1' ? 'fa-trash-alt' : 'fa-check' }}"></i>
                                                 </button>
                                             </td>
@@ -79,24 +81,34 @@
             </div>
         </div>
     </section>
-    {{-- Modal para crear productos --}}
-    <div class="modal fade" id="nuevoProductoModal" tabindex="-1" role="dialog"
-        aria-labelledby="nuevoProductoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="nuevoProductoModalLabel">Nuevo Producto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <livewire:crear-producto />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+    <div>
+        <div class="modal fade" id="nuevoProductoModal" tabindex="-1" role="dialog"
+            aria-labelledby="nuevoProductoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="nuevoProductoModalLabel">Nuevo Producto</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{-- Aca el formulario --}}
+                        <livewire:crear-producto />
+                        {{-- Modal para crear productos --}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
+        <style>
+            .modal-md {
+                max-width: 50%;
+                /* Ajusta el tamaño medio deseado */
+                width: auto;
+            }
+        </style>
     </div>
 </div>

@@ -17,61 +17,33 @@ class ProductoController extends Controller
         $this->middleware('can:productos.destroy')->only('destroy');
     }
     public function index()
-    { 
+    {
         // Pasar la colección 
         return view('productos.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('productos.create');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Producto $producto)
     {
-        
+
         return view('productos.show', [
             'producto' => $producto
         ]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Producto $producto)
     {
         return view('productos.edit', [
             'producto' => $producto,
         ]);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    /*  */
+    public function kardex(Producto $producto)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('productos.kardex', [
+            'producto' => $producto,
+        ]);
     }
 }

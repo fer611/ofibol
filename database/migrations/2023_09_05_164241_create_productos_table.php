@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('barcode',50)->nullable();  // Codigo de barra del producto
             $table->text('descripcion')->nullable();  // Descripción del producto, puede ser nulo
             $table->string('unidad_medida');  // Unidad de medida (caja, bolsa, etc.)
-            $table->decimal('cantidad_unidad',10,2);  // Cantidad por caja/bolsa etc....
-            $table->decimal('costo_actual', 10, 2);  // Costo actual (CPP)
+            $table->decimal('cantidad_unidad',10,2)->nullable();  // Cantidad por caja/bolsa etc....
+            $table->decimal('costo_actual', 10, 2)->nullable();  // Costo actual (CPP)
             $table->decimal('porcentaje_margen', 5, 2)->default(30.00);;  // Porcentaje de margen para el precio de venta
-            $table->decimal('precio_venta', 10, 2);  // Precio de venta calculado
+            $table->decimal('precio_venta', 10, 2)->nullable();  // Precio de venta calculado
             $table->string('imagen')->nullable();  // Ruta de la imagen del producto, puede ser nulo
             $table->decimal('stock_minimo', 10, 2)->default(0); //stock 
             $table->date('fecha_vencimiento')->nullable(); //fecha de vencimiento

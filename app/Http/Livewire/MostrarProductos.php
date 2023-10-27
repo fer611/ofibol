@@ -8,11 +8,20 @@ use Livewire\Component;
 
 class MostrarProductos extends Component
 {
-    protected $listeners = ['prueba'];
+    protected $listeners = ['activarProducto', 'inactivarProducto'];
 
-    public function prueba()
+    
+    public function activarProducto(Producto $producto)
     {
-        logger('Desde prueba...');
+        // Cambia el estado del producto a activo (1)
+        $producto->estado = '1';
+        $producto->save();
+    }
+    public function inactivarProducto(Producto $producto)
+    {
+        // Cambia el estado del producto a inactivo (0)
+        $producto->estado = '0';
+        $producto->save();
     }
     public function render()
     {

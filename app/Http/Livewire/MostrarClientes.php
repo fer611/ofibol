@@ -7,9 +7,16 @@ use Livewire\Component;
 
 class MostrarClientes extends Component
 {
-    protected $listeners = ['eliminarCliente'];
-    
-    public function eliminarCliente(Cliente $cliente)
+    protected $listeners = ['inactivarCliente', 'activarCliente'];
+
+    public function activarCliente(Cliente $cliente)
+    {
+        // Cambia el estado del cliente a activo (1)
+        $cliente->estado = '1';
+        $cliente->save();
+    }
+
+    public function inactivarCliente(Cliente $cliente)
     {
         // Cambia el estado del cliente a inactivo (0)
         $cliente->estado = '0';

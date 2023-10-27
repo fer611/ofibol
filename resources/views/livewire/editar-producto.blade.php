@@ -1,9 +1,8 @@
-<div class="container-fluid rounded p-4">
+<div class="container-fluid rounded p-4 ">
     <form wire:submit.prevent="editarProducto" novalidate>
         <div class="row">
             <!-- Primera columna -->
             <div class="col-lg-4">
-
                 <!-- Categoría -->
                 <div class="form-group">
                     <label for="categoria">Categoría</label>
@@ -86,7 +85,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                
+
                 <!-- Precio de Compra -->
                 <div class="form-group">
                     <label for="costo_actual">Costo Actual (Bs.)</label>
@@ -133,8 +132,9 @@
                 {{-- Fecha de vencimiento del producto --}}
                 <div class="form-group">
                     <label for="fecha_vencimiento">Fecha de Vencimiento (Opcional)</label>
-                    <input type="date" class="form-control @error('fecha_vencimiento') is-invalid @enderror" id="fecha_vencimiento"
-                        wire:model="fecha_vencimiento" placeholder="Ingrese la fecha de vencimiento del producto">
+                    <input type="date" class="form-control @error('fecha_vencimiento') is-invalid @enderror"
+                        id="fecha_vencimiento" wire:model="fecha_vencimiento"
+                        placeholder="Ingrese la fecha de vencimiento del producto">
                     @error('fecha_vencimiento')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -177,7 +177,7 @@
             </div>
 
             <!-- Botón de envío -->
-            <button type="submit" class="btn btn-primary w-100">Guardar Cambios</button>
+            <button type="submit" class="btn btn-dark w-100">Guardar Cambios</button>
         </div>
 </div>
 </form>

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Agregar Producto')
+@section('title', 'Editar Cliente')
 
 @section('content_header')
 
@@ -12,9 +12,9 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header text-center bg-dark">
-                        <h3><strong> EDITAR PRODUCTO </strong></h3>
+                        <h3><strong> EDITAR CLIENTE </strong></h3>
                     </div>
-                    <livewire:editar-producto :producto="$producto" /> {{-- Pasando el objeto producto para el formulario editar --}}
+                    <livewire:editar-cliente :cliente="$cliente" /> {{-- Pasando el objeto cliente para el formulario editar --}}
                 </div>
             </div>
         </div>

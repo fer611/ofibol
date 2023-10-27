@@ -16,4 +16,17 @@ class Kardex extends Model
         'almacen_id',
         'precio_producto'
     ];
+
+     //si dice rol espera almacen
+     public function almacen()
+     {
+         //pertenece a
+         return $this->belongsTo(Almacen::class);
+     }
+
+     public function producto()
+     {
+         //pertenece a
+         return $this->belongsTo(Producto::class);
+     }
 }

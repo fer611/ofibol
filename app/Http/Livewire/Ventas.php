@@ -79,6 +79,7 @@ class Ventas extends Component
             /* Aca validamos si el producto esta activo */
             if ($producto->estado == '0') {
                 $this->emit('no-stock', 'El producto esta Inactivo');
+                return;
             }
 
             /* Añadiendo el producto al carrito */
@@ -275,7 +276,6 @@ class Ventas extends Component
             ]);
             if ($venta) {
                 $items = Cart::getContent();
-
 
                 foreach ($items as $item) {
                     /* guardando los detalles */
