@@ -12,9 +12,9 @@ class Ingreso extends Model
     protected $fillable = [
         'user_id',
         'proveedor_id',
-        'tipo_comprobante',
-        'numero_comprobante',
+        'almacen_id',
         'total',
+        'items',
         'estado'
     ];
 
@@ -28,6 +28,10 @@ class Ingreso extends Model
     public function proveedor(){
         //pertenece a
         return $this->belongsTo(Proveedor::class);
+    }
+    public function almacen(){
+        //pertenece a
+        return $this->belongsTo(Almacen::class);
     }
     /* Relacion de N a N */
     public function detallesIngreso()

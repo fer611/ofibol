@@ -19,12 +19,12 @@
                                 <thead class="">
                                     <tr>
                                         <th>ID</th>
-                                        <th>Recepcion</th>
-                                        <th>Proveedor</th>
-                                        <th>Comprobante</th>
+                                        <th>Fecha</th>
                                         <th>Total</th>
+                                        <th>Items</th>
+                                        <th>Usuario</th>
+                                        <th>Proveedor</th>
                                         <th>Estado</th>
-                                        <th>Fecha de Ingreso</th>
                                         <th>Opciones</th>
                                     </tr>
                                 </thead>
@@ -33,30 +33,28 @@
                                     @foreach ($ingresos as $ingreso)
                                         <tr>
                                             <td>{{ $ingreso->id }}</td>
-                                            <td>{{ $ingreso->user_name }}</td>
-                                            <td>{{ $ingreso->proveedor_nombre }}</td>
-                                            <td>{{ $ingreso->tipo_comprobante . ': ' . $ingreso->numero_comprobante }}</td>
-                                            <td>{{ number_format($ingreso->totalIngreso, 2, '.', '') }} Bs.</td>
+                                            <td>{{ $ingreso->created_at->format('d/m/Y') }}</td>
+                                            <td>{{ $ingreso->total }}</td>
+                                            <td>{{ $ingreso->items}}</td>
+                                            <td>{{ $ingreso->user->name}}</td>
+                                            <td>{{ $ingreso->proveedor->nombre }}</td>
                                             <td>
                                                 <span
                                                     class="badge badge-{{ $ingreso->estado === 'Pendiente' ? 'warning' : 'success' }}">
                                                     {{ $ingreso->estado }}
                                                 </span>
                                             </td>
-                                            <td>{{ \Carbon\Carbon::parse($ingreso->created_at)->format('d/m/Y') }}</td>
-                                            <td class="d-flex align-items-center">
-                                                <!-- ver, editar o eliminar -->
-                                                <a href="{{ route('ingresos.show', $ingreso->id) }}"
-                                                    class="btn btn-outline-primary  btn-sm mr-1"><i
-                                                        class="fas fa-eye"></i></a>
-                                                <a class="btn btn-warning btn-sm mr-1 mb-1 edit-button"
-                                                    href="{{ route('ingresos.edit', $ingreso->id) }}"><i
-                                                        class="fas fa-pen"></i></a>
-                                                <button type="button"
-                                                    class="btn btn-outline-{{ $ingreso->estado === '1' ? 'danger' : 'success' }} btn-sm delete-button"
-                                                    data-id="{{ $ingreso->id }}"
-                                                    data-estado="{{ $ingreso->estado }}"><i
-                                                        class="fas {{ $ingreso->estado === '1' ? 'fa-trash-alt' : 'fa-check' }}"></i></button>
+                                            <td class="d-flex align-items-center ">
+                                                <a href="{{ route('ingresos.pdf', $ingreso) }}"
+                                                    class="btn btn-outline-danger  btn-sm mr-1"><i
+                                                        class="fas fa-file-pdf"></i> PDF</a>
+
+                                                {{-- Eliminar --}}
+                                                {{-- <button type="button"
+                                                    class="btn btn-outline-danger btn-sm delete-button"
+                                                    wire:click="$emit('mostrarAlerta',{{ $venta->id }})"><i
+                                                        class="fas fa-trash-alt"></i>
+                                                </button> --}}
                                             </td>
                                         </tr>
                                     @endforeach

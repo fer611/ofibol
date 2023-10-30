@@ -5,7 +5,7 @@
             <div class="connect-sorting-content mt-4">
                 <div class="card simplet-title-task ui-sortable-handle">
                     <div class="card-body">
-                        <h2 >TOTAL: Bs. {{ number_format($total, 2) }}</h2>
+                        <h4 >TOTAL: Bs. {{ number_format($total, 2) }}</h4>
                                     <input type="hidden" id="hiddenTotal" value="{{ $total }}">
                         <div class="input-group input-group-md mb-3">
                             <div class="input-group-prepend">
@@ -17,12 +17,12 @@
                             <input type="number" id="cash" wire:model="efectivo" wire:keydown.enter="guardarVenta"
                                 class="form-control text-center" value="{{ $efectivo }}" style="height: 50px;">
 
-                            <div class="input-group-append">
+                            {{-- <div class="input-group-append">
                                 <span wire:click.prevent="limpiarEntrada" class="input-group-text"
                                     style="background: #3B3F5C; color: white">
                                     <i class="fas fa-backspace fa-2x"></i>
                                 </span>
-                            </div>
+                            </div> --}}
                         </div>
                         <h4 class="text-muted">Cambio: {{ number_format($cambio, 2) }}</h4>
 

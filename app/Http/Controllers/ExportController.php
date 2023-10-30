@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetalleIngreso;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Venta;
 use App\Models\DetalleVenta;
+use App\Models\Ingreso;
 use Barryvdh\Snappy\Facades\SnappyPdf;
 use App\Models\User;
 
@@ -69,11 +71,21 @@ class ExportController extends Controller
 
     public function reporteNotaVenta(Venta $venta){
         $data = DetalleVenta::join('productos as p', 'p.id', '=', 'detalle_venta.producto_id')
-        ->select('detalle_venta.*', 'p.descripcion as producto', DB::raw('detalle_venta.precio * detalle_venta.cantidad as total'))
+        ->select('detalle_venta.*', 'p.descripcion as descripcion','p.unidad_medida as medida', DB::raw('detalle_venta.precio * detalle_venta.cantidad as total'))
         ->where('venta_id', $venta->id)
         ->orderBy('detalle_venta.created_at', 'desc')
         ->get();
         $pdf = SnappyPdf::loadView('pdf.notaVenta', compact('data', 'venta'));
-        return $pdf->inline('NotaVenta.pdf');
+        return $pdf->inline('NotaVenta'.$venta->id.'.pdf');
+    }
+    public function reporteNotaIngreso(Ingreso $ingreso){
+
+        $data = DetalleIngreso::join('productos as p', 'p.id', '=', 'detalle_ingreso.producto_id')
+        ->select('detalle_ingreso.*', 'p.descripcion as descripcion','p.unidad_medida as medida', DB::raw('detalle_ingreso.precio_compra * detalle_ingreso.cantidad as total'))
+        ->where('ingreso_id', $ingreso->id)
+        ->orderBy('detalle_ingreso.created_at', 'desc')
+        ->get();
+        $pdf = SnappyPdf::loadView('pdf.notaIngreso', compact('data', 'ingreso'));
+        return $pdf->inline('NotaIngreso'.$ingreso->id.'.pdf');
     }
 }

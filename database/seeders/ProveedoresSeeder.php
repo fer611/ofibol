@@ -15,6 +15,14 @@ class ProveedoresSeeder extends Seeder
     {
         DB::table('proveedores')->insert([
             [
+                'nombre' => 'S/N',
+                'representante' => 'S/N',
+                'correo' => null,
+                'estado' => '1',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
+            [
                 'nombre' => 'Madepa',
                 'representante' => 'Jose',
                 'telefono' => '7852471',

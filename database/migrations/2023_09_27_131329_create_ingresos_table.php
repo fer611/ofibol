@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('ingresos', function (Blueprint $table) {
             $table->id();
+            /* nuevas columnas */
+            $table->decimal('total', 10, 2);
+            /* La cantidad de productos que se venden */
+            $table->integer('items');
+            $table->enum('estado', ['pagado', 'pendiente', 'cancelado'])->default('pagado');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('proveedor_id')->constrained('proveedores')->onDelete('cascade');
-            $table->string('tipo_comprobante',20);
-            $table->string('numero_comprobante',20);
-            $table->string('estado',20);
+            $table->foreignId('almacen_id')->constrained('almacenes')->onDelete('cascade');
             $table->timestamps();
         });
     }

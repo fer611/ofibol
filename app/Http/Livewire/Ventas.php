@@ -296,10 +296,9 @@ class Ventas extends Component
                         'precio_producto' => $item->price,
                         'user_id' => auth()->user()->id,
                     ]);
-
+/* 
                     $producto = Producto::find($item->id);
-                    $producto->stock_minimo = $producto->stock_minimo - $item->quantity;
-                    $producto->save();
+                    $producto->save(); */
                 }
             }
 

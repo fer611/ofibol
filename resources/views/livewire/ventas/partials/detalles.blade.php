@@ -5,14 +5,14 @@
                     @if ($total > 0)
                         <div class="table-responsive tblscroll" style="max-height: 650px; overflow: hidden">
                             <table class="table table-bordered table-striped mt-1">
-                                <thead class="text-white" style="background: #3B3F5C">
+                                <thead class="text-white table-dark" style="background: #3B3F5C">
                                     <tr>
-                                        <th width="10%"></th>
-                                        <th class="table-th text-left text-white">DESCRIPCIÓN</th>
+                                        <th width="10%">IMAGEN</th>
+                                        <th width="25%" class="table-th text-left text-white">DESCRIPCIÓN</th>
                                         <th class="table-th text-center text-white">PRECIO</th>
-                                        <th width="13%" class="table-th text-center text-white">CANT</th>
+                                        <th width="13%" class="table-th text-center text-white">CANTIDAD</th>
                                         <th class="table-th text-center text-white">IMPORTE</th>
-                                        <th class="table-th text-center text-white">ACCIONES</th>
+                                        <th width="20%" class="table-th text-center text-white">ACCIONES</th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -125,6 +125,7 @@ Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function
     Route::get('/reportes/pdf/{user}/{type}',[ExportController::class, 'reportPDF']);
     /* Esto desde la vista de ventas */
     Route::get('/ventas/pdf/{venta}',[ExportController::class, 'reporteNotaVenta'])->name('ventas.pdf');
+    Route::get('/ingresos/pdf/{ingreso}',[ExportController::class, 'reporteNotaIngreso'])->name('ingresos.pdf');
 
     //Reportes EXCEL
 });

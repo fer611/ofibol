@@ -42,8 +42,7 @@ class CrearProducto extends Component
         $imagen = $this->imagen->store('public/productos');
         $datos['imagen'] = str_replace('public/productos/', '', $imagen);
         //Crear El producto
-
-        $producto = Producto::create([
+        Producto::create([
             'barcode' => $datos['barcode'],
             'descripcion' => $datos['descripcion'],
             'marca_id' => $datos['marca'],

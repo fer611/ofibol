@@ -1,35 +1,66 @@
 <div>
-    
-        <div class="row">
-            <div class="col-md-8">
-                <div class="input-group w-100">
-                    <input type="text"
-                        class="form-control @error('producto') is-invalid @enderror" id="producto" wire:model='buscar'
-                        placeholder="Ingrese el producto">
-                    @error('producto')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                    <div class="input-group-append">
-                        <button class="btn btn-dark" type="button" >
-                            <i class="fas fa-search"></i> Buscar
-                        </button>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="input-group w-100">
+                <input type="text" class="form-control @error('producto') is-invalid @enderror" id="producto"
+                    wire:model='buscar' wire:keydown.enter.prevent='agregarProducto' placeholder="Ingrese el producto">
+                @error('producto')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <div class="input-group-append">
+                    <button class="btn btn-dark" type="button">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="input-group w-100">
+                <button type="button" class="btn" style="background: #3B3F5C; color:white" data-toggle="modal"
+                    data-target="#nuevoProductoModal">
+                    <li class="fa fa-plus"></li> Nuevo Producto
+                </button>
+            </div>
+        </div>
+    </div>
+    {{-- <ul class="list-group">
+        @if ($productos && $productos->count() > 0)
+            <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Imagen</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Descripcion</p>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="input-group w-100">
-                    <button type="button" class="btn" style="background: #3B3F5C; color:white" data-toggle="modal"
-                            data-target="#nuevoProductoModal">
-                            <li class="fa fa-plus"></li> Nuevo Producto
-                        </button>
-                </div>
-            </div>
-        </div><br>
+            </li>
+            @foreach ($productos as $producto)
+                <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img src="{{ asset('storage/productos/' . $producto->imagen) }}" alt="imagen"
+                                    width="40px">
+                            </div>
+                            <div class="col-md-4">
+                                <p>{{ $producto->descripcion }}</p>
+                            </div>
+                        </div>
+                </li>
+            @endforeach
+        @else
+            <p>No hay resultados para la búsqueda: {{ $buscar }}</p>
+        @endif
+    </ul> --}}
+
+
     <div class="table-responsive" style="max-height: 200px;">
         <table class="table table-hover table-striped">
             <thead class="bg-dark">
                 <tr>
                     <th>Imagen</th>
+                    <th>Marca</th>
                     <th>Descripción</th>
                     <th>Acciones</th>
                 </tr>
@@ -39,9 +70,10 @@
                     @foreach ($productos as $producto)
                         <tr>
                             <td>
-                                <img src="{{ asset('storage/productos/' . $producto->imagen) }}" alt="imagen" width="40px">
+                                <img src="{{ asset('storage/productos/' . $producto->imagen) }}" alt="imagen" width="40px" wire:click="agregarProducto({{ $producto->id }})">
                             </td>
-                            <td>{{ $producto->descripcion }}</td>
+                            <td>{{ $producto->marca->nombre }}</td>
+                            <td wire:click="agregarProducto({{ $producto->id }})">{{ $producto->descripcion }}</td>
                             <td>
                                 <button class="btn btn-dark" wire:click="agregarProducto({{ $producto->id }})">
                                     Agregar

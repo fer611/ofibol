@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie-edge">
-    <title>Nota de Venta</title>
+    <title>Nota de Ingreso</title>
     <style>
         /* Estilos CSS */
         body {
@@ -100,37 +100,36 @@
             border-collapse: collapse;
             margin-top: 20px;
         }
-
         .items-table th,
         .items-table td {
             border: 1px solid #000;
             padding: 8px;
         }
-
         .items-table th {
             background-color: #f2f2f2;
         }
-
         .total {
             margin-top: 20px;
             text-align: right;
         }
-        
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>NOTA DE VENTA</h1>
+            <h1>NOTA DE INGRESO</h1>
+            <h2>{{ $ingreso->almacen->nombre }}</h2>
         </div>
     </div>
     <div class="row">
         <div class="left-section">
-            <p><strong>NIT:</strong> {{ $venta->cliente->nit }}</p>
-            <p><strong>Razón Social:</strong> {{ $venta->cliente->razon_social }}</p>
-            <p><strong>Fecha:</strong> {{ $venta->created_at->format('d/m/Y') }}</p>
+            <p><strong>Datos del Proveedor</strong></p>
+            <p><strong>Nombre:</strong> {{ $ingreso->proveedor->nombre }}</p>
+            <p><strong>Representante:</strong> {{ $ingreso->proveedor->representante }}</p>
+            <p><strong>Fecha:</strong> {{ $ingreso->created_at->format('d/m/Y') }}</p>
         </div>
         <div class="right-section">
+            <p><strong>Datos de la Empresa</strong></p>
             <p><strong>Nombre:</strong> OFIBOL</p>
             <p><strong>NIT:</strong> 4801118019</p>
             <p><strong>Dirección:</strong> Calle Murillo Nº 897</p>
@@ -148,12 +147,12 @@
         </tr>
         @foreach ($data as $item)
             <tr>
-                <td align="center">{{ $item->id }}</td>
+                <td align="center">{{ $item->id}}</td>
                 <td align="center">{{ number_format($item->cantidad,0) }}</td>
                 <td>{{ $item->descripcion }}</td>
                 <td>{{ $item->medida }}</td>
-                <td align="right">{{ $item->precio }}</td>
-                <td align="right">{{ number_format($item->precio * $item->cantidad, 2) }}</td>
+                <td align="right">{{ $item->precio_compra }}</td>
+                <td align="right">{{ number_format($item->precio_compra * $item->cantidad, 2) }}</td>
             </tr>
         @endforeach
         <!-- Agrega una fila para el total justo debajo de la tabla de detalles -->
