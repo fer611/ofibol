@@ -17,6 +17,8 @@ class ProveedoresSeeder extends Seeder
             [
                 'nombre' => 'S/N',
                 'representante' => 'S/N',
+                'telefono' => null,
+                'direccion' => null,
                 'correo' => null,
                 'estado' => '1',
                 'created_at' => date('Y-m-d H:i:s'),

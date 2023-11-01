@@ -74,14 +74,24 @@ class CrearIngreso extends Component
                 return;
             }
         }
+
+
         if ($this->InCart($producto->id, $carritoNombre)) {
-            /* En el caso de que el producto ya existe en el carrito */
+            /* En el caso de que el producto ya existe en el carrito, aumentamos la cantidad en 1 */
             $this->increaseQty($producto->id);
             return;
         }
 
         /* Añadiendo el producto al carrito de ingresos */
-        Cart::session($carritoNombre)->add($producto->id, $producto->descripcion, $producto->costo_actual == null ? 0.00 : $producto->costo_actual, $cant, $producto->imagen);
+        if ($producto->costo_actual === null) {
+            /* Si el costo_actual es null, quiere decir que el producto solo se registró, no tiene ninguna entrada,
+            entonces para agregarlo a nuestro carrito le pondremos 0.01, por que Laravel shoppingcart
+            no acepta precios de 0.00, entonces en la vista ya lo redondearemos y nos dará como resultado 0.00, llegamos
+            a lo mismo pero la diferencia es que el carrito ya no lo excluirá */
+            $producto->costo_actual = 0.01;
+        }
+
+        Cart::session($carritoNombre)->add($producto->id, $producto->descripcion, $producto->costo_actual, $cant, $producto->imagen);
 
         /* Actualizando el total */
         $this->total = Cart::getTotal();
@@ -116,13 +126,15 @@ class CrearIngreso extends Component
         $producto = Producto::find($productId);
         /* Si el producto existe, actualizamos la cantidad */
         $existe = Cart::session('ingresos')->get($productId);
+
         if ($existe) {
             $titulo = 'Cantidad Actualizada';
         } else {
-            $titulo = 'Producto Agregado';
+            $titulo = 'w';
         }
         /* Actualiza la información en caso de que el producto ya exista en el carrito, en caso de que no exista lo inserta */
-        Cart::session('ingresos')->add($producto->id, $producto->descripcion, $producto->costo_actual == null ? 0.00 : $producto->costo_actual, $cant, $producto->imagen);
+
+        Cart::session('ingresos')->add($producto->id, $producto->descripcion, $existe->price, $cant, $producto->imagen);
 
         $this->total = Cart::session('ingresos')->getTotal();
         $this->itemsQuantity = Cart::session('ingresos')->getTotalQuantity();
@@ -171,13 +183,13 @@ class CrearIngreso extends Component
         if ($existe) {
             $titulo = 'Cantidad Actualizado';
         } else {
-            $titulo = 'Producto Agregado';
+            $titulo = 'w';
         }
         $this->removeItem($producto->id);
         if ($cant > 0) {
 
             // Agregamos el producto actualizado al carrito 'ingresos'
-            Cart::session('ingresos')->add($producto->id, $producto->descripcion, $producto->costo_actual, $cant, $producto->imagen);
+            Cart::session('ingresos')->add($producto->id, $producto->descripcion, $existe->price, $cant, $producto->imagen);
 
             // Actualizamos las propiedades
             $this->total = Cart::session('ingresos')->getTotal();
@@ -188,6 +200,39 @@ class CrearIngreso extends Component
             // Notificamos al usuario que la cantidad debe ser mayor a 0
             // Crear un mensaje
             $this->emit('no-stock', 'La cantidad debe ser mayor a 0');
+        }
+    }
+
+    public function updatePrice($productId, $costo = 1)
+    {
+
+
+        $titulo = '';
+        $producto = Producto::find($productId);
+
+        // Verificamos si el producto existe en el carrito 'ingresos'
+        $existe = Cart::session('ingresos')->get($productId);
+
+        /* Si el producto existe actualizamos la cantidad */
+        if ($existe) {
+            $titulo = 'Precio Actualizado';
+        } else {
+            $titulo = 'w';
+        }
+        $this->removeItem($producto->id);
+        if ($costo > 0) {
+            // Agregamos el producto actualizado al carrito 'ingresos'
+            Cart::session('ingresos')->add($producto->id, $producto->descripcion, $costo, $existe->quantity, $producto->imagen);
+
+            // Actualizamos las propiedades
+            $this->total = Cart::session('ingresos')->getTotal();
+            $this->itemsQuantity = Cart::session('ingresos')->getTotalQuantity();
+
+            $this->emit('scan-ok', $titulo);
+        } else {
+            // Notificamos al usuario que la cantidad debe ser mayor a 0
+            // Crear un mensaje
+            $this->emit('no-stock', 'El precio debe ser mayor a 0');
         }
     }
 
@@ -207,8 +252,11 @@ class CrearIngreso extends Component
 
     public function guardarIngreso()
     {
+        /* $sumaCostoTotalEntradas = DB::table('kardex')
+            ->select(DB::raw('SUM(entradas * precio_producto) as suma_costo_total_entradas'))
+            ->first();
+        dd($sumaCostoTotalEntradas); */
         $datos = $this->validate();
-
 
         $carritoNombre = 'ingresos'; // Nombre del carrito de ingresos
 
@@ -238,37 +286,54 @@ class CrearIngreso extends Component
                         'cantidad' => $item->quantity,
                         'precio_compra' => $item->price,
                     ]);
+
+                    /* Verificamos si este producto ya existe en el kardex*/
+                    $existe = Kardex::where('producto_id', $item->id)->first();
                     /* aca registramos una entrada de cada producto */
-                    Kardex::create([
+                    /* lo almacenamos en una nueva variable para que luego de calcular el cpp lo modifiquemos */
+                    $nuevo = Kardex::create([
                         'producto_id' => $item->id,
                         'entradas' => $item->quantity,
                         'salidas' => 0,
                         'almacen_id' => $datos['almacen'],
                         'precio_producto' => $item->price,
+                        'saldo' => $item->quantity * $item->price,
                         'user_id' => auth()->user()->id,
                     ]);
 
+                    /* Obtenemos el producto */
                     $producto = Producto::find($item->id);
-
-                    // Obtener todos los registros del kardex relacionados con este producto
-                    $kardexRegistros = Kardex::where('producto_id', $producto->id)->get();
-
-                    // Calcular el costo total sumando todos los costos en el kardex
-                    $costoTotalInventario = $kardexRegistros->sum('costo');
-
-                    // Obtener la cantidad total de unidades en el inventario
-                    $cantidadTotalInventario = $producto->stock; // Supongo que 'stock' es la cantidad actual en el inventario
-
-                    // Calcular el nuevo costo promedio ponderado (CPP)
-                    if ($cantidadTotalInventario > 0) {
-                        $nuevoCPP = $costoTotalInventario / $cantidadTotalInventario;
+                    /* Si es la primera vez que se hace un ingreso del producto, entonces su cpp es el mismo costo de compra,y saldo,tambien
+                    es la multiplicacion de canditad*precio */
+                    if ($existe == null) {
+                        $producto->costo_actual = $item->price;
+                        $producto->precio_venta = $producto->costo_actual * $producto->porcentaje_margen;
+                        $producto->save();
                     } else {
-                        // Si la cantidad total es cero, el nuevo CPP también será cero para evitar divisiones por cero.
-                        $nuevoCPP = 0;
+                        $stock = DB::table('kardex')
+                            ->where('producto_id', $producto->id)
+                            ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
+                            ->groupBy('producto_id')
+                            ->value('stock');
+
+                        $saldo = Kardex::where('producto_id', $producto->id)
+                            ->orderBy('id', 'desc')
+                            ->skip(1) // Saltar el último registro
+                            ->take(1) // Tomar el siguiente registro
+                            ->value('saldo');
+                            
+                        $total = $item->price * $item->quantity;
+                        $saldo += $total;
+                        $cpp = $saldo / $stock;
+                        /* Actualizamos el registro anterior */
+                        $nuevo->saldo = $saldo;
+                        $nuevo->precio_producto = $cpp;
+                        $nuevo->save();
+                        /* Actualizamos el producto */
+                        $producto->costo_actual = $cpp;
+                        $producto->precio_venta = $producto->costo_actual * $producto->porcentaje_margen;
+                        $producto->save();
                     }
-                    // Actualizar el campo costo_actual del producto con el nuevo valor calculado del CPP
-                    $producto->costo_actual = $nuevoCPP;
-                    $producto->save();
                 }
             }
 
@@ -307,7 +372,8 @@ class CrearIngreso extends Component
         $proveedores = Proveedor::where('estado', '1')->get();
         $almacenes = Almacen::all();
         $carritoNombre = 'ingresos'; // Nombre del carrito de ingresos
-        $carrito = Cart::session($carritoNombre)->getContent()->sortBy('barcode');
+        $carrito = Cart::session($carritoNombre)->getContent();
+
         /* Aca lo mismo, solo productos activos */
         return view('livewire.ingresos.crear-ingreso', [
             'proveedores' => $proveedores,

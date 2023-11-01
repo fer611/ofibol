@@ -11,7 +11,7 @@
                                         <th width="25%" class="table-th text-left text-white">DESCRIPCIÓN</th>
                                         <th class="table-th text-center text-white">COSTO Bs.</th>
                                         <th width="13%" class="table-th text-center text-white">CANTIDAD</th>
-                                        <th class="table-th text-center text-white">IMPORTE</th>
+                                        <th class="table-th text-center text-white">IMPORTE Bs.</th>
                                         <th width="20%" class="table-th text-center text-white">ACCIONES</th>
                                     </tr>
                                 </thead>
@@ -34,8 +34,9 @@
                                             </td>
                                             <td class="text-center">
                                                 <input type="number" id="p{{ $item->id }}"
+                                                    wire:change="updatePrice({{ $item->id }}, $('#p' + {{ $item->id }}).val() )"
                                                     style="font-size: 1rem!important" class="form-control text-center"
-                                                    value="{{ $item->price }}">
+                                                    value="{{ $item->price==0.01 ? 0.00 : $item->price }}">
                                             </td>
                                             <td>
                                                 <input type="number" id="r{{ $item->id }}"
@@ -45,7 +46,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <h6>
-                                                    Bs. {{ number_format($item->price * $item->quantity, 2) }}
+                                                    {{ number_format($item->price * $item->quantity, 2) }}
                                                 </h6>
                                             </td>
                                             <td class="text-center">

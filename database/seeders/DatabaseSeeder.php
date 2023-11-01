@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
                 AlmacenesSeeder::class,
                 RoleSeeder::class,
                 UsuariosSeeder::class,
+                ProductosSeeder::class,
             ]);
             User::factory(20)->create();
     }

@@ -81,7 +81,9 @@ class Ventas extends Component
                 $this->emit('no-stock', 'El producto esta Inactivo');
                 return;
             }
-
+            if ($producto->precio_venta == null || $producto->costo_actual == null) {
+                $this->emit('no-stock', 'El producto no tiene precio de venta o costo');
+            }
             /* Añadiendo el producto al carrito */
             Cart::add($producto->id, $producto->descripcion, $producto->precio_venta, $cant, $producto->imagen);
 
@@ -232,7 +234,7 @@ class Ventas extends Component
     public function guardarVenta()
     {
         /* dd($this->total.'|'.$this->efectivo.'|'.$this->itemsQuantity.'|'.$this->cambio.'|'.auth()->user()->id); */
-       
+
         /* Validando que se ingrese un nit que existe en el campo de clientes */
         $clienteExiste = Cliente::where('nit', $this->nit)->first();
         if (!$clienteExiste && !$this->venta_sin_datos) {
@@ -264,7 +266,7 @@ class Ventas extends Component
 
         //obteniendo al cliente
         $cliente = Cliente::where('nit', $this->nit)->first();
-       
+
         try {
             $venta = Venta::create([
                 'total' => $this->total,
@@ -287,16 +289,26 @@ class Ventas extends Component
                     ]);
                     /* Actualizando el stock */
                     /* aca podemos registrar una salida de este producto */
+                    /* Para el CPP obtenemos el producto y sacamos su costo actual para una venta el CPP debe mantener el costo */
+                    $producto = Producto::find($item->id);
+                    /* Obtenemos el stock para calcular el saldo */
+                    $stock = DB::table('kardex')
+                        ->where('producto_id', $producto->id)
+                        ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
+                        ->groupBy('producto_id')
+                        ->value('stock');
+                    /* Aca registramos la salida */
                     Kardex::create([
                         'producto_id' => $item->id,
                         'entradas' => 0,
                         'salidas' => $item->quantity,
                         /* Aca por defecto la salida debe ser del almacen punto de venta Ofibol*/
                         'almacen_id' => 3,
-                        'precio_producto' => $item->price,
+                        'precio_producto' => $producto->costo_actual,
+                        'saldo' => $producto->costo_actual * ($stock- $item->quantity),
                         'user_id' => auth()->user()->id,
                     ]);
-/* 
+                    /* 
                     $producto = Producto::find($item->id);
                     $producto->save(); */
                 }

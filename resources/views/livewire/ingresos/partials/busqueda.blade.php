@@ -4,7 +4,7 @@
         <div class="col-md-8">
             <div class="input-group w-100">
                 <input type="text" class="form-control @error('producto') is-invalid @enderror" id="producto"
-                    wire:model='buscar' wire:keydown.enter.prevent='agregarProducto' placeholder="Ingrese el producto">
+                    wire:model='buscar' wire:keydown.enter.prevent='agregarProducto' placeholder="Ingrese el nombre del producto o codigo de barras">
                 @error('producto')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

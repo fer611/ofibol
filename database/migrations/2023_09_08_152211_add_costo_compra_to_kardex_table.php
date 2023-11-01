@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('kardex', function (Blueprint $table) {
-            $table->decimal('precio_producto',10,2); //relacionando con la tabla roles
+            $table->decimal('precio_producto',10,2);
+            $table->decimal('saldo',10,2);
         });
     }
 
@@ -22,6 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('kardex', function (Blueprint $table) {
+            $table->dropColumn('saldo');
             $table->dropColumn('precio_producto');  // Luego eliminar la columna
         });
     }

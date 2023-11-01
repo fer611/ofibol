@@ -60,7 +60,7 @@
 
 <!-- Modal para crear clientes -->
 <div class="modal fade" id="nuevoClienteModal" tabindex="-1" role="dialog" aria-labelledby="nuevoClienteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-dialog modal-xs" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="nuevoClienteModalLabel">Registrar Proveedor</h5>

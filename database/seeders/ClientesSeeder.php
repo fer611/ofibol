@@ -15,8 +15,8 @@ class ClientesSeeder extends Seeder
     {
         DB::table('clientes')->insert([
             [
-                'razon_social' => 'FARMA SRL',
-                'nit' => '7623456789',
+                'razon_social' => 'S/N',
+                'nit' => '11062189',
                 'telefono' => '762123456',
                 'direccion' => 'Av. 6 de Agosto 123, La Paz',
                 'email' => 'empresa@email.com',

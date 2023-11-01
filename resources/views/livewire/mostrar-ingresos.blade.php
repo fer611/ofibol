@@ -9,8 +9,8 @@
                             Nuevo Ingreso
                         </button> --}}
 
-                        <a href="{{ route('ingresos.create') }}" class="btn btn-primary">
-                            Registrar Ingreso
+                        <a href="{{ route('ingresos.create') }}" class="btn" style="background: #3B3F5C; color:white">
+                            <li class="fa fa-plus"></li> Registrar Ingreso
                         </a>
                     </div>
                     <div class="card-body">

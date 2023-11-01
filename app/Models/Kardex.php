@@ -14,7 +14,8 @@ class Kardex extends Model
         'salidas',
         'producto_id',
         'almacen_id',
-        'precio_producto'
+        'precio_producto',
+        'saldo'
     ];
 
      //si dice rol espera almacen
