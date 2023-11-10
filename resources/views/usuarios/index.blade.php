@@ -26,7 +26,7 @@
         </div>
     @endif
 
-    <livewire:mostrar-usuarios :usuarios="$usuarios"/>
+    <livewire:mostrar-usuarios :usuarios="$usuarios" />
 @stop
 
 @section('css')
@@ -41,6 +41,13 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.colVis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#usuarios').DataTable({
@@ -70,7 +77,76 @@
                         "next": "Siguiente",
                         "previous": "Anterior"
                     }
-                }
+                },
+                dom: 'lBfrtip',
+                buttons: [{
+                        extend: 'copy',
+                        text: 'Copiar',
+                        exportOptions: {
+                            modifier: {
+                                // Exportar solo las filas que están actualmente en la vista (las que se muestran)
+                                page: 'current'
+                            }
+                        },
+                    }, 'csv', {
+                        extend: 'excel',
+                        text: 'Excel',
+                        exportOptions: {
+                            modifier: {
+                                // Exportar solo las filas que están actualmente en la vista (las que se muestran)
+                                page: 'current'
+                            },
+                            columns: ':not(:eq(6))' //excluyendo la fila de opciones
+                        },
+                    },
+                    {
+
+                        extend: 'pdf',
+                        pageSize: 'A4',
+                        exportOptions: {
+                            modifier: {
+                                page: 'current'
+                            },
+                            columns: ':not(:eq(5))'
+                        },
+                        // Personalizar la apariencia del PDF
+                        customize: function(doc) {
+                            doc.defaultStyle.alignment =
+                            'center'; // Configura la alineación predeterminada
+                            doc.content[1].table.widths = Array(doc.content[1].table.body[0]
+                                .length + 1).join('*').split('');
+
+                            // Configura la alineación izquierda para la primera y segunda columna (0 y 1)
+                            doc.content[1].table.widths[0] = 30;
+                            doc.content[1].table.body.forEach(function(row) {
+                                if (row) {
+                                    row[1].alignment = 'left';
+                                    row[2].alignment = 'left';
+                                }
+                            });
+                        },
+                        exportOptions: {
+                            modifier: {
+                                page: 'current'
+                            },
+                            columns: ':not(:eq(5))'
+                        }
+
+                    }, {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        exportOptions: {
+                            modifier: {
+                                // Exportar solo las filas que están actualmente en la vista (las que se muestran)
+                                page: 'current'
+                            },
+                            columns: ':not(:eq(6))' //excluyendo la fila de opcionesF
+                        },
+                    }, {
+                        extend: 'colvis',
+                        text: 'Ver Columnas',
+                    },
+                ]
             });
         });
     </script>

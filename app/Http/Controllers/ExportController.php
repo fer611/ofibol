@@ -8,9 +8,8 @@ use Carbon\Carbon;
 use App\Models\Venta;
 use App\Models\DetalleVenta;
 use App\Models\Ingreso;
-use Barryvdh\Snappy\Facades\SnappyPdf;
 use App\Models\User;
-
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -60,8 +59,8 @@ class ExportController extends Controller
         /* si el usuario no selecciono ningun usuariop por defecto le asignamos todos */
         $user = $userId == 0 ? 'Todos' : User::find($userId)->name;
         /* $pdf = SnappyPdf::loadView('pdf.reporte', compact('data', 'reportType', 'user', 'dateFrom', 'dateTo')); */
-        $pdf = SnappyPdf::loadView('pdf.reporte', compact('data', 'reportType', 'user', 'dateFrom', 'dateTo'));
-        return $pdf->inline('ReporteVentas.pdf');
+        $pdf = PDF::loadView('pdf.reporte', compact('data', 'reportType', 'user', 'dateFrom', 'dateTo'));
+        return $pdf->stream('ReporteVentas.pdf');
         /* $pdf = PDF::loadView('pdf.reporte', compact('data', 'reportType', 'user', 'dateFrom', 'dateTo')); */
         //esto para visualizarlo en el navegador
         /* return $pdf->stream('ReporteVentas.pdf'); */
@@ -75,8 +74,8 @@ class ExportController extends Controller
         ->where('venta_id', $venta->id)
         ->orderBy('detalle_venta.created_at', 'desc')
         ->get();
-        $pdf = SnappyPdf::loadView('pdf.notaVenta', compact('data', 'venta'));
-        return $pdf->inline('NotaVenta'.$venta->id.'.pdf');
+        $pdf = PDF::loadView('pdf.notaVenta', compact('data', 'venta'));
+        return $pdf->stream('NotaVenta'.$venta->id.'.pdf');
     }
     public function reporteNotaIngreso(Ingreso $ingreso){
 
@@ -85,7 +84,15 @@ class ExportController extends Controller
         ->where('ingreso_id', $ingreso->id)
         ->orderBy('detalle_ingreso.created_at', 'desc')
         ->get();
-        $pdf = SnappyPdf::loadView('pdf.notaIngreso', compact('data', 'ingreso'));
-        return $pdf->inline('NotaIngreso'.$ingreso->id.'.pdf');
+        $pdf = PDF::loadView('pdf.notaIngreso', compact('data', 'ingreso'));
+        return $pdf->stream('NotaIngreso'.$ingreso->id.'.pdf');
+        
+    }
+
+    public function test(){
+        
+        $pdf = PDF::loadView('pdf.prueba');
+        /* return $pdf->download(); */
+        return $pdf->stream();
     }
 }

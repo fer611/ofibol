@@ -134,7 +134,7 @@
             <p><strong>NIT:</strong> 4801118019</p>
             <p><strong>Dirección:</strong> Calle Murillo Nº 897</p>
         </div>
-    </div>
+    </div><br><br><br><br><br><br><br><br><br>
     <table class="items-table">
         <!-- Resto del código permanece igual -->
         <tr>
