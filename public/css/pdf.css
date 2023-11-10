@@ -1,4 +1,106 @@
-p{
-    color: gray;
-    font-size: 12px;
+@page {
+    margin: 6cm 0.5cm 1.5cm 0.5cm;
+}
+
+#header {
+    position: fixed;
+    top: -5cm;
+    left: 0cm;
+    /* right: 0cm;
+    height: 3cm;
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    line-height: 30px; */
+}
+
+.imgHeader {
+    float: left;
+    width: 5cm;
+}
+
+.infoHeader {
+    float: left;
+    margin-left: 1.5cm;
+}
+
+#footer {
+    position: fixed;
+    bottom: -1.5cm;
+    left: 0cm;
+    width: 100%;
+    /* background-color: rgb(4, 4, 128); */
+}
+
+.textFooter {
+    text-align: center;
+    width: 100%;
+    color: rgb(52, 50, 50);
+}
+
+.hijo {
+    width: 2cm;
+    height: 0.5cm;
+    margin: 0.2cm;
+    background-color: yellow;
+}
+
+
+.ligera {
+    font-family: "Roboto";
+    font-weight: 100;
+}
+
+.normal {
+    font-family: "Roboto";
+    font-weight: 400;
+}
+
+.bold {
+    font-family: "Roboto";
+    font-weight: 700;
+}
+
+/* Estilos de la tabla  */
+.items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.items-table th,
+.items-table td {
+    border: 1px solid #000;
+    padding: 8px;
+}
+.items-table th {
+    background-color: #f2f2f2;
+}
+.total {
+    margin-top: 20px;
+    text-align: right;
+}
+
+/* Ajustando el ancho del container a un 80% */
+/* .container {
+    width: 90%;
+    margin: 0 auto;
+}*/
+div{
+    font-family: "Roboto";
+    font-weight: 100;
+}
+
+/* Estilos para la sección de proveedor y empresa */
+.section {
+    margin-top: 0px;
+}
+
+.section-content {
+    font-size: 14px;
+}
+
+.section-header {
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-decoration: underline;
 }

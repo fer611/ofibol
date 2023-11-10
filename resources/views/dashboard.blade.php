@@ -23,7 +23,6 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-3 col-6">
-                    <a href="{{ route('test.pdf') }}" class="btn btn-dark">GENERAR REPORTE</a href="{{ route('test.pdf') }}" class="btn btn-dark">
                     <div class="small-box bg-info">
                         <div class="inner">
                             <h3>{{ number_format($inversion, 2) }} Bs.</h3>
