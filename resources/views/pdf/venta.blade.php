@@ -1,166 +1,197 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie-edge">
-    <title>Nota de Venta</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Reporte de Ventas</title>
+
+
     <style>
-        /* Estilos CSS */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-        }
-
-        .container {
-            width: 80%;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .customer-info {
-            margin-top: 20px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            min-height: 100vh;
+            /* Esto garantiza que el contenido abarque al menos el alto de la ventana */
         }
 
-        .company-info {
+        section {
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 5px;
+        }
+
+        .invoice-logo {
+            max-width: 100px;
+            max-height: 100px;
+        }
+
+        span {
+            font-size: 16px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
             text-align: right;
         }
 
-        /* Estilo para la sección izquierda (cliente) */
-        .left-section {
-            float: left;
-            width: 50%;
-        }
-
-        /* Estilo para la sección derecha (empresa) */
-        .right-section {
-            float: right;
-            width: 50%;
-        }
-
-        .clear {
-            clear: both;
-        }
-
-        /* Otras clases CSS (row, col-md-6, items-table, total) permanecen iguales */
-        /* Estilos CSS */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 80%;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .customer-info {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .company-info {
-            text-align: left; /* Alinea los datos de la empresa a la izquierda */
-            margin: 20px 0;
-        }
-
-        /* Clase personalizada para emular una fila (simulando Bootstrap) */
-        .row {
-            --bs-gutter-x: 1.5rem;
-            --bs-gutter-y: 0;
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: calc(-1 * var(--bs-gutter-y));
-            margin-right: calc(-.5 * var(--bs-gutter-x));
-            margin-left: calc(-.5 * var(--bs-gutter-x))
-        }
-
-        /* Clase personalizada para emular una columna (simulando Bootstrap) */
-        .col-md-6 {
-            flex: 0 0 auto;
-            width: 50%
-        }
-
-        .items-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .items-table th,
-        .items-table td {
-            border: 1px solid #000;
-            padding: 8px;
-        }
-
-        .items-table th {
+        thead {
             background-color: #f2f2f2;
         }
 
-        .total {
-            margin-top: 20px;
-            text-align: right;
+        th,
+        td {
+            border: 1px solid #ddd;
         }
-        
+
+        tfoot {
+            font-weight: bold;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+
+        .pagenum:before {
+            content: counter(page);
+        }
+
+        .header {
+            align-self: flex-start;
+            /* Mueve el header hacia la parte superior */
+        }
+
+        .body {
+            align-self: center;
+            /* Centra el body verticalmente */
+        }
+
+        .footer {
+            align-self: flex-end;
+            /* Mueve el footer hacia la parte inferior */
+        }
+
+        .text-start {
+            text-align: left !important
+        }
+
+        .text-end {
+            text-align: right !important
+        }
+
+        .text-center {
+            text-align: center !important
+        }
     </style>
+    <link rel="stylesheet" href="{{ public_path('css/pdf.css') }}">
 </head>
+
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>NOTA DE VENTA</h1>
+    <header class="bg-primary text-white text-center py-3">
+        <div id="header">
+            <img class="imgHeader" src="{{ public_path('img/logo.png') }}" alt="" width="200px">
+            <div class="infoHeader">
+                @if ($reportType == 0)
+                    <h2>Reporte de Ventas del Día</h2>
+                @else
+                    <h2>Reporte de Ventas por Fechas</h2>
+                    <p><strong>Desde:</strong> {{ $dateFrom }}</p>
+                    <p><strong>Hasta:</strong> {{ $dateTo }}</p>
+                @endif
+                <p><strong>Fecha:</strong> {{ \Carbon\Carbon::now()->format('d-M-Y') }}</p>
+                <p><strong>Usuario:</strong> {{ $user }}</p>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="row mt-4">
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">FECHA</th>
+                        <th class="text-center">ESTADO</th>
+                        <th class="text-center">USUARIO</th>
+                        <th class="text-center">CLIENTE</th>
+                        <th class="text-center">ITEMS</th>
+                        <th class="text-center">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data as $item)
+                        <tr>
+                            <td>{{ $item->id }}</td>
+                            <td class="text-center">{{ $item->created_at->format('d/n/Y') }}</td>
+                            <td>{{ $item->estado }}</td>
+                            <td>{{ $item->user->name }}</td>
+
+                            <td>{{ $item->cliente->razon_social }}</td>
+                            <td class="text-end">{{ number_format($item->items, 2) }}</td>
+                            <td class="text-end">{{ number_format($item->total, 2) }}</td>
+                        </tr>
+                    @endforeach
+ 
+                    {{-- datos de prueba --}}
+                    @for ($i = 0; $i < 60; $i++)
+                        <tr>
+                            <td>{{ $i + 1 }}</td>
+                            <td class="text-center">01/01/2021</td>
+                            <td>ACTIVO</td>
+                            <td>Usuario 1</td>
+                            <td>Cliente 1</td>
+                            <td class="text-end">10</td>
+                            <td class="text-end">100</td>
+                        </tr>
+                    @endfor
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5" class="text-end"><strong>TOTALES</strong></td>
+                        <td class="text-end">{{ number_format($data->sum('items'), 2) }}</td>
+                        <td class="text-end">{{ number_format($data->sum('total'), 2) }}</td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
-    <div class="row">
-        <div class="left-section">
-            <p><strong>NIT:</strong> {{ $venta->cliente->nit }}</p>
-            <p><strong>Razón Social:</strong> {{ $venta->cliente->razon_social }}</p>
-            <p><strong>Fecha:</strong> {{ $venta->created_at->format('d/m/Y') }}</p>
-        </div>
-        <div class="right-section">
-            <p><strong>Nombre:</strong> OFIBOL</p>
-            <p><strong>NIT:</strong> 4801118019</p>
-            <p><strong>Dirección:</strong> Calle Murillo Nº 897</p>
-        </div>
     </div>
-    <table class="items-table">
-        <!-- Resto del código permanece igual -->
-        <tr>
-            <th>ID</th>
-            <th>Cantidad</th>
-            <th>Descripción</th>
-            <th>U. Medida</th>
-            <th>Precio</th>
-            <th>Subtotal</th>
-        </tr>
-        @foreach ($data as $item)
-            <tr>
-                <td align="center">{{ $item->id }}</td>
-                <td align="center">{{ number_format($item->cantidad,0) }}</td>
-                <td>{{ $item->descripcion }}</td>
-                <td>{{ $item->medida }}</td>
-                <td align="right">{{ $item->precio }}</td>
-                <td align="right">{{ number_format($item->precio * $item->cantidad, 2) }}</td>
-            </tr>
-        @endforeach
-        <!-- Agrega una fila para el total justo debajo de la tabla de detalles -->
-        <tr>
-            <td colspan="5" align="right"><strong>Total:</strong></td>
-            <td align="right">{{ number_format($data->sum('total'), 2) }}</td>
-        </tr>
-    </table>
+
+    {{-- <footer class="bg-secondary text-white text-center py-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <span>SISTEMA OFIBOL v1</span>
+                </div>
+                <div class="col-md-4">
+                    <span>Ofibol.com</span>
+                </div>
+                <div class="col-md-4">
+                    Página <span class="pagenum"></span>
+                </div>
+            </div>
+        </div>
+    </footer> --}}
 </body>
+
 </html>

@@ -58,7 +58,7 @@ hr {
 }
 
 .table-items > tbody > tr:nth-child(odd) {
-    background-color: #99A3A4;
+    background-color: #eeeeee;
 }
 
 .table-items tfoot td {
