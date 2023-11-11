@@ -9,9 +9,9 @@
                         </div>
                         <div>
                             @can('usuarios.create')
-                                <a href="{{ route('usuarios.create') }}" class="btn btn-primary">Nuevo Usuario</a>
+                                <a href="{{ route('usuarios.create') }}" class="btn" style="background: #3B3F5C; color:white" >
+                                    <i class="fas fa-plus"></i> Nuevo Usuario</a>
                             @endcan
-
                         </div>
                     </div>
                     <div class="card-body">

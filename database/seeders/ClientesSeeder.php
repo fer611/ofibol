@@ -15,11 +15,21 @@ class ClientesSeeder extends Seeder
     {
         DB::table('clientes')->insert([
             [
-                'razon_social' => 'S/N',
+                'razon_social' => 'Luis Fernando Patiño Nina',
                 'nit' => '11062189',
                 'telefono' => '762123456',
                 'direccion' => 'Av. 6 de Agosto 123, La Paz',
-                'email' => 'empresa@email.com',
+                'email' => 'Fernandonina611@gmail.com',
+                'estado' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'razon_social' => 'S/N',
+                'nit' => 'S/N',
+                'telefono' => 'S/N',
+                'direccion' => 'S/N',
+                'email' => 'S/N',
                 'estado' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),

@@ -5,7 +5,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <!-- Botón para abrir el modal -->
-                        <a href="{{ route('ventas.create') }}" type="button" class="btn btn-success">
+                        <a href="{{ route('ventas.create') }}" type="button" class="btn" style="background: #3B3F5C; color:white">
                             <i class="fas fa-plus"></i> Nueva Venta
                         </a>
                     </div>

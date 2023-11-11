@@ -60,11 +60,12 @@
                             <table class="table table-bordered table-striped mt-1 table-hover">
                                 <thead class="text-white" style="background: #3B3F5C">
                                     <tr>
-                                        <th class="table-th text-white text-center">FOLIO</th>
+                                        <th class="table-th text-white text-center">ID</th>
                                         <th class="table-th text-white text-center">TOTAL</th>
                                         <th class="table-th text-white text-center">ITEMS</th>
                                         <th class="table-th text-white text-center">ESTADO</th>
                                         <th class="table-th text-white text-center">USUARIO</th>
+                                        <th class="table-th text-white text-center">CLIENTE</th>
                                         <th class="table-th text-white text-center">FECHA</th>
                                         <th class="table-th text-white text-center" width="50px"></th>
                                 </thead>
@@ -93,6 +94,9 @@
                                             </td>
                                             <td class="text-center">
                                                 <h6>{{ $d->user->name }}</h6>
+                                            </td>
+                                            <td class="text-center">
+                                                <h6>{{ $d->cliente->razon_social}}</h6>
                                             </td>
                                             <td class="text-center">
                                                 <h6>

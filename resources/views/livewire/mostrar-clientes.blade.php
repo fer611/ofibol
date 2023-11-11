@@ -5,8 +5,8 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <!-- Botón para abrir el modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevoClienteModal">
-                            Registrar Cliente
+                        <button type="button" class="btn" style="background: #3B3F5C; color:white" data-toggle="modal" data-target="#nuevoClienteModal">
+                            <li class="fa fa-plus"></li> Registrar Cliente
                         </button>
                     </div>
                     <div class="card-body">

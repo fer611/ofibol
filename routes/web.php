@@ -127,8 +127,9 @@ Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function
     Route::get('/ventas/pdf/{venta}',[ExportController::class, 'reporteNotaVenta'])->name('ventas.pdf');
     Route::get('/dashboard/pdf',[ExportController::class, 'test'])->name('test.pdf');
     Route::get('/ingresos/pdf/{ingreso}',[ExportController::class, 'reporteNotaIngreso'])->name('ingresos.pdf');
-
     //Reportes EXCEL
+    Route::get('/reportes/excel/{user}/{type}/{dia1}/{mes1}/{year1}/{dia2}/{mes2}/{year2}',[ExportController::class, 'reporteExcel']);
+    Route::get('/reportes/excel/{user}/{type}',[ExportController::class, 'reporteExcel']);
 });
 
 
