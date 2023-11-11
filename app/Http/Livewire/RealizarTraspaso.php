@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Almacen;
+use App\Models\Kardex;
 use App\Models\Producto;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -52,16 +53,59 @@ class RealizarTraspaso extends Component
             return;
         }
 
+        //Si se está intentando hacer el traspaso al mismo almacén
+        if ($this->origen == $this->destino) {
+            $this->addError('destino', 'No puedes realizar el traspaso a la misma sucursal');
+            return;
+        }
+
         // Llamar al procedimiento almacenado si hay suficiente stock
         $producto_id = $this->producto->id;
         $precio_producto = $this->producto->costo_actual;
-        DB::statement("CALL traspaso(?, ?, ?, ?, ?)", [$producto_id, $this->origen, $this->destino, $this->cantidad, $precio_producto]);
 
-        // Otras acciones post-traspaso aquí (notificaciones, redirección, etc.)
-        //Crear un mensaje
-        session()->flash('mensaje', 'El traspasó se realizó correctamente');
-        //Redireccionar al usuario
-        return redirect()->route('productos.show', $producto_id);
+        /* ABRIMOS UNA TRANSACCION PARA EL PROCESO DE VENTA */
+        // Obtener el último registro de Kardex para el producto en el almacén origen
+        // Obtener el último registro de Kardex para el producto
+        $kardexOrigen = new Kardex();
+        DB::beginTransaction();
+        try {
+            // Obtener el último registro de Kardex para el producto, esto para obtener el saldo actual del producto
+            // y así evitar cálculos innecesarios ya que al ser una transacción el costo del producto no variará
+            $ultimoKardex = Kardex::where('producto_id', $this->producto->id)
+                ->latest('id') // Ordenar por id de manera descendente
+                ->first();     // Obtener el primer registro
+
+            // Actualizar el stock en el almacén origen
+            $kardexOrigen->entradas = 0;
+            $kardexOrigen->salidas = $this->cantidad;
+            $kardexOrigen->producto_id = $producto_id;
+            $kardexOrigen->almacen_id = $this->origen;
+            $kardexOrigen->precio_producto = $precio_producto;
+            /* Aca el saldo se debe mantener */
+            $kardexOrigen->saldo = $ultimoKardex->saldo;
+            $kardexOrigen->save();
+
+            // Actualizar el stock en el almacén destino
+            $kardexDestino = new Kardex();
+            $kardexDestino->entradas = $this->cantidad;
+            $kardexDestino->salidas = 0;
+            $kardexDestino->producto_id = $producto_id;
+            $kardexDestino->almacen_id = $this->destino;
+            $kardexDestino->precio_producto = $precio_producto;
+            $kardexDestino->saldo = $ultimoKardex->saldo;
+            $kardexDestino->save();
+
+            // Otras acciones post-traspaso aquí (notificaciones, redirección, etc.)
+            //Crear un mensaje
+            session()->flash('mensaje', 'El traspaso se realizó correctamente');
+            //Redireccionar al usuario
+            DB::commit();
+            return redirect()->route('productos.show', $producto_id);
+        } catch (\Exception $e) {
+            /* Haciendo un rollback para mantener la consistencia de datos */
+            DB::rollback();
+            session()->flash('mensaje', $e->getMessage());
+        }
     }
 
     public function render()
