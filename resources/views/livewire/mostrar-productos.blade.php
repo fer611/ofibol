@@ -48,7 +48,7 @@
                                                     No Aplica
                                                 @endif
                                             </td>
-                                            <td>{{ $producto->costo_actual + ($producto->costo_actual * $producto->porcentaje_margen) / 100 }}
+                                            <td>{{ $producto->precio_venta ? $producto->precio_venta : 0 }}
                                             </td>
                                             <td>
                                                 <span

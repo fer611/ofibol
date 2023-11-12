@@ -1,466 +1,320 @@
 @extends('adminlte::page')
 @section('title', 'Dashboard')
+
+
 @section('content_header')
+    <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Dashboard</h1>
-                </div>
+                    <h1 class="m-0">Tablero Principal</h1>
+                </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Inicio</a></li>
-                        <li class="breadcrumb-item active">Dashboard</li>
+                        <li class="breadcrumb-item active">Tablero Principal</li>
                     </ol>
-                </div>
-            </div>
-        </div>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
     </div>
+    <!-- /.content-header -->
 @stop
 @section('content')
+    <!-- Main content -->
+    <div class="content">
 
-    <section class="content">
         <div class="container-fluid">
+
+            <!-- row Tarjetas Informativas -->
             <div class="row">
-                <div class="col-lg-3 col-6">
+
+                <div class="col-lg-2">
+                    <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>{{ number_format($inversion, 2) }} Bs.</h3>
-                            <p>Inversion Total</p>
+                            <h4 id="">{{ $productos->count() }}</h4>
+                            <p>Productos registrados</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-bag"></i>
+                            <i class="ion ion-clipboard"></i>
                         </div>
-                        <a href="#" class="small-box-footer">Más Información <i
+                        <a href="{{ route('productos.index') }}" class="small-box-footer">Mas Info <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-6">
-
+                <!-- TARJETA TOTAL COMPRAS -->
+                <div class="col-lg-2">
+                    <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>53<sup style="font-size: 20px">%</sup></h3>
-                            <p>Margen de Ganancia</p>
+                            <h4 id="totalCompras">Bs. {{ $totalCompras }}</h4>
+                            <p>Total Compras</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
+                            <i class="ion ion-cash"></i>
                         </div>
-                        <a href="#" class="small-box-footer">Más Información <i
+                        <a style="cursor:pointer;" class="small-box-footer">Mas Info <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-6">
-
+                <!-- TARJETA TOTAL VENTAS -->
+                <div class="col-lg-2">
+                    <!-- small box -->
                     <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3>{{ $usuarios->count() }}</h3>
-                            <p>Usuario Registrados</p>
+                            <h4 id="totalVentas">Bs. {{ $totalVentas }}</h4>
+
+                            <p>Total Ventas</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-person-add"></i>
+                            <i class="ion ion-ios-cart"></i>
                         </div>
-                        <a href="{{ route('usuarios.index') }}" class="small-box-footer">More info <i
+                        <a style="cursor:pointer;" class="small-box-footer">Mas Info <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-6">
-
+                <!-- TARJETA TOTAL GANANCIAS -->
+                <div class="col-lg-2">
+                    <!-- small box -->
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3>65</h3>
-                            <p>Unique Visitors</p>
+                            <h4 id="totalGanancias">Bs. {{ $totalGanancias }}</h4>
+
+                            <p>Total Ganancias</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-pie-graph"></i>
+                            <i class="ion ion-ios-pie"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a style="cursor:pointer;" class="small-box-footer">Mas Info <i
+                                class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
-            </div>
+                <!-- TARJETA PRODUCTOS POCO STOCK -->
+                <div class="col-lg-2">
+                    <!-- small box -->
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h4 id="totalProductosMinStock">{{ $productosPocoStock->count() }}</h4>
+                            <p>Productos poco stock</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-android-remove-circle"></i>
+                        </div>
+                        <a style="cursor:pointer;" class="small-box-footer">Mas Info <i
+                                class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
 
+                <!-- TARJETA TOTAL VENTAS DIA ACTUAL -->
+                <div class="col-lg-2">
+                    <!-- small box -->
+                    <div class="small-box bg-secondary">
+                        <div class="inner">
+                            <h4 id="totalVentasHoy">Bs. {{ $totalVentasDia }}</h4>
+
+                            <p>Ventas del día</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-android-calendar"></i>
+                        </div>
+                        <a style="cursor:pointer;" class="small-box-footer">Mas Info <i
+                                class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+
+
+            </div> <!-- ./row Tarjetas Informativas -->
+
+            <!-- row Grafico de barras -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title" id="title-header">Ventas del Mes: Bs:
+                                {{ number_format($total_venta_mes, 2) }}</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div> <!-- ./ end card-tools -->
+                        </div> <!-- ./ end card-header -->
+                        <div class="card-body">
+                            <div class="chart">
+                                <canvas id="barChart"
+                                    style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;">
+                                </canvas>
+                            </div>
+                        </div> <!-- ./ end card-body -->
+                    </div>
+                </div>
+            </div><!-- ./row Grafico de barras -->
 
             <div class="row">
-
-                <section class="col-lg-7 connectedSortable">
-
-                    <div class="card">
+                <div class="col-lg-6">
+                    <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-chart-pie mr-1"></i>
-                                Entradas
-                            </h3>
+                            <h3 class="card-title">Los 10 productos mas vendidos</h3>
                             <div class="card-tools">
-                                <ul class="nav nav-pills ml-auto">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="tab-content p-0">
-
-                                <div class="chart tab-pane active" id="revenue-chart"
-                                    style="position: relative; height: 300px;">
-                                    <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
-                                </div>
-                                <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-                                    <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="ion ion-clipboard mr-1"></i>
-                                To Do List
-                            </h3>
-                            <div class="card-tools">
-                                <ul class="pagination pagination-sm">
-                                    <li class="page-item"><a href="#" class="page-link">&laquo;</a>
-                                    </li>
-                                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">3</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">&raquo;</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-                            <ul class="todo-list" data-widget="todo-list">
-                                <li>
-
-                                    <span class="handle">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </span>
-
-                                    <div class="icheck-primary d-inline ml-2">
-                                        <input type="checkbox" value name="todo1" id="todoCheck1">
-                                        <label for="todoCheck1"></label>
-                                    </div>
-
-                                    <span class="text">Design a nice theme</span>
-
-                                    <small class="badge badge-danger"><i class="far fa-clock"></i> 2
-                                        mins</small>
-
-                                    <div class="tools">
-                                        <i class="fas fa-edit"></i>
-                                        <i class="fas fa-trash-o"></i>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="handle">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </span>
-                                    <div class="icheck-primary d-inline ml-2">
-                                        <input type="checkbox" value name="todo2" id="todoCheck2" checked>
-                                        <label for="todoCheck2"></label>
-                                    </div>
-                                    <span class="text">Make the theme responsive</span>
-                                    <small class="badge badge-info"><i class="far fa-clock"></i> 4
-                                        hours</small>
-                                    <div class="tools">
-                                        <i class="fas fa-edit"></i>
-                                        <i class="fas fa-trash-o"></i>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="handle">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </span>
-                                    <div class="icheck-primary d-inline ml-2">
-                                        <input type="checkbox" value name="todo3" id="todoCheck3">
-                                        <label for="todoCheck3"></label>
-                                    </div>
-                                    <span class="text">Let theme shine like a star</span>
-                                    <small class="badge badge-warning"><i class="far fa-clock"></i> 1
-                                        day</small>
-                                    <div class="tools">
-                                        <i class="fas fa-edit"></i>
-                                        <i class="fas fa-trash-o"></i>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="handle">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </span>
-                                    <div class="icheck-primary d-inline ml-2">
-                                        <input type="checkbox" value name="todo4" id="todoCheck4">
-                                        <label for="todoCheck4"></label>
-                                    </div>
-                                    <span class="text">Let theme shine like a star</span>
-                                    <small class="badge badge-success"><i class="far fa-clock"></i> 3
-                                        days</small>
-                                    <div class="tools">
-                                        <i class="fas fa-edit"></i>
-                                        <i class="fas fa-trash-o"></i>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="handle">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </span>
-                                    <div class="icheck-primary d-inline ml-2">
-                                        <input type="checkbox" value name="todo5" id="todoCheck5">
-                                        <label for="todoCheck5"></label>
-                                    </div>
-                                    <span class="text">Check your messages and notifications</span>
-                                    <small class="badge badge-primary"><i class="far fa-clock"></i> 1
-                                        week</small>
-                                    <div class="tools">
-                                        <i class="fas fa-edit"></i>
-                                        <i class="fas fa-trash-o"></i>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="handle">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </span>
-                                    <div class="icheck-primary d-inline ml-2">
-                                        <input type="checkbox" value name="todo6" id="todoCheck6">
-                                        <label for="todoCheck6"></label>
-                                    </div>
-                                    <span class="text">Let theme shine like a star</span>
-                                    <small class="badge badge-secondary"><i class="far fa-clock"></i> 1
-                                        month</small>
-                                    <div class="tools">
-                                        <i class="fas fa-edit"></i>
-                                        <i class="fas fa-trash-o"></i>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="card-footer clearfix">
-                            <button type="button" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add
-                                item</button>
-                        </div>
-                    </div>
-
-                </section>
-
-
-                <section class="col-lg-5 connectedSortable">
-
-                    <div class="card bg-gradient-primary">
-                        <div class="card-header border-0">
-                            <h3 class="card-title">
-                                <i class="fas fa-map-marker-alt mr-1"></i>
-                                Visitors
-                            </h3>
-
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-primary btn-sm daterange" title="Date range">
-                                    <i class="far fa-calendar-alt"></i>
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse"
-                                    title="Collapse">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                            </div>
-
-                        </div>
-                        <div class="card-body">
-                            <div id="world-map" style="height: 250px; width: 100%;"></div>
-                        </div>
-
-                        <div class="card-footer bg-transparent">
-                            <div class="row">
-                                <div class="col-4 text-center">
-                                    <div id="sparkline-1"></div>
-                                    <div class="text-white">Visitors</div>
-                                </div>
-
-                                <div class="col-4 text-center">
-                                    <div id="sparkline-2"></div>
-                                    <div class="text-white">Online</div>
-                                </div>
-
-                                <div class="col-4 text-center">
-                                    <div id="sparkline-3"></div>
-                                    <div class="text-white">Sales</div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-
-                    <div class="card bg-gradient-info">
-                        <div class="card-header border-0">
-                            <h3 class="card-title">
-                                <i class="fas fa-th mr-1"></i>
-                                Sales Graph
-                            </h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
                                     <i class="fas fa-times"></i>
                                 </button>
-                            </div>
-                        </div>
+                            </div> <!-- ./ end card-tools -->
+                        </div> <!-- ./ end card-header -->
                         <div class="card-body">
-                            <canvas class="chart" id="line-chart"
-                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                        </div>
-
-                        <div class="card-footer bg-transparent">
-                            <div class="row">
-                                <div class="col-4 text-center">
-                                    <input type="text" class="knob" data-readonly="true" value="20"
-                                        data-width="60" data-height="60" data-fgColor="#39CCCC">
-                                    <div class="text-white">Mail-Orders</div>
-                                </div>
-
-                                <div class="col-4 text-center">
-                                    <input type="text" class="knob" data-readonly="true" value="50"
-                                        data-width="60" data-height="60" data-fgColor="#39CCCC">
-                                    <div class="text-white">Online</div>
-                                </div>
-
-                                <div class="col-4 text-center">
-                                    <input type="text" class="knob" data-readonly="true" value="30"
-                                        data-width="60" data-height="60" data-fgColor="#39CCCC">
-                                    <div class="text-white">In-Store</div>
-                                </div>
-
+                            <div class="table-responsive">
+                                <table class="table" id="tbl_productos_mas_vendidos">
+                                    <thead>
+                                        <tr class="text-danger">
+                                            <th>ID</th>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Ventas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($productosMasVendidos as $producto)
+                                            <tr>
+                                                <td>{{ $producto->id }}</td>
+                                                <td>{{ $producto->descripcion }}</td>
+                                                <td>{{ $producto->cantidad }}</td>
+                                                <td>{{ number_format($producto->total_ventas, 2) }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
-
-                        </div>
-
+                        </div> <!-- ./ end card-body -->
                     </div>
-
-
-                    <div class="card bg-gradient-success">
-                        <div class="card-header border-0">
-                            <h3 class="card-title">
-                                <i class="far fa-calendar-alt"></i>
-                                Calendar
-                            </h3>
-
+                </div>
+                <div class="col-lg-6">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Listado de productos con poco stock</h3>
                             <div class="card-tools">
+                                <a href="#" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </a>
 
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle"
-                                        data-toggle="dropdown" data-offset="-52">
-                                        <i class="fas fa-bars"></i>
-                                    </button>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a href="#" class="dropdown-item">Add new event</a>
-                                        <a href="#" class="dropdown-item">Clear events</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a href="#" class="dropdown-item">View calendar</a>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn-success btn-sm" data-card-widget="collapse">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <button type="button" class="btn btn-success btn-sm" data-card-widget="remove">
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
                                     <i class="fas fa-times"></i>
                                 </button>
+                            </div> <!-- ./ end card-tools -->
+                        </div> <!-- ./ end card-header -->
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table" id="tbl_productos_poco_stock">
+                                    <thead>
+                                        <tr class="text-danger">
+                                            <th>ID</th>
+                                            <th>Producto</th>
+                                            <th>Stock Actual</th>
+                                            <th>Mín. Stock</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($productosPocoStock as $producto)
+                                            <tr>
+                                                <td>{{ $producto->id }}</td>
+                                                <td>{{ $producto->descripcion }}</td>
+                                                <td>{{ $producto->stock }}</td>
+                                                <td>{{ $producto->stock_minimo }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
-
-                        </div>
-
-                        <div class="card-body pt-0">
-
-                            <div id="calendar" style="width: 100%"></div>
-                        </div>
-
+                        </div> <!-- ./ end card-body -->
                     </div>
-
-                </section>
-
+                </div>
             </div>
-
-        </div>
-    </section>
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
 @stop
 
 @section('css')
+
 @stop
 
 @section('js')
+    {{-- Aca importamos Chart.min.js --}}
+    <script src="{{ asset('dist/js/chart.js/Chart.min.js') }}"></script>
     <script>
-        $(function() {
-            var salesChartCanvas = document.getElementById('revenue-chart-canvas').getContext('2d');
+        var fecha_venta = @json($fecha_venta);
+        var total_venta = @json($total_venta);
+        /* console.log(total_venta); */
+        var barChartCanvas = $('#barChart').get(0).getContext('2d');
+        var areaChartData = {
+            labels: fecha_venta,
+            datasets: [{
+                label: 'Ventas del Mes',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                data: total_venta,
+            }]
+        }
 
-            var entradas = @json($entradas);
-            var labels = entradas.map(function(e) {
-                return e.mes;
-            });
-            var data = entradas.map(function(e) {
-                return e.total_entrada;
-            });
+        var barChartData = $.extend(true, {}, areaChartData);
+        var temp0 = areaChartData.datasets[0];
+        barChartData.datasets[0] = temp0;
 
-            var salesChartData = {
-                labels: labels,
-                datasets: [{
-                    label: 'Entradas',
-                    backgroundColor: 'rgba(60,141,188,0.9)',
-                    borderColor: 'rgba(60,141,188,0.8)',
-                    pointRadius: false,
-                    pointColor: '#3b8bba',
-                    pointStrokeColor: 'rgba(60,141,188,1)',
-                    pointHighlightFill: '#fff',
-                    pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data: data
-                }]
-            };
+        var barCharOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            events: false,
+            legend: {
+                display: true
+            },
+            animation: {
+                duration: 500,
+                easing: "easeOutQuart",
+                onComplete: function() {
+                    var ctx = this.chart.ctx;
+                    ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal',
+                        Chart.defaults.global.defaultFontFamily);
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
 
-            var salesChartOptions = {
-                maintainAspectRatio: false,
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    xAxes: [{
-                        gridLines: {
-                            display: false,
-                            drawBorder: false
-                        },
-                        ticks: {
-                            fontSize: 20
+                    this.data.datasets.forEach(function(dataset) {
+                        for (var i = 0; i < dataset.data.length; i++) {
+                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+                            var scale_max = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._yScale
+                                .maxHeight;
+
+                            ctx.fillStyle = '#444';
+                            var y_pos = model.y - 5;
+
+                            if ((scale_max - model.y) / scale_max >= 0.93) {
+                                y_pos = model.y + 20;
+                            }
+
+                            // Aquí deberías mostrar el valor de cada barra encima de la columna
+                            ctx.fillText(dataset.data[i], model.x, y_pos);
                         }
-                    }],
-                    yAxes: [{
-                        gridLines: {
-                            display: false,
-                            drawBorder: false
-                        },
-                        ticks: {
-                            fontSize: 20
-                        }
-                    }]
+                    });
+
                 }
-            };
+            }
+        }
 
-            var salesChart = new Chart(salesChartCanvas, {
-                type: 'line',
-                data: salesChartData,
-                options: salesChartOptions
-            });
-        });
+        new Chart(barChartCanvas, {
+            type: 'bar',
+            data: barChartData,
+            options: barCharOptions
+        })
     </script>
 @stop

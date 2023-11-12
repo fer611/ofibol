@@ -307,7 +307,7 @@ class CrearIngreso extends Component
                     es la multiplicacion de canditad*precio */
                     if ($existe == null) {
                         $producto->costo_actual = $item->price;
-                        $producto->precio_venta = $producto->costo_actual * $producto->porcentaje_margen;
+                        $producto->precio_venta = ($producto->costo_actual * $producto->porcentaje_margen) / 100 + $producto->costo_actual;
                         $producto->save();
                     } else {
                         $stock = DB::table('kardex')
@@ -321,7 +321,7 @@ class CrearIngreso extends Component
                             ->skip(1) // Saltar el último registro
                             ->take(1) // Tomar el siguiente registro
                             ->value('saldo');
-                            
+
                         $total = $item->price * $item->quantity;
                         $saldo += $total;
                         $cpp = $saldo / $stock;

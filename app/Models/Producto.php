@@ -48,4 +48,9 @@ class Producto extends Model
     {   
         return $this->hasMany(DetalleIngreso::class, 'producto_id');
     }
+    //Relacion de 1 a N donde un producto puede tener muchos kardex(entradas y salidas)
+    public function kardex()
+    {
+        return $this->hasMany(Kardex::class);
+    }
 }

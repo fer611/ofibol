@@ -96,7 +96,7 @@ class EditarProducto extends Component
         $producto->cantidad_unidad = $datos['cantidad_unidad'];
         $producto->costo_actual = $datos['costo_actual'];
         $producto->porcentaje_margen = $datos['porcentaje_margen'];
-        $producto->precio_venta = $datos['precio_venta'];
+        $producto->precio_venta = $datos['costo_actual']*($datos['porcentaje_margen']/100) + $datos['costo_actual'];
         $producto->fecha_vencimiento = $datos['fecha_vencimiento'];
         /* Aca reescribimos, pero comprobamos si el usuario subio una nueva imagen asignamos el valor de producto y si no la misma imagen que tiene almacenada */
         $producto->imagen = $datos['imagen'] ?? $producto->imagen;

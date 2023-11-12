@@ -85,6 +85,7 @@ class Ventas extends Component
                 $this->emit('no-stock', 'El producto no tiene precio de venta o costo');
             }
             /* Añadiendo el producto al carrito */
+            
             Cart::add($producto->id, $producto->descripcion, $producto->precio_venta, $cant, $producto->imagen);
 
             /* Actualizando el total */
