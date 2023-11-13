@@ -167,8 +167,11 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\LaravelBackupPanelServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Milon\Barcode\BarcodeServiceProvider::class,
+        Spatie\Backup\BackupServiceProvider::class,
+        
     ])->toArray(),
 
     /*
