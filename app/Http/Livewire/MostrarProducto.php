@@ -22,7 +22,7 @@ class MostrarProducto extends Component
     }
 
 
-
+   
     public function render()
     {
         return view('livewire.mostrar-producto');

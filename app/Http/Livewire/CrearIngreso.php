@@ -99,6 +99,11 @@ class CrearIngreso extends Component
         /* Finalmente emitimos el evento */
         $this->emit('scan-ok', 'Producto Agregado');
     }
+
+    public function ScanCode(){
+        /* Refrescar la pagina */
+        return redirect()->route('ingresos.create');
+    }
     /* Este metodo valida si el producto ya existe en el carrito */
     function InCart($productId, $carritoNombre)
     {
@@ -331,7 +336,7 @@ class CrearIngreso extends Component
                         $nuevo->save();
                         /* Actualizamos el producto */
                         $producto->costo_actual = $cpp;
-                        $producto->precio_venta = $producto->costo_actual * $producto->porcentaje_margen;
+                        $producto->precio_venta = $producto->costo_actual * $producto->porcentaje_margen / 100 + $producto->costo_actual;
                         $producto->save();
                     }
                 }

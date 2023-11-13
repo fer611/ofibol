@@ -30,7 +30,7 @@
     @include('livewire.ventas.scripts.shortcuts')
     @include('livewire.ventas.scripts.events')
     @include('livewire.ingresos.scripts.general')
-    @include('livewire.ventas.scripts.scan')
+    @include('livewire.ingresos.scripts.scan')
     <style>
         .alert-container {
             position: fixed;

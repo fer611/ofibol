@@ -10,10 +10,13 @@ use App\Models\Origen;
 use App\Models\Producto;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+/* Para generar codigo de barras */
+use Milon\Barcode\DNS1D;
+use Illuminate\Support\Facades\File;
 
 class CrearProducto extends Component
 {
-    public $categoria, $origen,$marca,$stock_minimo,$unidad_medida,$cantidad_unidad,$descripcion,$fecha_vencimiento,$barcode;
+    public $categoria, $origen, $marca, $stock_minimo, $unidad_medida, $cantidad_unidad, $descripcion, $fecha_vencimiento, $barcode;
 
     public $imagen;
     public $errorImagen = false;
@@ -28,16 +31,15 @@ class CrearProducto extends Component
         'cantidad_unidad' => 'nullable|numeric|min:0',
         'descripcion' => 'required|string|max:255',
         'fecha_vencimiento' => 'nullable|date',
-        'barcode' => 'required|string|max:50|unique:productos,barcode',
+        'barcode' => 'required|numeric|max:20|unique:productos,barcode',
         'imagen' => 'required|image|mimes:jpeg,png,jpg|max:1024',
     ];
-    public function crearProductos(){
-        
-    }
+
     public function crearProducto()
     {
+        //Validar los datos
         $datos = $this->validate();
-
+        
         //Almacenar la imagen
         $imagen = $this->imagen->store('public/productos');
         $datos['imagen'] = str_replace('public/productos/', '', $imagen);
@@ -61,7 +63,14 @@ class CrearProducto extends Component
         //Redireccionar al usuario
         return redirect()->route('productos.index');
     }
-
+    public function generarBarcode(){
+        // Generar un número aleatorio como código de barras (puedes ajustarlo según tus necesidades)
+        $codigoGenerado = rand(100000000, 999999999);
+    
+        // Mostrar el código de barras generado
+        $this->barcode = $codigoGenerado;
+    }
+    
     public function render()
     {
         /* Consultar BD*/
@@ -79,7 +88,7 @@ class CrearProducto extends Component
 
 
 
-   /*  public function updated($field)
+    /*  public function updated($field)
     {
         if ($field === 'costo_actual' || $field === 'porcentaje_margen') {
             $this->calcularPrecioVenta();

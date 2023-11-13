@@ -39,7 +39,6 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             // Agregar tu middleware aquí
-            \App\Http\Middleware\UpgradeToHttpsUnderNgrok::class,  // Añadido
         ],
 
         'api' => [

@@ -4,20 +4,30 @@
         <div class="col-md-6">
             <img src="{{ asset('storage/productos/' . $producto->imagen) }}"
                 alt="{{ 'Imagen producto ' . $producto->nombre }}" class="img-fluid img-thumbnail">
-            <button type="button" class="btn w-100 mt-4" data-toggle="modal" data-target="#traspasoModal" style="background: #3B3F5C; color:white">
+            <button type="button" class="btn w-100 mt-4" data-toggle="modal" data-target="#traspasoModal"
+                style="background: #3B3F5C; color:white">
                 Realizar Traspaso
             </button>
         </div>
 
         <!-- Detalles del producto -->
         <div class="col-md-6">
-            
-            <p><strong>Codigo de Barras:</strong> {{ $producto->barcode }}</p>
+
+            @if ($producto->barcode)
+                <p><strong>Codigo de Barras:</strong>{!! DNS1D::getBarcodeHTML("$producto->barcode", 'CODABAR', 2, 50) !!} {{ $producto->barcode }}
+                    <br><button class="btn" style="background: #3B3F5C; color:white"
+                        onclick="imprimirCodigoBarras()">Imprimir</button>
+                </p>
+                
+            @else
+                <p><strong>Codigo de Barras:</strong> No generado</p>
+            @endif
             <p><strong>Categoría:</strong> {{ $producto->categoria->nombre }}</p>
             <p><strong>Descripción:</strong> {{ $producto->descripcion }}</p>
             <p><strong>Unidad de Medida:</strong> {{ $producto->unidad_medida }}</p>
             <p><strong>Cantidad por Caja/Paquete:</strong> {{ $producto->cantidad_unidad }}</p>
-            <p><strong>Costo Actual:</strong> {{ $producto->costo_actual==null ? 'No se registró ninguna entrada' : $producto->costo_actual }}</p>
+            <p><strong>Costo Actual:</strong>
+                {{ $producto->costo_actual == null ? 'No se registró ninguna entrada' : $producto->costo_actual }}</p>
             <p><strong>Porcentaje de Margen:</strong> {{ $producto->porcentaje_margen }}%</p>
             <p><strong>Precio de Venta:</strong>
                 {{ $producto->costo_actual + ($producto->costo_actual * $producto->porcentaje_margen) / 100 }} (Bs.)</p>
@@ -52,5 +62,18 @@
         </div>
     </div>
 
-
+    <script>
+        function imprimirCodigoBarras() {
+            var ventanaImpresion = window.open('', '_blank');
+            ventanaImpresion.document.write('<html><head><title>Imprimir Código de Barras</title></head><body>');
+            ventanaImpresion.document.write('<img src="' + "{!! $producto->barcode !!}" +
+                '" alt="Código de Barras" style="width: 100%;">');
+            ventanaImpresion.document.write('</body></html>');
+            ventanaImpresion.document.close();
+            ventanaImpresion.print();
+            ventanaImpresion.onafterprint = function() {
+                ventanaImpresion.close();
+            };
+        }
+    </script>
 </div>
