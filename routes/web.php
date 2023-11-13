@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\DashboardController;
@@ -125,11 +126,19 @@ Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function
     Route::get('/reportes/pdf/{user}/{type}',[ExportController::class, 'reportPDF']);
     /* Esto desde la vista de ventas */
     Route::get('/ventas/pdf/{venta}',[ExportController::class, 'reporteNotaVenta'])->name('ventas.pdf');
-    Route::get('/dashboard/pdf',[ExportController::class, 'test'])->name('test.pdf');
     Route::get('/ingresos/pdf/{ingreso}',[ExportController::class, 'reporteNotaIngreso'])->name('ingresos.pdf');
+    /* Productos con poco stock */
+    Route::get('/dashboard/pdf',[ExportController::class, 'reporteProductosPocoStock'])->name('productos.pdf');
+    /* los productos mas vendidos */
+    Route::get('/dashboard/pdf2',[ExportController::class, 'reporteProductosMasVendidos'])->name('masVendidos.pdf');
+
     //Reportes EXCEL
     Route::get('/reportes/excel/{user}/{type}/{dia1}/{mes1}/{year1}/{dia2}/{mes2}/{year2}',[ExportController::class, 'reporteExcel']);
     Route::get('/reportes/excel/{user}/{type}',[ExportController::class, 'reporteExcel']);
+
+
+    //Ruta para el acceso al backup
+    Route::get('/backup', [BackupController::class, 'index'])->name('backup.index');
 });
 
 

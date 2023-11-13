@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Models\Venta;
 use App\Models\DetalleVenta;
 use App\Models\Ingreso;
+use App\Models\Producto;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\App;
@@ -157,6 +158,36 @@ class ExportController extends Controller
         $pdf = PDF::loadView('pdf.notaIngreso', compact('data', 'ingreso'));
         return $pdf->stream('NotaIngreso' . $ingreso->id . '.pdf');
     }
+
+    public function reporteProductosPocoStock()
+    {
+        //Obtener productos con poco stock, tambien quiero la marca
+        $data = Producto::join('kardex', 'productos.id', '=', 'kardex.producto_id')
+            ->join('marcas', 'marcas.id', '=', 'productos.marca_id')
+            ->selectRaw('productos.*, marcas.nombre as marca, sum(kardex.entradas - kardex.salidas) as stock')
+            ->groupBy('productos.id', 'productos.stock_minimo', 'marcas.nombre') // Agrupa también por stock_minimo
+            ->havingRaw('stock <= productos.stock_minimo')
+            ->get();
+        $pdf = PDF::loadView('pdf.productosPocoStock', compact('data'));
+        return $pdf->stream('ProductosPocoStock.pdf');
+    }
+
+    public function reporteProductosMasVendidos()
+    {
+        //Obtener productos mas vendidos, y agregar un atributo del total de ventas, y tambien el nombre de la marca
+        $data = Producto::join('detalle_venta', 'productos.id', '=', 'detalle_venta.producto_id')
+            ->join('marcas', 'marcas.id', '=', 'productos.marca_id')
+            ->selectRaw('productos.*, marcas.nombre as marca, sum(detalle_venta.cantidad) as cantidad, sum(detalle_venta.cantidad * productos.precio_venta) as total_ventas')
+            ->groupBy('productos.id', 'marcas.nombre')
+            ->orderBy('cantidad', 'desc')
+            ->take(5)
+            ->get();
+
+        $pdf = PDF::loadView('pdf.productosMasVendidos', compact('data'));
+        return $pdf->stream('ProductosMasVendidos.pdf');
+    }
+
+  
 
     public function test()
     {

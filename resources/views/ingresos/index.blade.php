@@ -97,7 +97,7 @@
                                 page: 'current'
                             }
                         },
-                    }, , 'csv', {
+                    },  'csv', {
                         extend: 'excel',
                         text: 'Excel',
                         exportOptions: {
@@ -105,29 +105,36 @@
                                 // Exportar solo las filas que están actualmente en la vista (las que se muestran)
                                 page: 'current'
                             },
-                            columns: ':not(:eq(6))' //excluyendo la fila de opciones
+                            columns: ':not(:eq(6),:eq(7))' //excluyendo la fila de opciones
                         },
                     },
                     {
                         extend: 'pdf',
                         //orientation: 'landscape', // Orientación horizontal
                         pageSize: 'A4', // Tamaño del papel
+                        //quiero que las columnas ocupen todo el ancho de la pagina
+                        customize: function(doc) {
+                            doc.defaultStyle.alignment = 'center';
+                            doc.content[1].table.widths = Array(doc.content[1].table.body[0]
+                                .length + 1).join('*').split('');
+                        },
                         exportOptions: {
                             modifier: {
                                 // Exportar solo las filas que están actualmente en la vista (las que se muestran)
                                 page: 'current'
                             },
-                            columns: ':not(:eq(6))' // Excluye la columna 11 y 13 (0-indexadas)
+                            columns: ':not(:eq(6),:eq(7))' // Excluye la columna 11 y 13 (0-indexadas)
                         }
                     }, {
                         extend: 'print',
                         text: 'Imprimir',
+                        
                         exportOptions: {
                             modifier: {
                                 // Exportar solo las filas que están actualmente en la vista (las que se muestran)
                                 page: 'current'
                             },
-                            columns: ':not(:eq(6))' //excluyendo la fila de opcionesF
+                            columns: ':not(:eq(6),:eq(7))' //excluyendo la fila de opcionesF
                         },
                     }, {
                         extend: 'colvis',

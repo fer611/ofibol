@@ -164,6 +164,9 @@
                         <div class="card-header">
                             <h3 class="card-title">Los 10 productos mas vendidos</h3>
                             <div class="card-tools">
+                                <a href="{{ route('masVendidos.pdf') }}" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </a>
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
                                 </button>
@@ -203,7 +206,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Listado de productos con poco stock</h3>
                             <div class="card-tools">
-                                <a href="#" class="btn btn-danger">
+                                <a href="{{ route('productos.pdf') }}" class="btn btn-danger">
                                     <i class="fas fa-file-pdf"></i> PDF
                                 </a>
 

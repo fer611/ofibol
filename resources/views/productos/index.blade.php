@@ -83,7 +83,60 @@
                         "previous": "Anterior"
                     }
                 },
-                
+                dom: 'lBfrtip',
+                buttons: [{
+                        extend: 'copy',
+                        text: 'Copiar',
+                        exportOptions: {
+                            modifier: {
+                                // Exportar solo las filas que están actualmente en la vista (las que se muestran)
+                                page: 'current'
+                            }
+                        },
+                    }, , 'csv', {
+                        extend: 'excel',
+                        text: 'Excel',
+                        exportOptions: {
+                            modifier: {
+                                // Exportar solo las filas que están actualmente en la vista (las que se muestran)
+                                page: 'current'
+                            },
+                            columns: ':not(:eq(1),:eq(8),:eq(9))' //excluyendo la fila de opciones
+                        },
+                    },
+                    {
+                        extend: 'pdf',
+                        /* orientacion de papel horizontal */
+                        orientation: 'landscape',
+                        
+                        //quiero que las columnas ocupen todo el ancho de la pagina
+                        customize: function(doc) {
+                            doc.defaultStyle.alignment = 'center';
+                            doc.content[1].table.widths = Array(doc.content[1].table.body[0]
+                                .length + 1).join('*').split('');
+                        },
+                        exportOptions: {
+                            modifier: {
+                                // Exportar solo las filas que están actualmente en la vista (las que se muestran)
+                                page: 'current'
+                            },
+                            columns: ':not(:eq(1),:eq(8),:eq(9))'
+                        },
+                    }, {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        exportOptions: {
+                            modifier: {
+                                // Exportar solo las filas que están actualmente en la vista (las que se muestran)
+                                page: 'current'
+                            },
+                            columns: ':not(:eq(1),:eq(8),:eq(9))' //excluyendo la fila de opcionesF
+                        },
+                    }, {
+                        extend: 'colvis',
+                        text: 'Ver Columnas',
+                    },
+                ]
             });
             table.buttons().container().appendTo('#productos_wrapper .col-md-6:eq(0)');
         });

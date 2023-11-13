@@ -4,6 +4,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
+                         <h4 class="card-title">Productos</h4> 
                         <!-- Botón para abrir el modal -->
                         <button type="button" class="btn" style="background: #3B3F5C; color:white" data-toggle="modal"
                             data-target="#nuevoProductoModal">

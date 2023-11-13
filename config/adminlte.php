@@ -364,7 +364,7 @@ return [
             ],
             'icon_color' => 'purple',
         ],
-       
+
         /* VENTAS */
         [
             'text'    => 'Ventas',
@@ -380,8 +380,8 @@ return [
             'icon_color' => 'orange',
             'url' => 'clientes'
         ],
-         /* INGRESOS */
-         [
+        /* INGRESOS */
+        [
             'text'    => 'Ingresos',
             'icon'    => 'fas fa-fw fa-shopping-bag',
             'icon_color' => 'yellow',
@@ -400,7 +400,34 @@ return [
             'text'       => 'Reportes',
             'icon_color' => 'red',
             'icon'    => 'fas fa-fw fa-chart-bar',
-            'url'        => 'reportes',
+            'submenu' => [
+                [
+                    'text' => 'Reporte de Ventas',
+                    'url'  => 'reportes',
+                ],
+                [
+                    'text' => 'Mas vendidos',
+                    'url'  => 'dashboard/pdf2',
+                    /* Abrir en una nueva pestaña */
+                    'target' => '_blank',
+                ],
+                [
+                    'text' => 'Poco Stock',
+                    'url'  => 'dashboard/pdf',
+                    /* Abrir en una nueva pestaña */
+                    'target' => '_blank',
+                ],
+                
+            ],
+        ],
+
+        /* ['header' => 'RESPALDO DE DATOS'], */
+        [
+            'text'       => 'Respaldo de datos',
+            //color adecuado para el icono
+            'icon_color' => 'green',
+            'icon'    => 'fas fa-fw fa-database',
+            'url'        => 'backup',
         ]
     ],
 

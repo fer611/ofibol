@@ -85,7 +85,7 @@ class Ventas extends Component
                 $this->emit('no-stock', 'El producto no tiene precio de venta o costo');
             }
             /* Añadiendo el producto al carrito */
-            
+
             Cart::add($producto->id, $producto->descripcion, $producto->precio_venta, $cant, $producto->imagen);
 
             /* Actualizando el total */
@@ -243,6 +243,22 @@ class Ventas extends Component
             $this->addError('razon_social', 'El cliente no está registrado');
             return;
         }
+        /* Si es una venta sin datos, buscamos al cliente con S/N */
+        if ($this->venta_sin_datos) {
+            $clienteExiste = Cliente::where('nit', 'S/N')->first();
+            /* Si es que no encuentra algun registro con S/N */
+            if ($clienteExiste == null) {
+                /* Si no existe el cliente con S/N lo creamos */
+                $cliente = Cliente::create([
+                    'nit' => 'S/N',
+                    'razon_social' => 'S/N',
+                ]);
+                /* Obtenemos el cliente creado */
+                $clienteExiste = Cliente::where('nit', 'S/N')->first();
+            }
+        }
+
+
         if ($this->total <= 0) {
             /* $this->emit('sale-error', 'AGREGA PRODUCTOS A LA VENTA'); */
             session()->flash('mensaje', 'AGREGA PRODUCTOS A LA VENTA');
@@ -306,7 +322,7 @@ class Ventas extends Component
                         /* Aca por defecto la salida debe ser del almacen punto de venta Ofibol*/
                         'almacen_id' => 3,
                         'precio_producto' => $producto->costo_actual,
-                        'saldo' => $producto->costo_actual * ($stock- $item->quantity),
+                        'saldo' => $producto->costo_actual * ($stock - $item->quantity),
                         'user_id' => auth()->user()->id,
                     ]);
                     /* 

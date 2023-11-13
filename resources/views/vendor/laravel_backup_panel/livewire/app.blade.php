@@ -8,7 +8,7 @@
             <div class="container mb-5">
                 <div class="d-flex align-items-end pt-4">
                     <h5 class="mb-0">
-                        Panel de Laravel Backup
+                        Panel de Copias de Seguridad del Sistema
                     </h5>
 
                     <button id="create-backup" class="btn btn-primary btn-sm ml-auto px-3">
@@ -50,11 +50,11 @@
                             <table class="table table-hover mb-0">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Disk</th>
-                                        <th scope="col">Healthy</th>
-                                        <th scope="col">Amount of backups</th>
-                                        <th scope="col">Newest backup</th>
-                                        <th scope="col">Used storage</th>
+                                        <th scope="col">Disco</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Total Backups</th>
+                                        <th scope="col">Último Backup</th>
+                                        <th scope="col">Almacenamiento Usado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -112,9 +112,9 @@
                             <table class="table table-hover mb-0">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Path</th>
-                                        <th scope="col">Created at</th>
-                                        <th scope="col">Size</th>
+                                        <th scope="col">Nombre del archivo</th>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Tamaño</th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
@@ -122,7 +122,7 @@
                                     @foreach ($files as $file)
                                         <tr>
                                             <td>{{ $file['path'] }}</td>
-                                            <td>{{ $file['date'] }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($file['date'])->format('d/m/Y H:i:s') }}</td>
                                             <td>{{ $file['size'] }}</td>
                                             <td class="text-right pr-3">
                                                 <a class="action-button mr-2" href="#" target="_blank"
@@ -130,7 +130,7 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
                                                         height="24">
                                                         <path class="heroicon-ui"
-                                                            d="M11 14.59V3a1 1 0 0 1 2 0v11.59l3.3-3.3a1 1 0 0 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 0 1 1.4-1.42l3.3 3.3zM3 17a1 1 0 0 1 2 0v3h14v-3a1 1 0 0 1 2 0v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3z" />
+                                                            d="M11 14.59V3a1 1 0 0 1 2 0v11.59l3.3-3.3a1 1 0 0 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 0 1 1.4-1.42l3.3 3.3zM3 17a1 1 0 0 1 2 0v3h14v-3a1 1 0 0 1 2 0v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3z" fill="green"/>
                                                     </svg>
                                                 </a>
                                                 <a class="action-button" href="#" target="_blank"
@@ -138,7 +138,7 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
                                                         height="24">
                                                         <path class="heroicon-ui"
-                                                            d="M8 6V4c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2h5a1 1 0 0 1 0 2h-1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8H3a1 1 0 1 1 0-2h5zM6 8v12h12V8H6zm8-2V4h-4v2h4zm-4 4a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z" />
+                                                            d="M8 6V4c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2h5a1 1 0 0 1 0 2h-1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8H3a1 1 0 1 1 0-2h5zM6 8v12h12V8H6zm8-2V4h-4v2h4zm-4 4a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z" fill="red"/>
                                                     </svg>
                                                 </a>
                                             </td>
@@ -148,7 +148,7 @@
                                     @if (!count($files))
                                         <tr>
                                             <td class="text-center" colspan="4">
-                                                {{ 'No backups present' }}
+                                                {{ 'No hay copias de seguridad presentes' }}
                                             </td>
                                         </tr>
                                     @endif
@@ -160,21 +160,22 @@
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-body">
-                                            <h5 class="modal-title mb-3">Delete backup</h5>
+                                            <h5 class="modal-title mb-3">Eliminar backup</h5>
                                             @if ($deletingFile)
-                                                <span class="text-muted">
-                                                    Are you sure you want to delete the backup created at
-                                                    {{ $deletingFile['date'] }} ?
-                                                </span>
+                                            <span class="text-muted">
+                                                ¿Está seguro de que desea eliminar la copia de seguridad creada de
+                                                {{ \Carbon\Carbon::parse($deletingFile['date'])->format('d/m/Y H:i:s') }} ?
+                                            </span>
+                                            
                                             @endif
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-outline-secondary cancel-button"
                                                 data-dismiss="modal">
-                                                Cancel
+                                                Cancelar
                                             </button>
                                             <button type="button" class="btn btn-danger delete-button"
-                                                wire:click="deleteFile">Delete</button>
+                                                wire:click="deleteFile">Eliminar</button>
                                         </div>
                                     </div>
                                 </div>

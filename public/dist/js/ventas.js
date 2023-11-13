@@ -46,7 +46,7 @@ $(document).ready(function () {
                     // Exportar solo las filas que están actualmente en la vista (las que se muestran)
                     page: 'current'
                 },
-                columns: ':not(:eq(8))' //excluyendo la fila de opciones
+                columns: ':not(:eq(8),:eq(9))' //excluyendo la fila de opciones
             },
         },
         {
@@ -61,7 +61,8 @@ $(document).ready(function () {
                 modifier: {
                     page: 'current'
                 },
-                columns: ':not(:eq(8))'
+                /* excluir las columnas 8 y 9 */
+                columns: ':not(:eq(8),:eq(9))'
             }
         }, {
             extend: 'print',
@@ -71,7 +72,7 @@ $(document).ready(function () {
                     // Exportar solo las filas que están actualmente en la vista (las que se muestran)
                     page: 'current'
                 },
-                columns: ':not(:eq(8))' //excluyendo la fila de opcionesF
+                //excluyendo la columna 8 y 9
             },
         }, {
             extend: 'colvis',
