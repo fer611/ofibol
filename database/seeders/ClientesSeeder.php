@@ -34,7 +34,7 @@ class ClientesSeeder extends Seeder
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ],
-            [
+            /* [
                 'razon_social' => 'TECNO SA',
                 'nit' => '6312345678',
                 'telefono' => '631234567',
@@ -466,7 +466,7 @@ class ClientesSeeder extends Seeder
                 'estado' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-            ],
+            ], */
 
         ]);
     }

@@ -15,7 +15,7 @@ class UsuarioController extends Controller
 
     public function __construct()
     {
-        /* El middelwire solo se aplica en el index */
+        /* Aplicando middelware para cada ruta*/
         $this->middleware('can:usuarios.index')->only('index');
         $this->middleware('can:usuarios.edit')->only('edit', 'update');
         $this->middleware('can:usuarios.create')->only('create', 'store');

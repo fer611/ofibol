@@ -9,6 +9,12 @@ class BackupController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        /* Aplicando middelware para cada ruta*/
+        $this->middleware('can:backup.index')->only('index');
+    }
+
     public function index()
     {
         return view('backup.index');

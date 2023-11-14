@@ -9,6 +9,15 @@ class VentaController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        /* Aplicando middelware para cada ruta*/
+        $this->middleware('can:ventas.index')->only('index');
+        $this->middleware('can:ventas.edit')->only('edit', 'update');
+        $this->middleware('can:ventas.create')->only('create', 'store');
+        $this->middleware('can:ventas.destroy')->only('destroy');
+    }
+
     public function index()
     {
         return view('ventas.index');

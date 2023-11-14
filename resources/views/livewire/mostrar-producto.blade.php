@@ -15,8 +15,8 @@
 
             @if ($producto->barcode)
                 <p><strong>Codigo de Barras:</strong>{!! DNS1D::getBarcodeHTML("$producto->barcode", 'CODABAR', 2, 50) !!} {{ $producto->barcode }}
-                    <br><button class="btn" style="background: #3B3F5C; color:white"
-                        onclick="imprimirCodigoBarras()">Imprimir</button>
+                    {{-- <br><button class="btn" style="background: #3B3F5C; color:white"
+                        onclick="imprimirCodigoBarras()">Imprimir</button> --}}
                 </p>
                 
             @else
@@ -62,18 +62,5 @@
         </div>
     </div>
 
-    <script>
-        function imprimirCodigoBarras() {
-            var ventanaImpresion = window.open('', '_blank');
-            ventanaImpresion.document.write('<html><head><title>Imprimir Código de Barras</title></head><body>');
-            ventanaImpresion.document.write('<img src="' + "{!! $producto->barcode !!}" +
-                '" alt="Código de Barras" style="width: 100%;">');
-            ventanaImpresion.document.write('</body></html>');
-            ventanaImpresion.document.close();
-            ventanaImpresion.print();
-            ventanaImpresion.onafterprint = function() {
-                ventanaImpresion.close();
-            };
-        }
-    </script>
+    
 </div>

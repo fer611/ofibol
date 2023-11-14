@@ -11,6 +11,12 @@ class ReporteController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        /* Aplicando middelware para cada ruta*/
+        $this->middleware('can:reportes.index')->only('index');
+    }
+
     public function index()
     {
         return view('reportes.index');

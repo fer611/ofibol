@@ -51,6 +51,8 @@ class DashboardController extends Controller
             ->get();
         /* Recorremos el array dee resultado para almacenarlo en dos arrays diferentes */
         $total_venta_mes = 0;
+        $fecha_venta [] = '';
+        $total_venta [] = '';
         for ($i = 0; $i < $resultado->count(); $i++) {
             $fecha_venta[] = $resultado[$i]->fecha_venta;
             $total_venta[] = $resultado[$i]->total_venta;

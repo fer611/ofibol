@@ -100,7 +100,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control @error('barcode') is-invalid @enderror" id="barcode"
                             wire:model.debounce.1000ms="barcode" placeholder="Ingrese el barcode del producto"
-                            maxlength="12">
+                            maxlength="20">
                         <div class="input-group-append">
                             <button class="btn" style="background: #3B3F5C; color:white" type="button"
                                 id="generateBarcodeBtn" wire:click='generarBarcode'>Generar</button>

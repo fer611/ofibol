@@ -5,9 +5,11 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <!-- Botón para abrir el modal -->
+                        @can('clientes.create')
                         <button type="button" class="btn" style="background: #3B3F5C; color:white" data-toggle="modal" data-target="#nuevoClienteModal">
                             <li class="fa fa-plus"></li> Registrar Cliente
                         </button>
+                        @endcan
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -40,17 +42,21 @@
                                                 </span>
                                             </td>
                                             <td class="d-flex align-items-center ">
+                                                @can('clientes.edit')
                                                 {{-- Editar --}}
                                                 <a class="btn btn-warning btn-sm mr-1 mb-1 edit-button"
                                                     href="{{ route('clientes.edit', $cliente->id) }}"><i
                                                         class="fas fa-pen"></i></a>
                                                 {{-- Eliminar --}}
                                                 </button>
+                                                @endcan
+                                                @can('clientes.destroy')
                                                 <button type="button"
                                                     wire:click="$emit('{{ $cliente->estado === '1' ? 'alertaInactivar' : 'alertaActivar' }}',{{ $cliente->id }})"
                                                     class="btn btn-outline-{{ $cliente->estado === '1' ? 'danger' : 'success' }} btn-sm delete-button"><i
                                                         class="fas {{ $cliente->estado === '1' ? 'fa-trash-alt' : 'fa-check' }}"></i>
                                                 </button>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

@@ -35,11 +35,6 @@ class CategoriasSeeder extends Seeder
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ], [
-                'nombre' => 'Escritorio',
-                'descripcion' => 'Material de Escritorio especifico del Estado',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ], [
                 'nombre' => 'Hogar',
                 'descripcion' => 'Aquí van todos los productos de hogars',
                 'created_at' => date('Y-m-d H:i:s'),

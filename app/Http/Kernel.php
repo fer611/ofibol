@@ -23,6 +23,9 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+
+        /* Para que ngrok funcione y cargue los estilos.... */
+        \App\Http\Middleware\UpgradeToHttpsUnderNgrok::class,
     ];
 
     /**

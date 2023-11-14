@@ -40,6 +40,7 @@
         <div class="infoHeader">
             <h1 class="normal">NOTA DE INGRESO</h1>
             <h2 class="ligera"><span class="normal">Ubicación: </span>{{ $ingreso->almacen->nombre }}</h2>
+            <h2 class="normal">Nº: {{ $ingreso->id }}</h2>
         </div>
     </div>
 
@@ -51,6 +52,7 @@
                     <div class="ligera"><span class="normal">Nombre: </span>{{ $ingreso->user->name }}</div>
                     <div class="ligera"><span class="normal">Email: </span>{{ $ingreso->user->email }}</div>
                     <div class="ligera"><span class="normal">Fecha y Hora de Recepción: </span>{{ \Carbon\Carbon::parse($ingreso->created_at)->format('d/m/Y H:i:s') }}</div>
+                    
                 </div>
             </div>
             

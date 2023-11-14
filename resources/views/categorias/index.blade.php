@@ -19,9 +19,9 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-     @if (session()->has('mensaje'))
+    @if (session()->has('mensaje'))
         {{-- Si existe un mensaje --}}
-      <div class="alert alert-success alert-dismissible fade show">
+        <div class="alert alert-success alert-dismissible fade show">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             {{ session('mensaje') }}
         </div>
@@ -47,13 +47,15 @@
                                                 id="button-addon2">Buscar</button>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                        <div class="input-group mb-6">
-                                            <span class="input-group-text" id="basic-addon1"><i
-                                                    class="bi bi-plus-circle-fill"></i></span>
-                                            <a href="{{ route('categorias.create') }}" class="btn btn-success">Nueva</a>
+                                    @can('categorias.create')
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="input-group mb-6">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="bi bi-plus-circle-fill"></i></span>
+                                                <a href="{{ route('categorias.create') }}" class="btn btn-success">Nueva</a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endcan
                                 </div>
 
                             </form>
@@ -80,19 +82,22 @@
                                             <td>{{ $categoria->nombre }}</td>
                                             <td>{{ $categoria->descripcion }}</td>
                                             <td class="d-flex align-items-center">
+                                                @can('categorias.edit')
                                                 <a href="{{ route('categorias.edit', $categoria->id) }}"
                                                     class="btn btn-warning btn-sm mr-1"><i class="fas fa-pen"></i></a>
-
-                                                <form id="deleteForm-{{ $categoria->id }}"
-                                                    action="{{ route('categorias.destroy', $categoria->id) }}"
-                                                    method="post" class="mb-0">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                    <button type="button"
-                                                        class="btn btn-outline-danger btn-sm delete-button"
-                                                        data-id="{{ $categoria->id }}"><i
-                                                            class="fas fa-trash-alt"></i></button>
-                                                </form>
+                                                @endcan
+                                                @can('categorias.destroy')
+                                                    <form id="deleteForm-{{ $categoria->id }}"
+                                                        action="{{ route('categorias.destroy', $categoria->id) }}"
+                                                        method="post" class="mb-0">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <button type="button"
+                                                            class="btn btn-outline-danger btn-sm delete-button"
+                                                            data-id="{{ $categoria->id }}"><i
+                                                                class="fas fa-trash-alt"></i></button>
+                                                    </form>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
@@ -137,7 +142,7 @@
                     })
                 });
             });
-            
+
             // Verificar si se debe mostrar el segundo SweetAlert
             if (sessionStorage.getItem('deleted') === 'true') {
                 Swal.fire(
@@ -148,7 +153,6 @@
                 sessionStorage.removeItem('deleted'); // Limpiar la variable para futuras recargas
             }
         });
-
     </script>
 
 

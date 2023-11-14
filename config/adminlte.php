@@ -356,10 +356,12 @@ return [
                 [
                     'text' => 'Productos',
                     'url'  => 'productos',
+                    'can' => 'productos.index'
                 ],
                 [
                     'text' => 'Categorias',
                     'url'  => 'categorias',
+                    'can' => 'categorias.index'
                 ],
             ],
             'icon_color' => 'purple',
@@ -370,7 +372,8 @@ return [
             'text'    => 'Ventas',
             'icon'    => 'fas fa-fw fa-shopping-cart',
             'icon_color' => 'green',
-            'url' => 'ventas'
+            'url' => 'ventas',
+            'can' => 'ventas.index'
         ],
 
         /* CLIENTES */
@@ -378,14 +381,16 @@ return [
             'text'    => 'Clientes',
             'icon'    => 'fas fa-fw fa-user-tie',
             'icon_color' => 'orange',
-            'url' => 'clientes'
+            'url' => 'clientes',
+            'can' => 'clientes.index'
         ],
         /* INGRESOS */
         [
             'text'    => 'Ingresos',
             'icon'    => 'fas fa-fw fa-shopping-bag',
             'icon_color' => 'yellow',
-            'url' => 'ingresos'
+            'url' => 'ingresos',
+            'can' => 'ingresos.index'
         ],
 
         /* PROVEEDORES */
@@ -393,13 +398,15 @@ return [
             'text'    => 'Proveedores',
             'icon'    => 'fas fa-fw fa-truck',
             'icon_color' => 'blue',
-            'url' => 'proveedores'
+            'url' => 'proveedores',
+            'can' => 'proveedores.index'
         ],
         /* ['header' => 'REPORTES'], */
         [
             'text'       => 'Reportes',
             'icon_color' => 'red',
             'icon'    => 'fas fa-fw fa-chart-bar',
+            'can' => 'reportes.index',
             'submenu' => [
                 [
                     'text' => 'Reporte de Ventas',
@@ -419,6 +426,7 @@ return [
                 ],
                 
             ],
+
         ],
 
         /* ['header' => 'RESPALDO DE DATOS'], */
@@ -428,6 +436,7 @@ return [
             'icon_color' => 'green',
             'icon'    => 'fas fa-fw fa-database',
             'url'        => 'backup',
+            'can' => 'backup.index'
         ]
     ],
 

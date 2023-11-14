@@ -31,7 +31,7 @@ class CrearProducto extends Component
         'cantidad_unidad' => 'nullable|numeric|min:0',
         'descripcion' => 'required|string|max:255',
         'fecha_vencimiento' => 'nullable|date',
-        'barcode' => 'required|numeric|max:20|unique:productos,barcode',
+        'barcode' => 'required|numeric|unique:productos,barcode',
         'imagen' => 'required|image|mimes:jpeg,png,jpg|max:1024',
     ];
 

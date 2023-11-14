@@ -8,10 +8,11 @@
                         {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevoIngresoModal">
                             Nuevo Ingreso
                         </button> --}}
-
+                        @can('ingresos.create')
                         <a href="{{ route('ingresos.create') }}" class="btn" style="background: #3B3F5C; color:white">
                             <li class="fa fa-plus"></li> Registrar Ingreso
                         </a>
+                        @endcan
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -46,7 +47,7 @@
                                             </td>
                                             <td class="d-flex align-items-center ">
                                                 <a href="{{ route('ingresos.pdf', $ingreso) }}"
-                                                    class="btn btn-outline-danger  btn-sm mr-1"><i
+                                                    class="btn btn-outline-danger  btn-sm mr-1" target="_blank"><i
                                                         class="fas fa-file-pdf"></i> PDF</a>
 
                                                 {{-- Eliminar --}}

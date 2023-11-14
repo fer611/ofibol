@@ -63,17 +63,7 @@ class ProveedoresSeeder extends Seeder
                 'estado' => '1',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-            ],
-            [
-                'nombre' => 'nuevo',
-                'representante' => 'nuevo',
-                'telefono' => '75222371',
-                'direccion' => 'Miraflores',
-                'correo' => null,
-                'estado' => '1',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ],
+            ]
         ]);
     }
 }

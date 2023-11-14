@@ -16,6 +16,15 @@ class IngresoController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        /* Aplicando middelware para cada ruta*/
+        $this->middleware('can:ingresos.index')->only('index');
+        $this->middleware('can:ingresos.edit')->only('edit', 'update');
+        $this->middleware('can:ingresos.create')->only('create', 'store');
+        $this->middleware('can:ingresos.destroy')->only('destroy');
+    }
+
     public function index()
     { 
         return view('ingresos.index');

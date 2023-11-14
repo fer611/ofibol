@@ -5,9 +5,11 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <!-- Botón para abrir el modal -->
+                        @can('ventas.create')
                         <a href="{{ route('ventas.create') }}" type="button" class="btn" style="background: #3B3F5C; color:white">
                             <i class="fas fa-plus"></i> Nueva Venta
                         </a>
+                        @endcan
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -45,16 +47,9 @@
                                                 </span>
                                             </td>
                                             <td class="d-flex align-items-center ">
-                                                <a href="{{ route('ventas.pdf',$venta) }}"
-                                                    class="btn btn-outline-danger  btn-sm mr-1"><i
-                                                        class="fas fa-file-pdf"></i> PDF</a>
-
-                                                {{-- Eliminar --}}
-                                                {{-- <button type="button"
-                                                    class="btn btn-outline-danger btn-sm delete-button"
-                                                    wire:click="$emit('mostrarAlerta',{{ $venta->id }})"><i
-                                                        class="fas fa-trash-alt"></i>
-                                                </button> --}}
+                                                <a href="{{ route('ventas.pdf', $venta) }}" target="_blank" class="btn btn-outline-danger btn-sm mr-1">
+                                                    <i class="fas fa-file-pdf"></i> PDF
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach

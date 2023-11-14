@@ -38,7 +38,9 @@
     <div id="header">
         <img class="imgHeader" src="{{ public_path('img/logo.png') }}" alt="" width="200px">
         <div class="infoHeader">
-            <h1 class="normal">NOTA DE VENTA</h1>
+            <h1 class="normal">NOTA DE VENTA </h1>
+            <h2 class="normal">Nº: {{ $venta->id }}</h2>
+            <div class="normal"><span class="bold">Fecha: </span>{{ \Carbon\Carbon::parse($venta->created_at)->format('d/m/Y') }}</div>
         </div>
     </div>
     <table class="section">
@@ -51,7 +53,6 @@
                     {{-- telefono --}}
                     <div class="normal"><span class="bold">Teléfono: </span>{{ $venta->cliente->telefono }}</div>
                     <div class="normal"><span class="bold">Dirección: </span>{{ $venta->cliente->direccion }}</div>
-                    <div class="normal"><span class="bold">Fecha: </span>{{ \Carbon\Carbon::parse($venta->created_at)->format('d/m/Y') }}</div>
                 </div>
             </div>
             

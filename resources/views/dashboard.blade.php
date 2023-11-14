@@ -56,7 +56,7 @@
                         <div class="icon">
                             <i class="ion ion-cash"></i>
                         </div>
-                        <a style="cursor:pointer;" class="small-box-footer">Mas Info <i
+                        <a style="cursor:pointer;" href="{{ route('ingresos.index') }}" class="small-box-footer">Mas Info <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                         <div class="icon">
                             <i class="ion ion-ios-cart"></i>
                         </div>
-                        <a style="cursor:pointer;" class="small-box-footer">Mas Info <i
+                        <a href="{{ route('ventas.index') }}" style="cursor:pointer;" class="small-box-footer">Mas Info <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                         <div class="icon">
                             <i class="ion ion-ios-pie"></i>
                         </div>
-                        <a style="cursor:pointer;" class="small-box-footer">Mas Info <i
+                        <a href="{{ route('ventas.index') }}" style="cursor:pointer;" class="small-box-footer">Mas Info <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                         <div class="icon">
                             <i class="ion ion-android-remove-circle"></i>
                         </div>
-                        <a style="cursor:pointer;" class="small-box-footer">Mas Info <i
+                        <a href="{{ route('productos.pdf') }}" target="_blank" style="cursor:pointer;" class="small-box-footer">Mas Info <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
                         <div class="icon">
                             <i class="ion ion-android-calendar"></i>
                         </div>
-                        <a style="cursor:pointer;" class="small-box-footer">Mas Info <i
+                        <a href="{{ route('reportes.index') }}" style="cursor:pointer;" class="small-box-footer">Mas Info <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Los 10 productos mas vendidos</h3>
                             <div class="card-tools">
-                                <a href="{{ route('masVendidos.pdf') }}" class="btn btn-danger">
+                                <a href="{{ route('masVendidos.pdf') }}" class="btn btn-danger" target="_blank">
                                     <i class="fas fa-file-pdf"></i> PDF
                                 </a>
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -206,7 +206,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Listado de productos con poco stock</h3>
                             <div class="card-tools">
-                                <a href="{{ route('productos.pdf') }}" class="btn btn-danger">
+                                <a href="{{ route('productos.pdf') }}" class="btn btn-danger" target="_blank">
                                     <i class="fas fa-file-pdf"></i> PDF
                                 </a>
 

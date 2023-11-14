@@ -4,12 +4,14 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                         <h4 class="card-title">Productos</h4> 
+                        <h4 class="card-title">Productos</h4>
                         <!-- Botón para abrir el modal -->
-                        <button type="button" class="btn" style="background: #3B3F5C; color:white" data-toggle="modal"
-                            data-target="#nuevoProductoModal">
-                            <li class="fa fa-plus"></li> Nuevo Producto
-                        </button>
+                        @can('productos.create')
+                            <button type="button" class="btn" style="background: #3B3F5C; color:white" data-toggle="modal"
+                                data-target="#nuevoProductoModal">
+                                <li class="fa fa-plus"></li> Nuevo Producto
+                            </button>
+                        @endcan
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -62,15 +64,19 @@
                                                     class="btn btn-outline-primary  btn-sm mr-1"><i
                                                         class="fas fa-eye"></i></a>
                                                 {{-- Editar --}}
-                                                <a class="btn btn-warning btn-sm mr-1 mb-1 edit-button"
-                                                    href="{{ route('productos.edit', $producto->id) }}"><i
-                                                        class="fas fa-pen"></i></a>
+                                                @can('productos.edit')
+                                                    <a class="btn btn-warning btn-sm mr-1 mb-1 edit-button"
+                                                        href="{{ route('productos.edit', $producto->id) }}"><i
+                                                            class="fas fa-pen"></i></a>
+                                                @endcan
                                                 {{-- Eliminar --}}
+                                                @can('productos.destroy')
                                                 <button type="button"
                                                     wire:click="$emit('{{ $producto->estado === '1' ? 'alertaInactivar' : 'alertaActivar' }}',{{ $producto->id }})"
                                                     class="btn btn-outline-{{ $producto->estado === '1' ? 'danger' : 'success' }} btn-sm delete-button"><i
                                                         class="fas {{ $producto->estado === '1' ? 'fa-trash-alt' : 'fa-check' }}"></i>
                                                 </button>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

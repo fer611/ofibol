@@ -6,11 +6,12 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h6 class="text-center">LISTADO DE PROVEEDORES</h6>
                         <div class="mb-3">
-                            <button type="button" class="btn btn-dark " data-toggle="modal"
+                            @can('proveedores.create')
+                                <button type="button" class="btn btn-dark " data-toggle="modal"
                                     data-target="#nuevoProveedorModal">
                                     <i class="fas fa-user-plus"></i> Registrar Nuevo Proveedor
                                 </button>
-                            
+                            @endcan
                         </div>
                     </div>
                     <div class="card-body">
@@ -44,9 +45,12 @@
                                                 </span>
                                             </td>
                                             <td class="d-flex align-items-center">
-                                                <a href="{{ route('proveedores.edit', $proveedor->id) }}"
-                                                    class="btn btn-warning btn-sm mr-1"><i class="fas fa-pen"></i></a>
+                                                @can('proveedores.edit')
+                                                    <a href="{{ route('proveedores.edit', $proveedor->id) }}"
+                                                        class="btn btn-warning btn-sm mr-1"><i class="fas fa-pen"></i></a>
+                                                @endcan
 
+                                                @can('proveedores.destroy')
                                                 <form id="deleteForm-{{ $proveedor->id }}"
                                                     action="{{ route('proveedores.destroy', $proveedor->id) }}"
                                                     method="post" class="mb-0">
@@ -59,6 +63,7 @@
                                                             class="fas {{ $proveedor->estado === '1' ? 'fa-trash-alt' : 'fa-check' }}"></i>
                                                     </button>
                                                 </form>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
