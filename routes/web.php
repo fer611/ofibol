@@ -8,6 +8,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\IngresoController;
+use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\ReporteController;
@@ -70,6 +71,14 @@ Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function
     Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
     /* Ruta para el kardex de cada producto */
     Route::get('/productos/{producto}/kardex', [ProductoController::class, 'kardex'])->name('productos.kardex');
+
+    /* crud marcas*/
+    Route::get('/marcas', [MarcaController::class, 'index'])->name('marcas.index');
+    Route::get('/marcas/create', [MarcaController::class, 'create'])->name('marcas.create');
+    Route::post('/marcas', [MarcaController::class,'store'])->name('marcas.store');
+    Route::get('/marcas/{marca}/edit', [MarcaController::class, 'edit'])->name('marcas.edit');
+    Route::delete('/marcas/{marca}', [MarcaController::class, 'destroy'])->name('marcas.destroy');
+    
 
 
     // Rutas de categorías

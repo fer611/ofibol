@@ -363,6 +363,10 @@ return [
                     'url'  => 'categorias',
                     'can' => 'categorias.index'
                 ],
+                [
+                    'text' => 'Marcas',
+                    'url'  => 'marcas',
+                ],
             ],
             'icon_color' => 'purple',
         ],
