@@ -295,7 +295,6 @@ class Ventas extends Component
             ]);
             if ($venta) {
                 $items = Cart::getContent();
-
                 foreach ($items as $item) {
                     /* guardando los detalles */
                     DetalleVenta::create([
@@ -304,10 +303,13 @@ class Ventas extends Component
                         'producto_id' => $item->id,
                         'venta_id' => $venta->id
                     ]);
+
+
                     /* Actualizando el stock */
                     /* aca podemos registrar una salida de este producto */
                     /* Para el CPP obtenemos el producto y sacamos su costo actual para una venta el CPP debe mantener el costo */
                     $producto = Producto::find($item->id);
+
                     /* Obtenemos el stock para calcular el saldo */
                     $stock = DB::table('kardex')
                         ->where('producto_id', $producto->id)
