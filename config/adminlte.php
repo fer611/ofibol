@@ -1,5 +1,6 @@
 <?php
 
+
 return [
 
     /*
@@ -293,31 +294,31 @@ return [
 
     'menu' => [
         // Navbar items:
-        [
+        /* [
             'type'         => 'navbar-search',
             'text'         => 'Buscar',
             'topnav_right' => true,
-        ],
+        ], */
         [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-        /* [
+        [
             'type'         => 'navbar-notification',
-            'id'           => 'my-notification',      // An ID attribute (required).
-            'icon'         => 'fas fa-bell',          // A font awesome icon (required).
-            'icon_color'   => 'muted',              // The initial icon color (optional).
-            'label'        => 3,                      // The initial label for the badge (optional).
-            'label_color'  => 'danger',               // The initial badge color (optional).
-            'url'          => 'notifications/show',   // The url to access all notifications/elements (required).
-            'topnav_right' => true,                   // Or "topnav => true" to place on the left (required).
-            'dropdown_mode'   => true,                // Enables the dropdown mode (optional).
-            'dropdown_flabel' => 'All notifications', // The label for the dropdown footer link (optional).
+            'id'           => 'my-notification',      // Un atributo ID (obligatorio).
+            'icon'         => 'fas fa-bell',          // Un icono de Font Awesome (obligatorio).
+            'icon_color'   => 'muted',                // El color inicial del icono (opcional).
+            /* 'label'        => 3,  */                     // La etiqueta inicial para el distintivo (opcional).
+            'label_color'  => 'danger',               // El color inicial del distintivo (opcional).
+            'url'          => 'notificaciones',   //notifications/show La URL para acceder a todas las notificaciones/elementos (obligatorio).
+            'topnav_right' => true,                   // O "topnav => true" para colocarlo a la izquierda (obligatorio).
+            'dropdown_mode'   => false,                // Habilita el modo de lista desplegable (opcional).
+            'dropdown_flabel' => 'Ver todo', // La etiqueta para el enlace del pie de página de la lista desplegable (opcional).
             'update_cfg'   => [
-                'url' => 'notifications/get',         // The url to periodically fetch new data (optional).
-                'period' => 30,                       // The update period for get new data (in seconds, optional).
+                'url' => 'notificaciones/get',         // La URL para obtener periódicamente nuevos datos (opcional).
+                'period' => 30,                       // El período de actualización para obtener nuevos datos (en segundos, opcional).
             ]
-        ], */
+        ],
         [
             'type'         => 'darkmode-widget',
             'topnav_right' => true, // Or "topnav => true" to place on the left.
@@ -428,7 +429,7 @@ return [
                     /* Abrir en una nueva pestaña */
                     'target' => '_blank',
                 ],
-                
+
             ],
 
         ],

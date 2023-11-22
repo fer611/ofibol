@@ -3,6 +3,8 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cliente;
+use App\Models\User;
+use App\Notifications\NuevoCliente;
 use Livewire\Component;
 
 class CrearCliente extends Component
@@ -21,17 +23,25 @@ class CrearCliente extends Component
         'direccion' => 'nullable|string',
         'email' => 'nullable|email',
     ];
-    
+
     public function crearCliente()
     {
+       
+        // Obtener al dueño de la empresa con el rol "Dueño"
+        $owner = User::role('Dueño')->first();
+        //Validar los datos
         $datos = $this->validate();
-        Cliente::create([
+        //Crear el cliente
+        $cliente = Cliente::create([
             'razon_social' => $datos['razon_social'],
             'nit' => $datos['nit'],
             'telefono' => $datos['telefono'],
             'direccion' => $datos['direccion'],
             'email' => $datos['email']
         ]);
+
+        //Enviamos una notificacion
+        $owner->notify(new NuevoCliente($cliente->id, $cliente->razon_social, $cliente->nit, $owner->id));
         //Crear un mensaje
         session()->flash('mensaje', 'El Cliente se registró correctamente');
         //Redireccionar al usuario

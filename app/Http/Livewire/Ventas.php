@@ -7,7 +7,9 @@ use App\Models\Denominacion;
 use App\Models\DetalleVenta;
 use App\Models\Kardex;
 use App\Models\Producto;
+use App\Models\User;
 use App\Models\Venta;
+use App\Notifications\NuevaVenta;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -343,6 +345,12 @@ class Ventas extends Component
             $this->itemsQuantity = Cart::getTotalQuantity();
 
             /* $this->emit('sale-ok', 'Venta registrada con éxito'); */
+
+            //Crear notificacion y enviar el email
+            // Obtener al dueño de la empresa con el rol "Dueño"
+            $owner = User::role('Dueño')->first();
+            $owner->notify(new NuevaVenta($venta->id,$venta->user->name, $venta->total, $owner->id));
+
             //Crear un mensaje
             session()->flash('mensaje', 'Venta registrada con éxito');
             //Redireccionar al usuario
