@@ -9,6 +9,7 @@ use App\Models\Kardex;
 use App\Models\Producto;
 use App\Models\User;
 use App\Models\Venta;
+use App\Notifications\BajoStock;
 use App\Notifications\NuevaVenta;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Exception;
@@ -329,9 +330,16 @@ class Ventas extends Component
                         'saldo' => $producto->costo_actual * ($stock - $item->quantity),
                         'user_id' => auth()->user()->id,
                     ]);
-                    /* 
-                    $producto = Producto::find($item->id);
-                    $producto->save(); */
+
+                    /* Aca volvemos a obtener el stock pero ya actualizado en kardex */
+                    /* Obtenemos el stock para calcular el saldo */
+                    $stock = $stock-$item->quantity;
+                    if ($stock <= $producto->stock_minimo) {
+                        //Crear notificacion y enviar el email
+                        // Obtener al dueño de la empresa con el rol "Dueño"
+                        $owner = User::role('Dueño')->first();
+                        $owner->notify(new BajoStock($producto->id, $producto->descripcion, $producto->marca->nombre, $stock, $owner->id));
+                    }
                 }
             }
 
@@ -349,7 +357,7 @@ class Ventas extends Component
             //Crear notificacion y enviar el email
             // Obtener al dueño de la empresa con el rol "Dueño"
             $owner = User::role('Dueño')->first();
-            $owner->notify(new NuevaVenta($venta->id,$venta->user->name, $venta->total, $owner->id));
+            $owner->notify(new NuevaVenta($venta->id, $venta->user->name, $venta->total, $owner->id));
 
             //Crear un mensaje
             session()->flash('mensaje', 'Venta registrada con éxito');

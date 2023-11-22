@@ -19,12 +19,20 @@ class MostrarProducto extends Component
                            INNER JOIN almacenes a ON k.almacen_id = a.id 
                            WHERE k.producto_id = ? 
                            GROUP BY a.id", [$producto->id]);
+        
     }
 
 
-   
+
     public function render()
     {
-        return view('livewire.mostrar-producto');
+        $stock_total = DB::table('kardex')
+            ->where('producto_id', $this->producto->id)
+            ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
+            ->groupBy('producto_id')
+            ->value('stock');
+        return view('livewire.mostrar-producto',[
+            'stock_total' => $stock_total
+        ]);
     }
 }

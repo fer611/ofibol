@@ -424,7 +424,7 @@ return [
                     'target' => '_blank',
                 ],
                 [
-                    'text' => 'Poco Stock',
+                    'text' => 'Bajo Stock',
                     'url'  => 'dashboard/pdf',
                     /* Abrir en una nueva pestaña */
                     'target' => '_blank',
