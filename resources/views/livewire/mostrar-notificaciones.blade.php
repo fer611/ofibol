@@ -78,10 +78,29 @@
                                                 <strong>{{ $notificacion->data['producto_id'] }}</strong>) --}}
                                         <div>
                                             <div>
-                                                <a href="{{ route('productos.show', $notificacion->data['producto_id']) }}" class="btn btn-dark btn-sm"> <i
-                                                        class="fas fa-eye"></i> VER DETALLE</a>
-                                                
+                                                <a href="{{ route('productos.show', $notificacion->data['producto_id']) }}"
+                                                    class="btn btn-dark btn-sm"> <i class="fas fa-eye"></i> VER
+                                                    DETALLE</a>
+
                                             </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                {{-- Si es un ingreso... --}}
+                                @if ($notificacion->type === 'App\Notifications\NuevoIngreso')
+                                    {{-- Aca mostramos el vendedor, el total y la antigüedad de la notificación --}}
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="mb-0">Nuevo Ingreso Realizado por:
+                                                <strong>{{ $notificacion->data['usuario'] }}</strong> por un total de
+                                                <strong>{{ $notificacion->data['total'] }} Bs.</strong>
+                                            </p>
+                                            <strong>Hace {{ $notificacion->created_at->diffForHumans() }}</strong>
+                                        </div>
+                                        <div>
+                                            <a href="{{ route('ingresos.pdf', $notificacion->data['id_ingreso']) }}"
+                                                target="_blank" class="btn btn-danger btn-sm"> <i
+                                                    class="fas fa-file-pdf"></i> VER DETALLES</a>
                                         </div>
                                     </div>
                                 @endif

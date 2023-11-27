@@ -8,6 +8,8 @@ use App\Models\Ingreso;
 use App\Models\Kardex;
 use App\Models\Producto;
 use App\Models\Proveedor;
+use App\Models\User;
+use App\Notifications\NuevoIngreso;
 use Livewire\Component;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Exception;
@@ -100,7 +102,8 @@ class CrearIngreso extends Component
         $this->emit('scan-ok', 'Producto Agregado');
     }
 
-    public function ScanCode(){
+    public function ScanCode()
+    {
         /* Refrescar la pagina */
         return redirect()->route('ingresos.create');
     }
@@ -349,10 +352,13 @@ class CrearIngreso extends Component
 
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
-
-            /* $this->emit('sale-ok', 'Venta registrada con éxito'); */
+            //Crear notificacion y enviar el email
+            // Obtener al dueño de la empresa con el rol "Dueño"
+            $owner = User::role('Dueño')->first();
+            $owner->notify(new NuevoIngreso($ingreso->id, $ingreso->user->name, $ingreso->total, $owner->id));
+            
             //Crear un mensaje
-            session()->flash('mensaje', 'Venta registrada con éxito');
+            session()->flash('mensaje', 'Ingreso registrado con éxito');
             //Redireccionar al usuario
             return redirect()->route('ingresos.index');
             /* Evento para imprimir el ticket */
