@@ -21,12 +21,19 @@ class Ventas extends Component
 {
     public $total, $itemsQuantity, $efectivo, $cambio, $razon_social, $nit, $venta_sin_datos = false, $nitIsValid = true;
 
+    /* Atributos para mostrar el stock */
+    public $producto; //el producto que se mostrara en el modal de stock
+    public $stocks; //el stock en las diferentes sucursales
     public function mount()
     {
         $this->efectivo = 0;
         $this->cambio = 0;
         $this->total = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
+
+        /* Para el modal de stocks */
+        $this->stocks = [];
+        $this->producto = null;
     }
     public function render()
     {
@@ -73,7 +80,6 @@ class Ventas extends Component
                 ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
                 ->groupBy('producto_id')
                 ->value('stock');
-            /* validar si las existencias del producto son suficientes,por el momento lo ponemos en stock minimo(calcular entradas - salidas)  */
             if ($stock < 1) {
                 $this->emit('no-stock', 'Stock insuficiente :/');
                 //Crear un mensaje
@@ -87,9 +93,16 @@ class Ventas extends Component
             if ($producto->precio_venta == null || $producto->costo_actual == null) {
                 $this->emit('no-stock', 'El producto no tiene precio de venta o costo');
             }
-            /* Añadiendo el producto al carrito */
 
-            Cart::add($producto->id, $producto->descripcion, $producto->precio_venta, $cant, $producto->imagen);
+            /* Añadiendo el producto al carrito */
+            Cart::add(
+                $producto->id,
+                $producto->descripcion,
+                $producto->precio_venta,
+                $cant,
+                /* Esta parte se ponen atributos adicionales */
+                [$producto->imagen, $stock],
+            );
 
             /* Actualizando el total */
             $this->total = Cart::getTotal();
@@ -138,7 +151,14 @@ class Ventas extends Component
         }
 
         /* Actualiza la informacion en caso de que el producto ya exista en el carrito, en caso de que no exista lo inserta */
-        Cart::add($producto->id, $producto->descripcion, $producto->precio_venta, $cant, $producto->imagen);
+        Cart::add(
+            $producto->id,
+            $producto->descripcion,
+            $producto->precio_venta,
+            $cant,
+            /* Esta parte se ponen atributos adicionales */
+            [$producto->imagen, $stock],
+        );
 
         $this->total  = Cart::getTotal();
         $this->itemsQuantity = Cart::getTotalQuantity();
@@ -175,7 +195,14 @@ class Ventas extends Component
 
         $this->removeItem($producto->id);
         if ($cant > 0) {
-            Cart::add($producto->id, $producto->descripcion, $producto->precio_venta, $cant, $producto->imagen);
+            Cart::add(
+                $producto->id,
+                $producto->descripcion,
+                $producto->precio_venta,
+                $cant,
+                /* Esta parte se ponen atributos adicionales */
+                [$producto->imagen, $stock],
+            );
 
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
@@ -210,7 +237,14 @@ class Ventas extends Component
         /* Aca reducimos la cantidad del producto en el carrito */
         $newQty = ($item->quantity) - 1;
         if ($newQty > 0) {
-            Cart::add($item->id, $item->name, $item->price, $newQty, $item->attributes[0]);
+            Cart::add(
+                $item->id,
+                $item->name,
+                $item->price,
+                $newQty,
+                /* Esta parte se ponen atributos adicionales */
+                [$item->attributes[0], $item->attributes[1]],
+            );
         }
 
         $this->total = Cart::getTotal();
@@ -333,7 +367,7 @@ class Ventas extends Component
 
                     /* Aca volvemos a obtener el stock pero ya actualizado en kardex */
                     /* Obtenemos el stock para calcular el saldo */
-                    $stock = $stock-$item->quantity;
+                    $stock = $stock - $item->quantity;
                     if ($stock <= $producto->stock_minimo) {
                         //Crear notificacion y enviar el email
                         // Obtener al dueño de la empresa con el rol "Dueño"
@@ -426,5 +460,17 @@ class Ventas extends Component
             $this->nit = '';
             $this->razon_social = '';
         }
+    }
+
+    /* Obtener el stock de3 las distintas sucursales */
+    public function getStock(Producto $producto)
+    {
+        $this->producto = $producto;
+        $this->stocks = DB::select("SELECT a.nombre, SUM(entradas) - SUM(salidas) AS stock 
+                           FROM kardex k 
+                           INNER JOIN almacenes a ON k.almacen_id = a.id 
+                           WHERE k.producto_id = ? 
+                           GROUP BY a.id", [$producto->id]);
+        $this->emit('show-modal', 'details loaded');
     }
 }

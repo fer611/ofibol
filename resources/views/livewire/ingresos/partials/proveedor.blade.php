@@ -24,14 +24,14 @@
                                 @error('proveedor')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div>{{-- 
                             <div class="form-group">
                                 <label for="venta_sin_datos">Ingreso sin datos:</label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="venta_sin_datos" wire:model="venta_sin_datos">
                                     <label class="form-check-label" for="venta_sin_datos">Marcar si es un ingreso sin datos</label>
                                 </div>
-                            </div>
+                            </div> --}}
                             @if (session()->has('mensaje'))
                                 <div class="alert alert-dark alert-dismissible fade show">
                                     <button type="button" class="close" data-dismiss="alert">&times;</button>

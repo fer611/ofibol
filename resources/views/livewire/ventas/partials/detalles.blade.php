@@ -9,6 +9,7 @@
                                     <tr>
                                         <th width="10%">IMAGEN</th>
                                         <th width="25%" class="table-th text-left text-white">DESCRIPCIÓN</th>
+                                        <th data-toggle="tooltip" data-placement="top" title="Cantidad de productos en stock">STOCK</th>
                                         <th class="table-th text-center text-white">PRECIO</th>
                                         <th width="13%" class="table-th text-center text-white">CANTIDAD</th>
                                         <th class="table-th text-center text-white">IMPORTE</th>
@@ -31,6 +32,11 @@
                                             </td>
                                             <td>
                                                 <h6>{{ $item->name }}</h6>
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="#" wire:click.prevent="getStock({{ $item->id }})" data-toggle="tooltip" data-placement="top" title="Ver detalles del stock">
+                                                    {{ $item->attributes['1'] }}
+                                                </a>
                                             </td>
                                             <td class="text-center">Bs. {{ number_format($item->price, 2) }}</td>
                                             <td>
@@ -74,4 +80,41 @@
                 </div>
             </div>
         </div>
+        <!-- Modal para detalles de stock -->
+        <div class="modal fade" id="detallesStockModal" tabindex="-1" role="dialog"
+            aria-labelledby="detallesStockModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <!-- Contenido del modal -->
+                    <div class="modal-header text-white" style="background: #3B3F5C; color:white">
+                        <h5 class="modal-title" id="detallesStockModalLabel">
+                            Detalles del Stock -
+                            {{ $producto == null ? 'Producto no cargado' : $producto->descripcion }}
+                        </h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Iterar sobre las cantidades por sucursal -->
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="list-group">
+                                    @foreach ($stocks as $stock)
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{ $stock->nombre }}
+                                            <span class="badge badge-pill" style="background: #3B3F5C; color: white; font-size: 1.2em;">{{ $stock->stock }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>

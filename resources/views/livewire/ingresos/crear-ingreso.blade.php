@@ -11,7 +11,7 @@
             
         </div>
         <div class="col-sm-12 col-md-3">
-            {{-- CLIENTE --}}
+            {{-- PROVEEDOR --}}
             @include('livewire.ingresos.partials.proveedor')
             {{-- TOTAL  --}}
             @include('livewire.ingresos.partials.total')

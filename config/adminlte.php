@@ -349,9 +349,9 @@ return [
             'icon_color' => 'green',
             'can' => 'usuarios.index'
         ],
-        /* ALMACEN */
+        /* INVENTARIO */
         [
-            'text'    => 'Almacen',
+            'text'    => 'Inventario',
             'icon'    => 'fas fa-fw fa-boxes',
             'submenu' => [
                 [

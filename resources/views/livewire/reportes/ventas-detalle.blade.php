@@ -5,7 +5,7 @@
                 <h5 class="modal-title text-white">
                     <b> Detalle de Venta # {{ $ventaId }}</b> | {{ $selected_id > 0 ? 'EDITAR' : 'CREAR' }}
                 </h5>
-                <h6 class="text-center text-warning" wire_loading>POR FAVOR ESPERE</h6>
+                <h6 class="text-center text-warning" wire:loading >POR FAVOR ESPERE</h6>
             </div>
             <div class="modal-body">
                 <div class="table-responsive">

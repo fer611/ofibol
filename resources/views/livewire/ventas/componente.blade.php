@@ -47,4 +47,15 @@
             color: #fff;
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            //eventos
+            Livewire.on('show-modal', Msg => {
+                $('#detallesStockModal').modal('show');
+            });
+        });
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 </div>

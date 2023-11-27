@@ -108,7 +108,7 @@
                         extend: 'pdf',
                         /* orientacion de papel horizontal */
                         orientation: 'landscape',
-                        
+
                         //quiero que las columnas ocupen todo el ancho de la pagina
                         customize: function(doc) {
                             doc.defaultStyle.alignment = 'center';
@@ -196,6 +196,11 @@
                     });
                 }
             })
-        })
+        });
+
+        /* Script para tooltip*/
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
     </script>
 @stop

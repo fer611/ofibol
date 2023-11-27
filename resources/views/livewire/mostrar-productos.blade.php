@@ -38,8 +38,14 @@
                                                     alt="{{ 'Imagen producto ' . $producto->nombre }}"
                                                     class="img-fluid w-60 img-thumbnail my-custom-img"></td>
                                             <td>{{ $producto->barcode }}</td>
-                                            <td><a href="{{ route('productos.kardex', $producto) }}">
-                                                    {{ $producto->descripcion }} </a></td>
+                                            <td>
+                                                <a href="{{ route('productos.kardex', $producto) }}"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    title="Haz clic para ver el Kardex del producto">
+                                                    {{ $producto->descripcion }}
+                                                </a>
+                                            </td>
                                             <td>{{ $producto->stock }}</td>
                                             <td>{{ $producto->unidad_medida }}</td>
                                             {{-- <td
