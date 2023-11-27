@@ -27,7 +27,6 @@ class EditarProducto extends Component
     public $imagen;
     public $imagen_nueva;
     public $barcode;
-    public $fecha_vencimiento;
     use WithFileUploads;
 
     public function rules()
@@ -43,7 +42,6 @@ class EditarProducto extends Component
             'costo_actual' => 'required|numeric|min:0',
             'porcentaje_margen' => 'required|numeric|min:0',
             'precio_venta' => 'required|numeric|min:0',
-            'fecha_vencimiento' => 'nullable|date',
             'categoria' => 'required|exists:categorias,id',
             'imagen_nueva' => 'nullable|image|mimes:jpeg,png,jpg|max:1024',
         ];
@@ -64,7 +62,6 @@ class EditarProducto extends Component
         $this->porcentaje_margen = $producto->porcentaje_margen;
         $this->precio_venta = $this->costo_actual + ($this->costo_actual * $this->porcentaje_margen / 100);
         $this->imagen = $producto->imagen;
-        $this->fecha_vencimiento = $producto->fecha_vencimiento;
     }
 
     public function editarProducto()
@@ -76,12 +73,7 @@ class EditarProducto extends Component
             /* Aca almacenamos solo el nombre de la imagen en datos */
             $datos['imagen'] = str_replace('public/productos/', '', $imagen);
         }
-        /* Si el usuario manda una fecha vacia es decir eliminia el input de la fecha de 12/10/2023 a dd/mm*aaaa entonces como
-       valor no llega un dato null, sino que llega "" entonces el campo puede ir nulo pero no puede ir como "" cadena vacia por que
-       solo se acepta datos de tipo date o nullo */
-        if ($datos['fecha_vencimiento'] == "") {
-            $datos['fecha_vencimiento'] = null;
-        }
+        
 
         //Encontrar el producto a editar
         $producto = Producto::find($this->producto_id);
@@ -97,7 +89,7 @@ class EditarProducto extends Component
         $producto->costo_actual = $datos['costo_actual'];
         $producto->porcentaje_margen = $datos['porcentaje_margen'];
         $producto->precio_venta = $datos['costo_actual']*($datos['porcentaje_margen']/100) + $datos['costo_actual'];
-        $producto->fecha_vencimiento = $datos['fecha_vencimiento'];
+       
         /* Aca reescribimos, pero comprobamos si el usuario subio una nueva imagen asignamos el valor de producto y si no la misma imagen que tiene almacenada */
         $producto->imagen = $datos['imagen'] ?? $producto->imagen;
         //Guardar la vacante

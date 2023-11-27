@@ -24,7 +24,6 @@
                                         <th>Descripcion</th>
                                         <th>Stock</th>
                                         <th>Unidad Medida</th>
-                                        <th>Fecha de Vencimiento</th>
                                         <th>Precio_venta</th>
                                         <th>Estado</th>
                                         <th>Opciones</th>
@@ -43,14 +42,14 @@
                                                     {{ $producto->descripcion }} </a></td>
                                             <td>{{ $producto->stock }}</td>
                                             <td>{{ $producto->unidad_medida }}</td>
-                                            <td
+                                            {{-- <td
                                                 class="{{ $producto->fecha_vencimiento && now()->greaterThan($producto->fecha_vencimiento) ? 'bg-danger' : '' }}">
                                                 @if ($producto->fecha_vencimiento)
                                                     {{ \Carbon\Carbon::parse($producto->fecha_vencimiento)->format('d/n/Y') }}
                                                 @else
                                                     No Aplica
                                                 @endif
-                                            </td>
+                                            </td> --}}
                                             <td>{{ $producto->precio_venta ? $producto->precio_venta : 0 }}
                                             </td>
                                             <td>

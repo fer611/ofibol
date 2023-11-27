@@ -23,7 +23,6 @@ return new class extends Migration
             $table->decimal('precio_venta', 10, 2)->nullable();  // Precio de venta calculado
             $table->string('imagen')->nullable();  // Ruta de la imagen del producto, puede ser nulo
             $table->decimal('stock_minimo', 10, 2)->default(0); //stock 
-            $table->date('fecha_vencimiento')->nullable(); //fecha de vencimiento
             $table->char('estado', 1)->default('1');  // Estado del producto (1 para activo, 0 para inactivo)
 
             $table->foreign('categoria_id')->references('id')->on('categorias');

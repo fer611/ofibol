@@ -130,7 +130,7 @@
                     @enderror
                 </div>
                 {{-- Fecha de vencimiento del producto --}}
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="fecha_vencimiento">Fecha de Vencimiento (Opcional)</label>
                     <input type="date" class="form-control @error('fecha_vencimiento') is-invalid @enderror"
                         id="fecha_vencimiento" wire:model="fecha_vencimiento"
@@ -138,7 +138,7 @@
                     @error('fecha_vencimiento')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                </div>
+                </div> --}}
             </div>
             <!-- Tercera columna -->
             <div class="col-lg-4">

@@ -1,7 +1,7 @@
 
 @extends('adminlte::page')
 
-@section('title', 'Productos')
+@section('title', 'Editar Categoria')
 
 @section('content')
     <!-- Content Header (Page header) -->

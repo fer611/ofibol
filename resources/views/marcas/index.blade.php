@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'marcas')
+@section('title', 'Marcas')
 
 @section('content')
 

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Productos')
+@section('title', 'Roles')
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">

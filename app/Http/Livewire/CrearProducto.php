@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\File;
 
 class CrearProducto extends Component
 {
-    public $categoria, $origen, $marca, $stock_minimo, $unidad_medida, $cantidad_unidad, $descripcion, $fecha_vencimiento, $barcode;
+    public $categoria, $origen, $marca, $stock_minimo, $unidad_medida, $cantidad_unidad, $descripcion, $barcode;
 
     public $imagen;
     public $errorImagen = false;
@@ -30,7 +30,6 @@ class CrearProducto extends Component
         'unidad_medida' => 'required|string',
         'cantidad_unidad' => 'nullable|numeric|min:0',
         'descripcion' => 'required|string|max:255',
-        'fecha_vencimiento' => 'nullable|date',
         'barcode' => 'required|numeric|unique:productos,barcode',
         'imagen' => 'required|image|mimes:jpeg,png,jpg|max:1024',
     ];
@@ -53,7 +52,6 @@ class CrearProducto extends Component
             'unidad_medida' => $datos['unidad_medida'],
             'cantidad_unidad' => $datos['cantidad_unidad'],
             'stock_minimo' => $datos['stock_minimo'],
-            'fecha_vencimiento' => $datos['fecha_vencimiento'],
             'imagen' => $datos['imagen'],
             'estado' => '1',
         ]);

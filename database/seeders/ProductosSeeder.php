@@ -30,7 +30,6 @@ class ProductosSeeder extends Seeder
                 'origen_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-                'fecha_vencimiento' => '2023-10-12',
             ],
             [
                 'categoria_id' => '1',
@@ -48,7 +47,7 @@ class ProductosSeeder extends Seeder
                 'origen_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-                'fecha_vencimiento' => null,
+                
             ],
             [
                 'categoria_id' => '1',
@@ -66,7 +65,7 @@ class ProductosSeeder extends Seeder
                 'origen_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-                'fecha_vencimiento' => null,
+                
             ],
             [
                 'categoria_id' => '1',
@@ -84,7 +83,7 @@ class ProductosSeeder extends Seeder
                 'origen_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-                'fecha_vencimiento' => null,
+                
             ],
             [
                 'categoria_id' => '1',
@@ -102,7 +101,7 @@ class ProductosSeeder extends Seeder
                 'origen_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-                'fecha_vencimiento' => null,
+                
             ],
             [
                 'categoria_id' => '1',
@@ -120,7 +119,7 @@ class ProductosSeeder extends Seeder
                 'origen_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-                'fecha_vencimiento' => null,
+                
             ],
             [
                 'categoria_id' => '1',
@@ -138,7 +137,7 @@ class ProductosSeeder extends Seeder
                 'origen_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-                'fecha_vencimiento' => null,
+                
             ],
             [
                 'categoria_id' => '1',
@@ -156,7 +155,7 @@ class ProductosSeeder extends Seeder
                 'origen_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-                'fecha_vencimiento' => null,
+                
             ],
             [
                 'categoria_id' => '1',
@@ -174,7 +173,7 @@ class ProductosSeeder extends Seeder
                 'origen_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-                'fecha_vencimiento' => null,
+                
             ],
             [
                 'categoria_id' => '1',
@@ -192,7 +191,7 @@ class ProductosSeeder extends Seeder
                 'origen_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-                'fecha_vencimiento' => null,
+                
             ],
             [
                 'categoria_id' => '1',
@@ -210,7 +209,7 @@ class ProductosSeeder extends Seeder
                 'origen_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-                'fecha_vencimiento' => null,
+                
             ],
             [
                 'categoria_id' => '1',
@@ -228,7 +227,7 @@ class ProductosSeeder extends Seeder
                 'origen_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
-                'fecha_vencimiento' => null,
+                
             ],
         ]);
     }
