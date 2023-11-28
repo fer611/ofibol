@@ -9,7 +9,8 @@
                                     <tr>
                                         <th width="10%">IMAGEN</th>
                                         <th width="25%" class="table-th text-left text-white">DESCRIPCIÓN</th>
-                                        <th data-toggle="tooltip" data-placement="top" title="Cantidad de productos en stock">STOCK</th>
+                                        <th data-toggle="tooltip" data-placement="top"
+                                            title="Cantidad de productos en stock">STOCK</th>
                                         <th class="table-th text-center text-white">PRECIO</th>
                                         <th width="13%" class="table-th text-center text-white">CANTIDAD</th>
                                         <th class="table-th text-center text-white">IMPORTE</th>
@@ -34,7 +35,9 @@
                                                 <h6>{{ $item->name }}</h6>
                                             </td>
                                             <td class="text-center">
-                                                <a href="#" wire:click.prevent="getStock({{ $item->id }})" data-toggle="tooltip" data-placement="top" title="Ver detalles del stock">
+                                                <a href="#" wire:click.prevent="getStock({{ $item->id }})"
+                                                    data-toggle="tooltip" data-placement="top"
+                                                    title="Ver detalles del stock">
                                                     {{ $item->attributes['1'] }}
                                                 </a>
                                             </td>
@@ -100,12 +103,26 @@
                         <div class="row">
                             <div class="col-12">
                                 <ul class="list-group">
-                                    @foreach ($stocks as $stock)
+                                    @forelse ($stocks as $stock)
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            {{ $stock->nombre }}
-                                            <span class="badge badge-pill" style="background: #3B3F5C; color: white; font-size: 1.2em;">{{ $stock->stock }}</span>
+                                            @if (is_object($stock) && property_exists($stock, 'nombre'))
+                                                {{ $stock->nombre }}
+                                            @else
+                                                No hay nombre disponible
+                                            @endif
+                                            <span class="badge badge-pill"
+                                                style="background: #3B3F5C; color: white; font-size: 1.2em;">
+                                                @if (is_object($stock) && property_exists($stock, 'stock'))
+                                                    {{ $stock->stock }}
+                                                @else
+                                                    No hay stock disponible
+                                                @endif
+                                            </span>
                                         </li>
-                                    @endforeach
+                                    @empty
+                                        <li class="list-group-item">No hay stocks disponibles.</li>
+                                    @endforelse
+
                                 </ul>
                             </div>
                         </div>

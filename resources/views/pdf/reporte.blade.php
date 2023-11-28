@@ -50,11 +50,13 @@
                     <th class="text-center" width="5%">ID</th>
                     <th class="text-center" width="15%">FECHA</th>
                     <th class="text-center" width="10%">ESTADO</th>
-                    <th class="text-center" width="22%">USUARIO</th>
-                    <th class="text-center" width="22%">CLIENTE</th>
+                    <th class="text-center" width="15%">SUCURSAL</th>
+                    <th class="text-center" width="18%">USUARIO</th> 
+                    <th class="text-center" width="18%">CLIENTE</th> 
                     <th class="text-center" width="6%">ITEMS</th>
                     <th class="text-center" width="20%">TOTAL</th>
                 </tr>
+                
             </thead>
             <tbody>
                 @foreach ($data as $item)
@@ -62,6 +64,7 @@
                         <td class="text-center">{{ $item->id }}</td>
                         <td class="text-center">{{ $item->created_at->format('d/n/Y') }}</td>
                         <td>{{ $item->estado }}</td>
+                        <td>{{ $item->almacen->nombre }}</td>
                         <td>{{ $item->user->name }}</td>
                         <td>{{ $item->cliente->razon_social }}</td>
                         <td align="right">{{ number_format($item->items, 2) }}</td>

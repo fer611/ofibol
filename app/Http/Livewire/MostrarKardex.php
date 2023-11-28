@@ -10,7 +10,6 @@ use Livewire\Component;
 class MostrarKardex extends Component
 {
     public $producto;
-
     public function mount(Producto $producto)
     {
         $this->producto = $producto;
@@ -31,6 +30,7 @@ class MostrarKardex extends Component
             ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
             ->groupBy('producto_id')
             ->value('stock');
+        
         return view('livewire.mostrar-kardex',[
             'kardex' => $kardex,
             'totalEntradas' => $totalEntradas,

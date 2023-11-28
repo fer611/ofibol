@@ -30,7 +30,7 @@
                 {{ $producto->costo_actual == null ? 'No se registró ninguna entrada' : $producto->costo_actual }}</p>
             <p><strong>Porcentaje de Margen:</strong> {{ $producto->porcentaje_margen }}%</p>
             <p><strong>Precio de Venta:</strong>
-                {{ $producto->precio_venta }} (Bs.)</p>
+                {{ $producto->precio_venta == null ? 'No se registró ninguna entrada' : $producto->precio_venta }} (Bs.)</p>
             <p><strong>Stock Mínimo:</strong> {{ $producto->stock_minimo }}</p>
             <p><strong>Estado:</strong> {{ $producto->estado === '1' ? 'Activo' : 'Inactivo' }}</p>
 
@@ -41,7 +41,7 @@
                     <li> <strong> {{ $stock->nombre }}: </strong> {{ $stock->stock }} unidades</li>
                 @endforeach
             </ul>
-            <h4>Stock total: <span>{{ $stock_total }}</span></h4>
+            <h4>Stock total: <span>{{ $stock_total == null ? 'No se registró ninguna entrada' : $stock_total}}</span></h4>
         </div>
     </div>
     <!-- Modal Para realizar el traspaso-->

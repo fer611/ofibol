@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Almacen;
 use App\Models\Cliente;
 use App\Models\Denominacion;
 use App\Models\DetalleVenta;
@@ -20,7 +21,7 @@ use Livewire\Component;
 class Ventas extends Component
 {
     public $total, $itemsQuantity, $efectivo, $cambio, $razon_social, $nit, $venta_sin_datos = false, $nitIsValid = true;
-
+    public $almacen;
     /* Atributos para mostrar el stock */
     public $producto; //el producto que se mostrara en el modal de stock
     public $stocks; //el stock en las diferentes sucursales
@@ -34,12 +35,15 @@ class Ventas extends Component
         /* Para el modal de stocks */
         $this->stocks = [];
         $this->producto = null;
+        $this->almacen = 3;
     }
     public function render()
     {
+        $almacenes = Almacen::all();
         $carrito = Cart::getContent()->sortBy('barcode');
         return view('livewire.ventas.componente', [
             'carrito' => $carrito,
+            'almacenes' => $almacenes
         ]);
     }
 
@@ -271,7 +275,15 @@ class Ventas extends Component
 
     public function guardarVenta()
     {
+        
         /* dd($this->total.'|'.$this->efectivo.'|'.$this->itemsQuantity.'|'.$this->cambio.'|'.auth()->user()->id); */
+
+        /* Validando que se ingrese el almacen */
+        $almacenExiste = Almacen::where('id', $this->almacen)->first();
+        if (!$almacenExiste) {
+            $this->addError('almacen', 'El almacén seleccionado no existe');
+            return;
+        }
 
         /* Validando que se ingrese un nit que existe en el campo de clientes */
         $clienteExiste = Cliente::where('nit', $this->nit)->first();
@@ -329,6 +341,7 @@ class Ventas extends Component
                 'cambio' => $this->cambio,
                 'user_id' => auth()->user()->id,
                 'cliente_id' => $cliente->id,
+                'almacen_id' => $almacenExiste->id
             ]);
             if ($venta) {
                 $items = Cart::getContent();
@@ -359,7 +372,7 @@ class Ventas extends Component
                         'entradas' => 0,
                         'salidas' => $item->quantity,
                         /* Aca por defecto la salida debe ser del almacen punto de venta Ofibol*/
-                        'almacen_id' => 3,
+                        'almacen_id' => $almacenExiste->id,
                         'precio_producto' => $producto->costo_actual,
                         'saldo' => $producto->costo_actual * ($stock - $item->quantity),
                         'user_id' => auth()->user()->id,

@@ -94,7 +94,7 @@
                             <span class="input-group-text">Bs.</span>
                         </div>
                         <input type="text" class="form-control @error('costo_actual') is-invalid @enderror"
-                            id="costo_actual" wire:model="costo_actual" placeholder="Ej. 12,2">
+                            id="costo_actual" wire:model="costo_actual" placeholder="Ej. 12,2" readonly>
                         @error('costo_actual')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -106,7 +106,7 @@
                     <label for="porcentaje_margen">Porcentaje de Margen</label>
                     <input type="number" class="form-control @error('porcentaje_margen') is-invalid @enderror"
                         id="porcentaje_margen" wire:model="porcentaje_margen"
-                        placeholder="Ingrese el porcentaje de margen">
+                        placeholder="Ingrese el porcentaje de margen" wire:input.debounce.500ms="calcularPrecioVenta">
                     @error('porcentaje_margen')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -114,21 +114,37 @@
                 <!-- Precio de Venta -->
                 <div class="form-group">
                     <label for="precio_venta">Precio de Venta</label>
-                    <input type="number" class="form-control @error('precio_venta') is-invalid @enderror"
-                        id="precio_venta" wire:model="precio_venta" readonly>
-                    @error('precio_venta')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Bs.</span>
+                        </div>
+                        <input type="text" class="form-control @error('precio_venta') is-invalid @enderror"
+                            id="precio_venta" wire:model="precio_venta" readonly>
+                        @error('precio_venta')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
                 <!-- Codigo de barras del producto -->
                 <div class="form-group">
                     <label for="barcode">Codigo de Barras</label>
-                    <input type="text" class="form-control @error('barcode') is-invalid @enderror" id="barcode"
-                        wire:model="barcode" placeholder="Ingrese el barcode del producto">
+                    <div class="input-group">
+                        <input type="text" class="form-control @error('barcode') is-invalid @enderror"
+                            id="barcode" wire:model="barcode" placeholder="Ingrese el barcode del producto">
+                        <div class="input-group-append">
+                            <button class="btn" style="background: #3B3F5C; color:white" type="button"
+                                id="generateBarcodeBtn" wire:click='generarBarcode'>Generar</button>
+                        </div>
+                    </div>
                     @error('barcode')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <p class="text-sm text-red">{{ $message }}</p>
                     @enderror
+                    {{-- si barcode tiene un valor y sea numerico... --}}
+                    @if ($barcode != null && is_numeric($barcode))
+                        {!! DNS1D::getBarcodeHTML("$barcode", 'CODABAR', 2, 50) !!}
+                    @endif
                 </div>
+
                 {{-- Fecha de vencimiento del producto --}}
                 {{-- <div class="form-group">
                     <label for="fecha_vencimiento">Fecha de Vencimiento (Opcional)</label>
@@ -179,6 +195,6 @@
             <!-- Botón de envío -->
             <button type="submit" class="btn btn-dark w-100">Guardar Cambios</button>
         </div>
-</div>
-</form>
+
+    </form>
 </div>

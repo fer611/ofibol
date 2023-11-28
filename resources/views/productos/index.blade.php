@@ -202,5 +202,13 @@
         $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip();
         });
+
+        /* Evento de livewire */
+        document.addEventListener('DOMContentLoaded', function() {
+            //eventos
+            Livewire.on('show-modal', Msg => {
+                $('#detallesStockModal').modal('show');
+            });
+        });
     </script>
 @stop

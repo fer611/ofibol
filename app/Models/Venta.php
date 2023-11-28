@@ -17,7 +17,8 @@ class Venta extends Model
         'cambio',
         'estado',
         'user_id',
-        'cliente_id'
+        'cliente_id',
+        'almacen_id'
     ];
 
 
@@ -32,5 +33,10 @@ class Venta extends Model
     {
         //pertenece a
         return $this->belongsTo(Cliente::class);
+    }
+
+    public function almacen(){
+        //pertenece a
+        return $this->belongsTo(Almacen::class);
     }
 }

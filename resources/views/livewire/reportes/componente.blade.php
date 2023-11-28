@@ -64,6 +64,7 @@
                                         <th class="table-th text-white text-center">TOTAL</th>
                                         <th class="table-th text-white text-center">ITEMS</th>
                                         <th class="table-th text-white text-center">ESTADO</th>
+                                        <th class="table-th text-white text-center">SUCURSAL</th>
                                         <th class="table-th text-white text-center">USUARIO</th>
                                         <th class="table-th text-white text-center">CLIENTE</th>
                                         <th class="table-th text-white text-center">FECHA</th>
@@ -91,6 +92,9 @@
                                             </td>
                                             <td class="text-center">
                                                 <h6>{{ $d->estado }}</h6>
+                                            </td>
+                                            <td class="text-center">
+                                                <h6>{{ $d->almacen->nombre }}</h6>
                                             </td>
                                             <td class="text-center">
                                                 <h6>{{ $d->user->name }}</h6>

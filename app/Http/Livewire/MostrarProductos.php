@@ -9,8 +9,16 @@ use Livewire\Component;
 class MostrarProductos extends Component
 {
     protected $listeners = ['activarProducto', 'inactivarProducto'];
+    /* Atributos para mostrar el stock en cada sucursal */
 
-    
+    public $productoStock;
+    public $stocks;
+
+    public function mount(){
+        /* Para el modal de stocks */
+        $this->stocks = [];
+        $this->productoStock = null;
+    }
     public function activarProducto(Producto $producto)
     {
         // Cambia el estado del producto a activo (1)
@@ -23,6 +31,17 @@ class MostrarProductos extends Component
         $producto->estado = '0';
         $producto->save();
     }
+    public function getStock(Producto $producto)
+    {
+        $this->productoStock = $producto;
+        $this->stocks = DB::select("SELECT a.nombre, SUM(entradas) - SUM(salidas) AS stock 
+                           FROM kardex k 
+                           INNER JOIN almacenes a ON k.almacen_id = a.id 
+                           WHERE k.producto_id = ? 
+                           GROUP BY a.id", [$producto->id]);
+        $this->emit('show-modal', 'details loaded');
+    }
+
     public function render()
     {
         // Obtener todos los productos

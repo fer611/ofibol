@@ -18,16 +18,16 @@
                                         class="form-control @error('nit') is-invalid @enderror" id="nit"
                                         wire:model='nit' placeholder="Ingrese el NIT del Cliente"
                                         @if ($venta_sin_datos) readonly @endif>
-                                    
+
                                     <div class="input-group-append">
                                         <button class="btn btn-dark" type="button" wire:click='buscarCliente'>
                                             <i class="fas fa-search"></i> Buscar
                                         </button>
                                     </div>
-                                    
-                                @error('nit')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+
+                                    @error('nit')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -49,6 +49,25 @@
                                         datos</label>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="almacen" data-toggle="tooltip" data-placement="top" title="Seleccione solo si la venta se realiza desde otra sucursal.">
+                                    Seleccione la sucursal:
+                                </label>
+                                <select class="form-control @error('almacen') is-invalid @enderror" id="almacen" wire:model="almacen">
+                                    <option value="">Seleccione un almacén</option>
+                                    @foreach ($almacenes as $almacenOption)
+                                        <option value="{{ $almacenOption->id }}" {{ $almacenOption->id == 3 ? 'selected' : '' }}>
+                                            {{ $almacenOption->nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('almacen')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            
+
                             @if (session()->has('mensaje'))
                                 <div class="alert btn-dark alert-dismissible fade show">
                                     <button type="button" class="close" data-dismiss="alert">&times;</button>

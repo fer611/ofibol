@@ -40,13 +40,33 @@
                                             <td>{{ $producto->barcode }}</td>
                                             <td>
                                                 <a href="{{ route('productos.kardex', $producto) }}"
-                                                    data-toggle="tooltip"
-                                                    data-placement="top"
+                                                    data-toggle="tooltip" data-placement="top"
                                                     title="Haz clic para ver el Kardex del producto">
                                                     {{ $producto->descripcion }}
                                                 </a>
                                             </td>
-                                            <td>{{ $producto->stock }}</td>
+                                            <!-- Modificar la celda de stock en tu tabla -->
+                                            <!-- Modificar la celda de stock en tu tabla -->
+                                            <td align="right">
+                                                <strong>
+                                                    <button class="btn btn-link p-0"
+                                                        wire:click.prevent="getStock({{ $producto->id }})"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Ver detalles del stock">
+                                                        <span
+                                                            class="badge badge-pill
+                @if ($producto->stock <= $producto->stock_minimo) bg-danger text-black
+                @elseif ($producto->stock <= $producto->stock_minimo + 10)
+                    bg-warning text-black
+                @else
+                    bg-success text-white @endif"
+                                                            style="font-size: 1em">
+                                                            {{ $producto->stock == intval($producto->stock) ? number_format($producto->stock, 0) : number_format($producto->stock, 2) }}
+                                                        </span>
+                                                    </button>
+                                                </strong>
+                                            </td>
+
                                             <td>{{ $producto->unidad_medida }}</td>
                                             {{-- <td
                                                 class="{{ $producto->fecha_vencimiento && now()->greaterThan($producto->fecha_vencimiento) ? 'bg-danger' : '' }}">
@@ -56,7 +76,8 @@
                                                     No Aplica
                                                 @endif
                                             </td> --}}
-                                            <td>{{ $producto->precio_venta ? $producto->precio_venta : 0 }}
+                                            <td align="right">
+                                                {{ $producto->precio_venta ? $producto->precio_venta : 0 }}
                                             </td>
                                             <td>
                                                 <span
@@ -76,11 +97,11 @@
                                                 @endcan
                                                 {{-- Eliminar --}}
                                                 @can('productos.destroy')
-                                                <button type="button"
-                                                    wire:click="$emit('{{ $producto->estado === '1' ? 'alertaInactivar' : 'alertaActivar' }}',{{ $producto->id }})"
-                                                    class="btn btn-outline-{{ $producto->estado === '1' ? 'danger' : 'success' }} btn-sm delete-button"><i
-                                                        class="fas {{ $producto->estado === '1' ? 'fa-trash-alt' : 'fa-check' }}"></i>
-                                                </button>
+                                                    <button type="button"
+                                                        wire:click="$emit('{{ $producto->estado === '1' ? 'alertaInactivar' : 'alertaActivar' }}',{{ $producto->id }})"
+                                                        class="btn btn-outline-{{ $producto->estado === '1' ? 'danger' : 'success' }} btn-sm delete-button"><i
+                                                            class="fas {{ $producto->estado === '1' ? 'fa-trash-alt' : 'fa-check' }}"></i>
+                                                    </button>
                                                 @endcan
                                             </td>
                                         </tr>
@@ -108,6 +129,44 @@
                         {{-- Aca el formulario --}}
                         <livewire:crear-producto />
                         {{-- Modal para crear productos --}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para detalles de stock -->
+        <div class="modal fade" id="detallesStockModal" tabindex="-1" role="dialog"
+            aria-labelledby="detallesStockModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <!-- Contenido del modal -->
+                    <div class="modal-header text-white" style="background: #3B3F5C; color:white">
+                        <h5 class="modal-title" id="detallesStockModalLabel">
+                            Detalles del Stock -
+                            {{ $productoStock == null ? 'Producto no cargado' : $productoStock->descripcion }}
+                        </h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Iterar sobre las cantidades por sucursal -->
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="list-group">
+                                    @foreach ($stocks as $stock)
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{ $stock->nombre }}
+                                            <span class="badge badge-pill"
+                                                style="background: #3B3F5C; color: white; font-size: 1.2em;">{{ $stock->stock }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

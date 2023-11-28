@@ -32,7 +32,7 @@ class EditarProducto extends Component
     public function rules()
     {
         return [
-            'barcode' => 'required|string|max:50|unique:productos,barcode,' . $this->producto_id,
+            'barcode' => 'required|numeric||unique:productos,barcode,' . $this->producto_id,
             'descripcion' => 'required|string',
             'marca' => 'required|exists:marcas,id',
             'origen' => 'required|exists:origenes,id',
@@ -101,6 +101,27 @@ class EditarProducto extends Component
     }
 
 
+
+     public function updated($field)
+    {
+        if ($field === 'costo_actual' || $field === 'porcentaje_margen') {
+            $this->calcularPrecioVenta();
+        }
+    }
+
+    public function calcularPrecioVenta()
+    {
+        if ($this->costo_actual && $this->porcentaje_margen) {
+            $this->precio_venta = $this->costo_actual + ($this->costo_actual * $this->porcentaje_margen / 100);
+        }
+    }
+    public function generarBarcode(){
+        // Generar un número aleatorio como código de barras (puedes ajustarlo según tus necesidades)
+        $codigoGenerado = rand(100000000, 999999999);
+    
+        // Mostrar el código de barras generado
+        $this->barcode = $codigoGenerado;
+    }
     public function render()
     {
 

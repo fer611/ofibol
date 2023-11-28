@@ -22,6 +22,7 @@
                                         <th>Items</th>
                                         <th>Pago</th>
                                         <th>Cambio</th>
+                                        <th>Sucursal</th>
                                         <th>Vendedor</th>
                                         <th>Cliente</th>
                                         <th>Estado</th>
@@ -37,6 +38,7 @@
                                             <td>{{ $venta->items }}</td>
                                             <td>Bs. {{ $venta->cash }} </td>
                                             <td>Bs. {{ $venta->cambio }}</td>
+                                            <td>{{ $venta->almacen->nombre }}</td>
                                             <td>{{ $venta->user->name }}</td>
                                             <td>{{ $venta->cliente->razon_social }}</td>
                                             </td>

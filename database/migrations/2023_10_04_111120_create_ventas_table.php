@@ -25,7 +25,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             /* Agregamos la columna cliente_id como clave foránea */
             $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
-
+            /* Agregamos la columna de venta_id como clave foranea */
+            $table->foreignId('almacen_id')->constrained('almacenes')->onDelete('cascade');
             $table->timestamps();
         });
     }
