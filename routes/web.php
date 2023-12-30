@@ -7,7 +7,9 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\IngresoController;
+use App\Http\Controllers\LicitacionController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\ProductoController;
@@ -41,7 +43,7 @@ Route::get('/home', function () {
 
 Route::get('/dashboard',[DashboardController::class, 'index'])->middleware(['auth', 'verified','estado','rol.cliente','can:dashboard'])->name('dashboard');
 
-Route::get('datatable/users',[DatatableController::class,'user'])->name('datatable.user');
+/* Route::get('datatable/users',[DatatableController::class,'user'])->name('datatable.user'); */
 
 Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function () {
 
@@ -153,6 +155,24 @@ Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function
 
     //Ruta para el acceso al backup
     Route::get('/backup', [BackupController::class, 'index'])->name('backup.index');
+
+
+    //Rutas para licitaciones
+    Route::get('/licitaciones', [LicitacionController::class, 'index'])->name('licitaciones.index'); 
+    Route::get('/licitaciones/create', [LicitacionController::class, 'create'])->name('licitaciones.create');
+    Route::post('/licitaciones', [LicitacionController::class,'store'])->name('licitaciones.store');
+    Route::get('/licitaciones/{usuario}/edit', [LicitacionController::class, 'edit'])->name('licitaciones.edit');
+    Route::put('/licitaciones/{usuario}', [LicitacionController::class, 'update'])->name('licitaciones.update');
+    Route::delete('/licitaciones/{usuario}', [LicitacionController::class, 'destroy'])->name('licitaciones.destroy');
+
+    //rutas para el seguimiento de pagos mediante facturas
+    Route::get('/facturas', [FacturaController::class, 'index'])->name('facturas.index'); 
+    Route::get('/facturas/create', [FacturaController::class, 'create'])->name('facturas.create');
+    Route::post('/facturas', [FacturaController::class,'store'])->name('facturas.store');
+    Route::get('/facturas/{usuario}/edit', [FacturaController::class, 'edit'])->name('facturas.edit');
+    Route::put('/facturas/{usuario}', [FacturaController::class, 'update'])->name('facturas.update');
+    Route::delete('/facturas/{usuario}', [FacturaController::class, 'destroy'])->name('facturas.destroy');
+
 });
 
 

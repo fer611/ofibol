@@ -16,8 +16,6 @@
             </form>
         </li>
     </ul>
-    
-    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             livewire.on('scan-code', action =>{

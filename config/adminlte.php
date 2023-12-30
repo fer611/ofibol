@@ -331,6 +331,21 @@ return [
             'icon' => 'fas fa-fw fa-tachometer-alt',
             /* 'icon_color' => 'blue', */
         ],
+        //Facturas
+        [
+            'text'    => 'Facturas',
+            'icon'    => 'fas fa-fw fa-receipt',
+            'url' => 'facturas',
+            'can' => 'usuarios.index',
+            'icon_color' => 'green',
+        ],
+        //Licitaciones
+        [
+            'text'    => 'Licitaciones',
+            'icon'    => 'fas fa-fw fa-file-signature',
+            'url' => 'licitaciones',
+            'can' => 'usuarios.index'
+        ],
         //Administracion
         [
             'text'    => 'Administración',
