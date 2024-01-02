@@ -1,8 +1,14 @@
 <div class="container-fluid rounded p-4">
+    @if (session()->has('mensaje'))
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ session('mensaje') }}
+        </div>
+    @endif
     <form wire:submit.prevent="crearFactura" novalidate>
         <div class="row">
 
-            <div class="col-lg-12">
+            <div class="col-lg-6">
 
                 <!-- Seleccionar Cliente -->
                 {{-- <div class="form-group">
@@ -19,8 +25,8 @@
                 </div> --}}
                 <div class="form-group">
                     <label for="nit">NIT</label>
-                    <input type="text" class="form-control @error('nit') is-invalid @enderror"
-                        id="nit" wire:model="nit" placeholder="Ingrese el número de la factura">
+                    <input type="text" class="form-control @error('nit') is-invalid @enderror" id="nit"
+                        wire:model="nit" placeholder="Ingrese el NIT/CI del cliente">
                     @error('nit')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -28,7 +34,7 @@
                 <div class="form-group">
                     <label for="razon_social">RAZON SOCIAL</label>
                     <input type="text" class="form-control @error('razon_social') is-invalid @enderror"
-                        id="razon_social" wire:model="razon_social" placeholder="Ingrese el número de la factura">
+                        id="razon_social" wire:model="razon_social" placeholder="Ingrese la razon social del cliente">
                     @error('razon_social')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -47,7 +53,7 @@
                     <select class="form-control @error('categoria') is-invalid @enderror" id="categoria"
                         wire:model="categoria">
                         <option value="">-- Seleccione --</option>
-                        <option value="Material De Escritorio">Material De Escritorio</option>
+                        <option value="Material De Escritorio" selected>Material De Escritorio</option>
                         <option value="Material De Limpieza">Material De Limpieza</option>
                     </select>
                     @error('categoria')
@@ -64,7 +70,8 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-
+            </div>
+            <div class="col-lg-6">
                 <!-- Fecha -->
                 <div class="form-group">
                     <label for="fecha">Fecha de Emisión</label>
@@ -101,6 +108,17 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+
+                <!-- Nota -->
+                <div class="form-group">
+                    <label for="nota">Nota</label>
+                    <textarea class="form-control @error('nota') is-invalid @enderror" id="nota" wire:model="nota"></textarea>
+                    <small class="text-muted">Máximo 255 caracteres</small>
+                    @error('nota')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                
             </div>
         </div>
 

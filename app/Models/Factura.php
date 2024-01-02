@@ -15,7 +15,8 @@ class Factura extends Model
         'fecha',
         'total',
         'estado',
-        'categoria'
+        'categoria',
+        'nota'
     ];
 
     //Relaciones

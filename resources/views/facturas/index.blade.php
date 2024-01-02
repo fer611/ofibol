@@ -115,7 +115,7 @@
                                 // Exportar solo las filas que están actualmente en la vista (las que se muestran)
                                 page: 'current'
                             },
-                            columns: ':not(:eq(6))' //excluyendo la fila de opciones
+                            columns: ':not(:eq(8))' //excluyendo la fila de opciones
                         },
                     },
                     {
@@ -127,7 +127,7 @@
                                 // Exportar solo las filas que están actualmente en la vista (las que se muestran)
                                 page: 'current'
                             },
-                            columns: ':not(:eq(6))' // Excluye la columna 11 y 13 (0-indexadas)
+                            columns: ':not(:eq(8))' // Excluye la columna 11 y 13 (0-indexadas)
                         }
                     }, {
                         extend: 'print',
@@ -137,7 +137,7 @@
                                 // Exportar solo las filas que están actualmente en la vista (las que se muestran)
                                 page: 'current'
                             },
-                            columns: ':not(:eq(6))' //excluyendo la fila de opcionesF
+                            columns: ':not(:eq(8))' //excluyendo la fila de opcionesF
                         },
                     }, {
                         extend: 'colvis',
@@ -146,6 +146,14 @@
                 ]
             });
             table.buttons().container().appendTo('#clientes_wrapper .col-md-6:eq(0)');
+        });
+
+        /* Evento de livewire */
+        document.addEventListener('DOMContentLoaded', function() {
+            //eventos
+            Livewire.on('show-modal', Msg => {
+                $('#notaModal').modal('show');
+            });
         });
     </script>
 
