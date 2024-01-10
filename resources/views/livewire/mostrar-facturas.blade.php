@@ -33,7 +33,7 @@
                                     @foreach ($facturas as $factura)
                                         <tr>
                                             <td>{{ $factura->id }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($factura->fecha)->format('d/m/Y') }}</td>
+                                            <td>{{ $factura->fecha !=null ? \Carbon\Carbon::parse($factura->fecha)->format('d/m/Y') : '' }}</td>
                                             <td>{{ $factura->cliente->razon_social }}</td>
                                             <td>{{ $factura->cliente->nit }}</td>
                                             <td>{{ $factura->numero_factura }}</td>
@@ -57,7 +57,7 @@
                                                 @can('usuarios.edit')
                                                     {{-- Editar --}}
                                                     <a class="btn btn-warning btn-sm mr-1 mb-1 edit-button"
-                                                        href="{{ route('clientes.edit', $factura->id) }}"><i
+                                                        href="{{ route('facturas.edit', $factura->id) }}"><i
                                                             class="fas fa-pen"></i></a>
                                                     {{-- Eliminar --}}
                                                     </button>

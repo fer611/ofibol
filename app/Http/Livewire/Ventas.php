@@ -22,6 +22,9 @@ class Ventas extends Component
 {
     public $total, $itemsQuantity, $efectivo, $cambio, $razon_social, $nit, $venta_sin_datos = false, $nitIsValid = true;
     public $almacen;
+    public $productos;
+    /* Para el buscador */
+    public $buscar = '';
     /* Atributos para mostrar el stock */
     public $producto; //el producto que se mostrara en el modal de stock
     public $stocks; //el stock en las diferentes sucursales
@@ -39,6 +42,11 @@ class Ventas extends Component
     }
     public function render()
     {
+        if (empty($this->buscar)) {
+            $this->productos = Producto::where('descripcion', $this->buscar)->get();
+        } else {
+            $this->productos = Producto::where('descripcion', 'like', '%' . $this->buscar . '%')->get();
+        }
         $almacenes = Almacen::all();
         $carrito = Cart::getContent()->sortBy('barcode');
         return view('livewire.ventas.componente', [
@@ -62,7 +70,79 @@ class Ventas extends Component
         'clearCart' => 'clearCart',
         'saveSale' => 'saveSale',
     ];
+    function agregarProducto($id = null, $cant = 1)
+    {
 
+        /* Buscando el producto */
+        $producto = Producto::where('barcode', $this->buscar)->first();
+
+        /* Para agregar un producto al carrito existen dos casos, 1 cuando se manda como parametro
+        $id desde el boton agregar del filtrado de productos
+        y 2. cuando se manda directamente un codigo de barras (lector optico) */
+        /* Para empezar, si $id es null eso quiere decir que se ingresaron datos
+        por el input de busqueda (Lector de barcode), entonces */
+
+        if ($id == null) {
+            /* Buscamos por el codigo de barras */
+            /* Importante: Aquí usamos $this->buscar por que es el wire:model del campo de entrada,
+        es decir que no necesitamos pedirlo como parametro,sino usarlo directamente */
+            $producto = Producto::where('barcode', $this->buscar)->first();
+            if ($producto == null || empty($producto)) {
+                $this->emit('scan-notfound', 'El producto no esta registrado');
+                return;
+            }
+        } else {
+            /* Si se manda un dato por el boton de agregar, entonces buscamos el producto
+            por el dato que se envia, en este caso id */
+            $producto = Producto::find($id);
+            if ($producto == null || empty($producto)) {
+                $this->emit('scan-notfound', 'El producto no esta registrado');
+                return;
+            }
+        }
+        //una vez tengamos el producto...
+
+        if ($this->InCart($producto->id)) {
+            /* En el caso de que el producto ya existe en el carrito */
+            $this->increaseQty($producto->id);
+            return;
+        }
+        /* Obteniendo el stock del producto */
+        $stock = DB::table('kardex')
+            ->where('producto_id', $producto->id)
+            ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
+            ->groupBy('producto_id')
+            ->value('stock');
+        if ($stock < 1) {
+            $this->emit('no-stock', 'Stock insuficiente :/');
+            //Crear un mensaje
+            return;
+        }
+        /* Aca validamos si el producto esta activo */
+        if ($producto->estado == '0') {
+            $this->emit('no-stock', 'El producto esta Inactivo');
+            return;
+        }
+        if ($producto->precio_venta == null || $producto->costo_actual == null) {
+            $this->emit('no-stock', 'El producto no tiene precio de venta o costo');
+        }
+
+        /* Añadiendo el producto al carrito */
+        Cart::add(
+            $producto->id,
+            $producto->descripcion,
+            $producto->precio_venta,
+            $cant,
+            /* Esta parte se ponen atributos adicionales */
+            [$producto->imagen, $stock],
+        );
+
+        /* Actualizando el total */
+        $this->total = Cart::getTotal();
+        $this->itemsQuantity = Cart::getTotalQuantity();
+        /* Finalmente emitimos el evento */
+        $this->emit('scan-ok', 'Producto Agregado');
+    }
     function ScanCode($barcode, $cant = 1)
     {
         /* Buscando el producto */
@@ -275,7 +355,7 @@ class Ventas extends Component
 
     public function guardarVenta()
     {
-        
+
         /* dd($this->total.'|'.$this->efectivo.'|'.$this->itemsQuantity.'|'.$this->cambio.'|'.auth()->user()->id); */
 
         /* Validando que se ingrese el almacen */

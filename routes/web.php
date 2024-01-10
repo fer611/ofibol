@@ -169,9 +169,9 @@ Route::middleware(['auth', 'verified',  'estado','rol.cliente'])->group(function
     Route::get('/facturas', [FacturaController::class, 'index'])->name('facturas.index'); 
     Route::get('/facturas/create', [FacturaController::class, 'create'])->name('facturas.create');
     Route::post('/facturas', [FacturaController::class,'store'])->name('facturas.store');
-    Route::get('/facturas/{usuario}/edit', [FacturaController::class, 'edit'])->name('facturas.edit');
-    Route::put('/facturas/{usuario}', [FacturaController::class, 'update'])->name('facturas.update');
-    Route::delete('/facturas/{usuario}', [FacturaController::class, 'destroy'])->name('facturas.destroy');
+    Route::get('/facturas/{factura}/edit', [FacturaController::class, 'edit'])->name('facturas.edit');
+    Route::put('/facturas/{factura}', [FacturaController::class, 'update'])->name('facturas.update');
+    Route::delete('/facturas/{factura}', [FacturaController::class, 'destroy'])->name('facturas.destroy');
 
 });
 

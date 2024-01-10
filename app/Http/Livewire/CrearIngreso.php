@@ -356,7 +356,7 @@ class CrearIngreso extends Component
             // Obtener al dueño de la empresa con el rol "Dueño"
             $owner = User::role('Dueño')->first();
             $owner->notify(new NuevoIngreso($ingreso->id, $ingreso->user->name, $ingreso->total, $owner->id));
-            
+
             //Crear un mensaje
             session()->flash('mensaje', 'Ingreso registrado con éxito');
             //Redireccionar al usuario

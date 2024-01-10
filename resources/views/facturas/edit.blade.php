@@ -12,9 +12,9 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header text-center bg-dark">
-                        <h3><strong> EDITAR CLIENTE </strong></h3>
+                        <h3><strong> EDITAR FACTURA </strong></h3>
                     </div>
-                    <livewire:editar-cliente :cliente="$cliente" /> {{-- Pasando el objeto cliente para el formulario editar --}}
+                    <livewire:editar-factura :factura="$factura" /> {{-- Pasando el objeto cliente para el formulario editar --}}
                 </div>
             </div>
         </div>

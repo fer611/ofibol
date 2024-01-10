@@ -23,6 +23,7 @@
                 <p><strong>Codigo de Barras:</strong> No generado</p>
             @endif
             <p><strong>Categoría:</strong> {{ $producto->categoria->nombre }}</p>
+            <p><strong>Marca:</strong> {{ $producto->marca->nombre }}</p>
             <p><strong>Descripción:</strong> {{ $producto->descripcion }}</p>
             <p><strong>Unidad de Medida:</strong> {{ $producto->unidad_medida }}</p>
             <p><strong>Cantidad por Caja/Paquete:</strong> {{ $producto->cantidad_unidad }}</p>
