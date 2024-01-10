@@ -1,103 +1,153 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie-edge">
     <title>Nota de Venta</title>
-    <link rel="stylesheet" href="{{ public_path('css/pdf.css') }}">
     <style>
-        @font-face {
-            font-family: "Roboto";
-            src: url('{{ storage_path('fonts/Roboto-Light.ttf') }}') format('truetype');
-            font-weight: 100;
-            font-style: normal;
+        /* Estilos CSS para la nota de venta */
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
         }
 
-        @font-face {
-            font-family: "Roboto";
-            src: url('{{ storage_path('fonts/Roboto-Regular.ttf') }}') format('truetype');
-            font-weight: 400;
-            font-style: normal;
+        .container {
+            width: 100%;
+            margin: auto;
         }
 
-        @font-face {
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+
+        .header img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .details {
+            margin-bottom: 30px;
+        }
+
+        .items {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .items th,
+        .items td {
+            border: 1px solid #000000;
+            padding: 8px;
+        }
+
+        .items th {
+            background-color: #3B3F5C;
+            color: white;
+        }
+
+        .total {
+            text-align: right;
+        }
+
+        .text-sm {
+            font-size: 14px;
+        }
+
+        .bold {
             font-family: "Roboto";
-            src: url('{{ storage_path('fonts/Roboto-Bold.ttf') }}') format('truetype');
             font-weight: 700;
-            font-style: normal;
+        }
+
+        /* Nueva regla para la clase .border */
+        .border {
+            border: 0 !important;
+            /* !important para aumentar la especificidad */
+            padding: 0;
+            /* Puedes agregar esto si también quieres quitar el relleno */
         }
 
         
-
     </style>
 </head>
 
 <body>
-    <div id="header">
-        <img class="imgHeader" src="{{ public_path('img/logo.png') }}" alt="" width="200px">
-        <div class="infoHeader">
-            <h1 class="normal">NOTA DE VENTA </h1>
-            <h2 class="normal">Nº: {{ $venta->id }}</h2>
-            <div class="normal"><span class="bold">Fecha: </span>{{ \Carbon\Carbon::parse($venta->created_at)->format('d/m/Y') }}</div>
-        </div>
-    </div>
-    <table class="section">
-        <tr>
-            <div class="section">
-                <div class="section-content">
-                    <div class="section-header normal">Datos del Cliente:</div>
-                    <div class="normal"><span class="bold">Señor (es): </span>{{ $venta->cliente->razon_social }}</div>
-                    <div class="normal"><span class="bold">NIT/C.I: </span>{{ $venta->cliente->nit }}</div>
-                    {{-- telefono --}}
-                    <div class="normal"><span class="bold">Teléfono: </span>{{ $venta->cliente->telefono }}</div>
-                    <div class="normal"><span class="bold">Dirección: </span>{{ $venta->cliente->direccion }}</div>
-                </div>
-            </div>
-            
-            <td width="120"></td>
-            <td class="section-content">
-                <div class="section-header normal">Datos de la Empresa:</div>
-                <div class="normal"><span class="bold">Dirección: </span>Calle Murillo Nº897, esq Sagarnaga</div>
-                <div class="normal"><span class="bold">Email: </span>Ofibol@hotmail.com</div>
-                <div class="normal"><span class="bold">Celular: </span>76202463 - 74005262</div>
-                <div class="normal"><span class="bold">NIT: </span>4801118019</div>
-            </td>
-        </tr>
-    </table>
     <div class="container">
-        <table class="items-table">
-            <tr>
-                <th>ID</th>
-                <th>Cantidad</th>
-                <th>Descripción</th>
-                <th>U. Medida</th>
-                <th>Precio</th>
-                <th>Subtotal</th>
-            </tr>
-            @foreach ($data as $item)
-            <tr>
-                <td align="center">{{ $item->id }}</td>
-                <td align="center">{{ number_format($item->cantidad,0) }}</td>
-                <td>{{ $item->descripcion }}</td>
-                <td>{{ $item->medida }}</td>
-                <td align="right">{{ $item->precio }}</td>
-                <td align="right">{{ number_format($item->precio * $item->cantidad, 2) }}</td>
-            </tr>
-            @endforeach
+        <div class="head">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="logo"><img class="imgHeader" src="{{ public_path('img/logo.png') }}"
+                                alt="Logo de la Empresa" width="150px"></td>
+                        <td width="170"></td>
+                        <td class="section-content">
+                            <div class="normal"><span class="bold">Dirección: </span>Calle Murillo Nº897, esq
+                                Sagarnaga
+                            </div>
+                            <div class="normal"><span class="bold">Email: </span>Ofibol@hotmail.com</div>
+                            <div class="normal"><span class="bold">Celular: </span>76202463 - 74005262</div>
+                            <div class="normal"><span class="bold">NIT: </span>4801118019</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="header">
+            <h1 style="font-size: 25px;">NOTA DE VENTA</h1>
+        </div>
 
+        <div class="details">
+            <p><strong>Cliente:</strong> {{ $venta->cliente->razon_social }}</p>
+            <p><strong>Fecha:</strong> {{ \Carbon\Carbon::parse($venta->created_at)->format('d/m/Y') }}</p>
+        </div>
 
-            <!-- Agrega una fila para el total justo debajo de la tabla de detalles -->
-            <tr>
-                <td colspan="5" align="right"><strong>Total:</strong></td>
-                <td align="right">{{ number_format($data->sum('total'), 2) }}</td>
-            </tr>
+        <table class="items">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>CANTIDAD</th>
+                    <th>DESCRIPCION</th>
+                    <th>U. MEDIDA</th>
+                    <th>PRECIO</th>
+                    <th>SUBTOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($data as $item)
+                    <tr>
+                        <td>{{ $item->id }}</td>
+                        <td align="center">{{ number_format($item->cantidad, 0) }}</td>
+                        <td>{{ $item->descripcion }}</td>
+                        <td align="center">{{ $item->medida }}</td>
+                        <td align="right">{{ $item->precio }}</td>
+                        <td align="right">{{ number_format($item->precio * $item->cantidad, 2) }}</td>
+                    </tr>
+                @endforeach
+                <tr>
+                    <td class="border" colspan="3"></td>
+                    <!-- Agrega celdas vacías para ocupar las primeras 4 columnas -->
+                    <td  colspan="2" align="right"><strong>SUBTOTAL Bs</strong></td>
+                    <td align="right">{{ number_format($data->sum('total'), 2) }}</td>
+                </tr>
+                <tr>
+                    <td class="border" colspan="3"></td>
+                    <!-- Agrega celdas vacías para ocupar las primeras 4 columnas -->
+                    <td  colspan="2" align="right"><strong>DESCUENTO Bs</strong></td>
+                    <td align="right">0.00</td>
+                </tr>
+                <tr>
+                    <td class="border" colspan="3"></td>
+                    <!-- Agrega celdas vacías para ocupar las primeras 4 columnas -->
+                    <td  colspan="2" align="right"><strong>TOTAL Bs</strong></td>
+                    <td align="right">{{ number_format($data->sum('total'), 2) }}</td>
+                </tr>
+            </tbody>
         </table>
     </div>
-    {{-- <div id="footer">
-        <p class="textFooter">Ofibol.com</p>
-    </div> --}}
     <script type="text/php">
         if ( isset($pdf) ) {
             $pdf->page_script('
