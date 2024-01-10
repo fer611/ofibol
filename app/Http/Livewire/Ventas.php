@@ -282,7 +282,7 @@ class Ventas extends Component
             Cart::add(
                 $producto->id,
                 $producto->descripcion,
-                $producto->precio_venta,
+                $existe->price,
                 $cant,
                 /* Esta parte se ponen atributos adicionales */
                 [$producto->imagen, $stock],
@@ -298,6 +298,49 @@ class Ventas extends Component
             $this->emit('no-stock', 'La cantidad debe ser mayor a 0');
         }
     }
+
+    public function updatePrice($productId, $precio = 1)
+    {
+        $titulo = '';
+        $producto = Producto::find($productId);
+        /* aca volvemos a obtener el stock */
+        $stock = DB::table('kardex')
+            ->where('producto_id', $producto->id)
+            ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
+            ->groupBy('producto_id')
+            ->value('stock');
+        // Verificamos si el producto existe en el carrito
+        $existe = Cart::get($productId);
+
+        /* Si el producto existe actualizamos el precio */
+        if ($existe) {
+            $titulo = 'Precio Actualizado';
+        } else {
+            $titulo = 'El producto no existe en el carrito';
+        }
+        $this->removeItem($producto->id);
+        if ($precio > 0) {
+            // Agregamos el producto actualizado al carrito
+            Cart::add(
+                $producto->id,
+                $producto->descripcion,
+                $precio,
+                $existe->quantity,
+                /* Esta parte se ponen atributos adicionales */
+                [$producto->imagen, $stock],
+            );
+            // Actualizamos las propiedades
+            $this->total = Cart::getTotal();
+            $this->itemsQuantity = Cart::getTotalQuantity();
+
+            $this->emit('scan-ok', $titulo);
+        } else {
+            // Notificamos al usuario que la cantidad debe ser mayor a 0
+            // Crear un mensaje
+            $this->emit('no-stock', 'El precio debe ser mayor a 0');
+        }
+    }
+
 
     public function removeItem($productId)
     {

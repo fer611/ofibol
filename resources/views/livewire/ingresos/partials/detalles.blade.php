@@ -11,7 +11,7 @@
                                         <th width="25%" class="table-th text-left text-white">DESCRIPCIÓN</th>
                                         <th class="table-th text-center text-white">COSTO Bs.</th>
                                         <th width="13%" class="table-th text-center text-white">CANTIDAD</th>
-                                        <th class="table-th text-center text-white">IMPORTE Bs.</th>
+                                        <th class="table-th text-center text-white">Sub total Bs.</th>
                                         <th width="20%" class="table-th text-center text-white">ACCIONES</th>
                                     </tr>
                                 </thead>
