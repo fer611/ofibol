@@ -260,20 +260,15 @@ class CrearIngreso extends Component
 
     public function guardarIngreso()
     {
-        /* $sumaCostoTotalEntradas = DB::table('kardex')
-            ->select(DB::raw('SUM(entradas * precio_producto) as suma_costo_total_entradas'))
-            ->first();
-        dd($sumaCostoTotalEntradas); */
         $datos = $this->validate();
 
-        $carritoNombre = 'ingresos'; // Nombre del carrito de ingresos
+       
 
         /* ABRIMOS UNA TRANSACCION PARA EL PROCESO DE INGRESO */
         DB::beginTransaction();
 
         //obteniendo al proveedor
         $proveedor = Proveedor::find($datos['proveedor']);
-
         try {
             $ingreso = Ingreso::create([
                 'total' => $this->total,
@@ -282,33 +277,43 @@ class CrearIngreso extends Component
                 'proveedor_id' => $proveedor->id,
                 'almacen_id' => $datos['almacen'],
             ]);
+            
             if ($ingreso) {
                 /* Aca obtenemos el carrito especificamente de ingresos */
                 $items = Cart::session('ingresos')->getContent();
 
                 foreach ($items as $item) {
                     /* guardando los detalles */
-                    DetalleIngreso::create([
+                    $detalle=DetalleIngreso::create([
                         'ingreso_id' => $ingreso->id,
                         'producto_id' => $item->id,
                         'cantidad' => $item->quantity,
                         'precio_compra' => $item->price,
                     ]);
-
+                    
                     /* Verificamos si este producto ya existe en el kardex*/
                     $existe = Kardex::where('producto_id', $item->id)->first();
                     /* aca registramos una entrada de cada producto */
+                    
                     /* lo almacenamos en una nueva variable para que luego de calcular el cpp lo modifiquemos */
-                    $nuevo = Kardex::create([
-                        'producto_id' => $item->id,
-                        'entradas' => $item->quantity,
-                        'salidas' => 0,
-                        'almacen_id' => $datos['almacen'],
-                        'precio_producto' => $item->price,
-                        'saldo' => $item->quantity * $item->price,
-                        'user_id' => auth()->user()->id,
-                    ]);
-
+                    try {
+                        $nuevo = Kardex::create([
+                            'producto_id' => $item->id,
+                            'entradas' => $item->quantity,
+                            'salidas' => 0,
+                            'almacen_id' => $datos['almacen'],
+                            'detalle' => 'Ingreso realizado por: '.$ingreso->user->name,
+                            'saldo_stock' => $item->quantity,
+                            'debe' => $item->quantity * $item->price,
+                            'haber' => 0,
+                            'costo_producto' => $item->price,
+                            'saldo_valorado' => $item->quantity * $item->price,
+                            'user_id' => auth()->user()->id,
+                        ]);
+                    } catch (\Throwable $error) {
+                        dd($error);
+                    }
+                    
                     /* Obtenemos el producto */
                     $producto = Producto::find($item->id);
                     /* Si es la primera vez que se hace un ingreso del producto, entonces su cpp es el mismo costo de compra,y saldo,tambien
@@ -318,24 +323,21 @@ class CrearIngreso extends Component
                         $producto->precio_venta = ($producto->costo_actual * $producto->porcentaje_margen) / 100 + $producto->costo_actual;
                         $producto->save();
                     } else {
-                        $stock = DB::table('kardex')
-                            ->where('producto_id', $producto->id)
-                            ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
-                            ->groupBy('producto_id')
-                            ->value('stock');
+                        $stock = $this->obtenerStock($producto->id);
 
-                        $saldo = Kardex::where('producto_id', $producto->id)
+                        $saldo_valorado = Kardex::where('producto_id', $producto->id)
                             ->orderBy('id', 'desc')
                             ->skip(1) // Saltar el último registro
                             ->take(1) // Tomar el siguiente registro
-                            ->value('saldo');
+                            ->value('saldo_valorado');
 
                         $total = $item->price * $item->quantity;
-                        $saldo += $total;
-                        $cpp = $saldo / $stock;
+                        $saldo_valorado += $total;
+                        $cpp = $saldo_valorado / $stock;
                         /* Actualizamos el registro anterior */
-                        $nuevo->saldo = $saldo;
-                        $nuevo->precio_producto = $cpp;
+                        $nuevo->saldo_valorado = $saldo_valorado;
+                        $nuevo->costo_producto = $cpp;
+                        $nuevo->saldo_stock = $stock;
                         $nuevo->save();
                         /* Actualizamos el producto */
                         $producto->costo_actual = $cpp;
@@ -353,8 +355,8 @@ class CrearIngreso extends Component
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
             //Crear notificacion y enviar el email
-            // Obtener al dueño de la empresa con el rol "Dueño"
-            $owner = User::role('Dueño')->first();
+            // Obtener al dueño de la empresa con el rol "Admin"
+            $owner = User::role('Admin')->first();
             $owner->notify(new NuevoIngreso($ingreso->id, $ingreso->user->name, $ingreso->total, $owner->id));
 
             //Crear un mensaje
@@ -401,5 +403,19 @@ class CrearIngreso extends Component
         } else {
             $this->proveedor = "";
         }
+    }
+
+    /**
+     * @return double el stock total del producto
+     * @param string $id El id del producto
+     */
+    public function obtenerStock(string $id)
+    {
+        $stock = DB::table('kardex')
+            ->where('producto_id', $id)
+            ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
+            ->groupBy('producto_id')
+            ->value('stock');
+        return $stock ? $stock : 'No tiene stock';
     }
 }

@@ -12,10 +12,14 @@ class Kardex extends Model
     protected $fillable = [
         'entradas',
         'salidas',
-        'producto_id',
         'almacen_id',
-        'precio_producto',
-        'saldo'
+        'producto_id',
+        'detalle',
+        'saldo_stock',
+        'costo_producto',
+        'debe',
+        'haber',
+        'saldo_valorado',
     ];
 
      //si dice rol espera almacen

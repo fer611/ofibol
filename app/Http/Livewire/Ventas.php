@@ -402,60 +402,60 @@ class Ventas extends Component
         /* dd($this->total.'|'.$this->efectivo.'|'.$this->itemsQuantity.'|'.$this->cambio.'|'.auth()->user()->id); */
 
         /* Validando que se ingrese el almacen */
-        $almacenExiste = Almacen::where('id', $this->almacen)->first();
-        if (!$almacenExiste) {
-            $this->addError('almacen', 'El almacén seleccionado no existe');
-            return;
-        }
+            //code...
 
-        /* Validando que se ingrese un nit que existe en el campo de clientes */
-        $clienteExiste = Cliente::where('nit', $this->nit)->first();
-        if (!$clienteExiste && !$this->venta_sin_datos) {
-            $this->addError('nit', 'El cliente no está registrado');
-            $this->addError('razon_social', 'El cliente no está registrado');
-            return;
-        }
-        /* Si es una venta sin datos, buscamos al cliente con S/N */
-        if ($this->venta_sin_datos) {
-            $clienteExiste = Cliente::where('nit', 'S/N')->first();
-            /* Si es que no encuentra algun registro con S/N */
-            if ($clienteExiste == null) {
-                /* Si no existe el cliente con S/N lo creamos */
-                $cliente = Cliente::create([
-                    'nit' => 'S/N',
-                    'razon_social' => 'S/N',
-                ]);
-                /* Obtenemos el cliente creado */
-                $clienteExiste = Cliente::where('nit', 'S/N')->first();
+            $almacenExiste = Almacen::where('id', $this->almacen)->first();
+            if (!$almacenExiste) {
+                $this->addError('almacen', 'El almacén seleccionado no existe');
+                return;
             }
-        }
+            /* Validando que se ingrese un nit que existe en el campo de clientes */
+            $clienteExiste = Cliente::where('nit', $this->nit)->first();
+            if (!$clienteExiste && !$this->venta_sin_datos) {
+                $this->addError('nit', 'El cliente no está registrado');
+                $this->addError('razon_social', 'El cliente no está registrado');
+                return;
+            }
+            /* Si es una venta sin datos, buscamos al cliente con S/N */
+            if ($this->venta_sin_datos) {
+                $clienteExiste = Cliente::where('nit', 'S/N')->first();
+                /* Si es que no encuentra algun registro con S/N */
+                if ($clienteExiste == null) {
+                    /* Si no existe el cliente con S/N lo creamos */
+                    $cliente = Cliente::create([
+                        'nit' => 'S/N',
+                        'razon_social' => 'S/N',
+                    ]);
+                    /* Obtenemos el cliente creado */
+                    $clienteExiste = Cliente::where('nit', 'S/N')->first();
+                }
+            }
 
 
-        if ($this->total <= 0) {
-            /* $this->emit('sale-error', 'AGREGA PRODUCTOS A LA VENTA'); */
-            session()->flash('mensaje', 'AGREGA PRODUCTOS A LA VENTA');
-            return;
-        }
-        if ($this->efectivo <= 0) {
-            /* $this->emit('sale-error', 'INGRESA EL EFECTIVO'); */
-            session()->flash('mensaje', 'INGRESA EL EFECTIVO');
-            return;
-        }
+            if ($this->total <= 0) {
+                /* $this->emit('sale-error', 'AGREGA PRODUCTOS A LA VENTA'); */
+                session()->flash('mensaje', 'AGREGA PRODUCTOS A LA VENTA');
+                return;
+            }
+            if ($this->efectivo <= 0) {
+                /* $this->emit('sale-error', 'INGRESA EL EFECTIVO'); */
+                session()->flash('mensaje', 'INGRESA EL EFECTIVO');
+                return;
+            }
 
-        /* El total que estamos intentando pagar es mayor a lo que el cliente nos entrega */
-        if ($this->total > $this->efectivo) {
-            /* $this->emit('sale-error', 'EL EFECTIVO DEBE SER MAYOR O IGUAL AL TOTAL'); */
-            //Crear un mensaje
-            session()->flash('mensaje', 'EL EFECTIVO DEBE SER MAYOR O IGUAL AL TOTAL');
-            return;
-        }
+            /* El total que estamos intentando pagar es mayor a lo que el cliente nos entrega */
+            if ($this->total > $this->efectivo) {
+                /* $this->emit('sale-error', 'EL EFECTIVO DEBE SER MAYOR O IGUAL AL TOTAL'); */
+                //Crear un mensaje
+                session()->flash('mensaje', 'EL EFECTIVO DEBE SER MAYOR O IGUAL AL TOTAL');
+                return;
+            }
 
-        /* ABRIMOS UNA TRANSACCION PARA EL PROCESO DE VENTA */
-        DB::beginTransaction();
+            /* ABRIMOS UNA TRANSACCION PARA EL PROCESO DE VENTA */
+            DB::beginTransaction();
 
-        //obteniendo al cliente
-        $cliente = Cliente::where('nit', $this->nit)->first();
-
+            //obteniendo al cliente
+            $cliente = Cliente::where('nit', $this->nit)->first();
         try {
             $venta = Venta::create([
                 'total' => $this->total,
@@ -494,10 +494,13 @@ class Ventas extends Component
                         'producto_id' => $item->id,
                         'entradas' => 0,
                         'salidas' => $item->quantity,
-                        /* Aca por defecto la salida debe ser del almacen punto de venta Ofibol*/
                         'almacen_id' => $almacenExiste->id,
-                        'precio_producto' => $producto->costo_actual,
-                        'saldo' => $producto->costo_actual * ($stock - $item->quantity),
+                        'detalle' => 'Venta Realizada al cliente: '.$cliente->razon_social,
+                        'saldo_stock' => $stock-$item->quantity,
+                        'costo_producto' => $producto->costo_actual,
+                        'debe' =>0,
+                        'haber' =>$item->quantity * $producto->costo_actual,
+                        'saldo_valorado' => $producto->costo_actual * ($stock - $item->quantity),
                         'user_id' => auth()->user()->id,
                     ]);
 
@@ -506,8 +509,8 @@ class Ventas extends Component
                     $stock = $stock - $item->quantity;
                     if ($stock <= $producto->stock_minimo) {
                         //Crear notificacion y enviar el email
-                        // Obtener al dueño de la empresa con el rol "Dueño"
-                        $owner = User::role('Dueño')->first();
+                        // Obtener al Admin de la empresa con el rol "Admin"
+                        $owner = User::role('Admin')->first();
                         $owner->notify(new BajoStock($producto->id, $producto->descripcion, $producto->marca->nombre, $stock, $owner->id));
                     }
                 }
@@ -525,8 +528,8 @@ class Ventas extends Component
             /* $this->emit('sale-ok', 'Venta registrada con éxito'); */
 
             //Crear notificacion y enviar el email
-            // Obtener al dueño de la empresa con el rol "Dueño"
-            $owner = User::role('Dueño')->first();
+            // Obtener al Admin de la empresa con el rol "Admin"
+            $owner = User::role('Admin')->first();
             $owner->notify(new NuevaVenta($venta->id, $venta->user->name, $venta->total, $owner->id));
 
             //Crear un mensaje

@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('kardex', function (Blueprint $table) {
-            $table->decimal('precio_producto',10,2);
-            $table->decimal('saldo',10,2);
+            $table->decimal('saldo_stock',10,2);
+            $table->decimal('costo_producto',10,2);
+            $table->decimal('debe',10,2);
+            $table->decimal('haber',10,2);
+            $table->decimal('saldo_valorado',10,2);
         });
     }
 
@@ -23,8 +26,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('kardex', function (Blueprint $table) {
-            $table->dropColumn('saldo');
-            $table->dropColumn('precio_producto');  // Luego eliminar la columna
+            $table->dropColumn('saldo_stock');
+            $table->dropColumn('costo_producto');
+            $table->dropColumn('debe');
+            $table->dropColumn('haber');
+            $table->dropColumn('costo_valorado');  // Luego eliminar la columna
         });
     }
 };

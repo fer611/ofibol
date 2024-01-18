@@ -39,7 +39,7 @@ class EditarProducto extends Component
             'unidad_medida' => 'required|string',
             'cantidad_unidad' => 'nullable|numeric|min:0',
             'stock_minimo' => 'required|numeric|min:0',
-            'costo_actual' => 'required|numeric|min:0',
+            'costo_actual' => 'nullable|numeric|min:0',
             'porcentaje_margen' => 'required|numeric|min:0',
             'precio_venta' => 'required|numeric|min:0',
             'categoria' => 'required|exists:categorias,id',

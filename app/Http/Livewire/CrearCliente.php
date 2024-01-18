@@ -27,8 +27,8 @@ class CrearCliente extends Component
     public function crearCliente()
     {
        
-        // Obtener al dueño de la empresa con el rol "Dueño"
-        $owner = User::role('Dueño')->first();
+        // Obtener al dueño de la empresa con el rol "Admin"
+        $owner = User::role('Admin')->first();
         //Validar los datos
         $datos = $this->validate();
         //Crear el cliente

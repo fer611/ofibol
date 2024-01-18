@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
             /* El numero de la factura */
             $table->integer('numero_factura');
-            $table->date('fecha');
-            $table->decimal('total', 10, 2);
+            $table->date('fecha')->nullable();
+            $table->decimal('total', 10, 2)->nullable();
             $table->string('estado',20);
             $table->enum('categoria', ['Material De Escritorio', 'Material De Limpieza']);
             $table->timestamps();

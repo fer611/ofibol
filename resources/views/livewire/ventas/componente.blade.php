@@ -1,7 +1,7 @@
 <div>
     <style></style>
     <div class="row">
-        <div class="col-sm-12 col-md-9">
+        <div class="col-sm-12 col-md-8">
             {{-- BUSCADOR --}}
             <h5>Seleccione el producto</h5>
             <div class="input-group w-100">
@@ -55,7 +55,7 @@
             {{-- DETALLES --}}
             @include('livewire.ventas.partials.detalles')
         </div>
-        <div class="col-sm-12 col-md-3">
+        <div class="col-sm-12 col-md-4">
             {{-- CLIENTE --}}
             @include('livewire.ventas.partials.cliente')
             {{-- TOTAL  --}}

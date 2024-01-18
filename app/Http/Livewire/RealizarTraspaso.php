@@ -61,7 +61,7 @@ class RealizarTraspaso extends Component
 
         // Llamar al procedimiento almacenado si hay suficiente stock
         $producto_id = $this->producto->id;
-        $precio_producto = $this->producto->costo_actual;
+        $costo_producto = $this->producto->costo_actual;
 
         /* ABRIMOS UNA TRANSACCION PARA EL PROCESO DE VENTA */
         // Obtener el último registro de Kardex para el producto en el almacén origen
@@ -80,9 +80,13 @@ class RealizarTraspaso extends Component
             $kardexOrigen->salidas = $this->cantidad;
             $kardexOrigen->producto_id = $producto_id;
             $kardexOrigen->almacen_id = $this->origen;
-            $kardexOrigen->precio_producto = $precio_producto;
-            /* Aca el saldo se debe mantener */
-            $kardexOrigen->saldo = $ultimoKardex->saldo;
+            $kardexOrigen->detalle = 'Traspaso de almacen';
+            $kardexOrigen->saldo_stock = $this->obtenerStock($producto_id)-$this->cantidad;
+            $kardexOrigen->costo_producto = $costo_producto;
+            $kardexOrigen->debe = 0;
+            $kardexOrigen->haber =$costo_producto*$this->cantidad;
+            $kardexOrigen->saldo_valorado = $ultimoKardex->saldo_valorado-($costo_producto*$this->cantidad);
+            
             $kardexOrigen->save();
 
             // Actualizar el stock en el almacén destino
@@ -91,8 +95,13 @@ class RealizarTraspaso extends Component
             $kardexDestino->salidas = 0;
             $kardexDestino->producto_id = $producto_id;
             $kardexDestino->almacen_id = $this->destino;
-            $kardexDestino->precio_producto = $precio_producto;
-            $kardexDestino->saldo = $ultimoKardex->saldo;
+            $kardexDestino->detalle = 'Traspaso de almacen';
+            $kardexDestino->saldo_stock = $this->obtenerStock($producto_id)+$this->cantidad;
+            $kardexDestino->costo_producto = $costo_producto;
+            $kardexDestino->debe = $costo_producto*$this->cantidad;
+            $kardexDestino->haber =0;
+            $kardexDestino->saldo_valorado = $ultimoKardex->saldo_valorado;
+            
             $kardexDestino->save();
 
             // Otras acciones post-traspaso aquí (notificaciones, redirección, etc.)
@@ -108,6 +117,19 @@ class RealizarTraspaso extends Component
         }
     }
 
+    /**
+     * @return double el stock total del producto
+     * @param string $id El id del producto
+     */
+    public function obtenerStock(string $id)
+    {
+        $stock = DB::table('kardex')
+            ->where('producto_id', $id)
+            ->selectRaw('SUM(entradas) - SUM(salidas) as stock')
+            ->groupBy('producto_id')
+            ->value('stock');
+        return $stock ? $stock : 'No tiene stock';
+    }
     public function render()
     {
         $this->almacenes = Almacen::all();  // asignar datos a la propiedad del componente

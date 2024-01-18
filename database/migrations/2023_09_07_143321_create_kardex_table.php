@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('salidas',10,2);
             $table->foreignId('almacen_id')->constrained('almacenes')->onDelete('cascade'); //relacionando con la tabla almaccenes
             $table->foreignId('producto_id')->constrained('productos')->onDelete('cascade'); //relacionando con la tabla productos
+            $table->text('detalle')->nullable();
             $table->timestamps();
         });
     }
