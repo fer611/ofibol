@@ -53,3 +53,5 @@ source ~/.zshrc
 ```bash
 sail up
 ```
+
+### !Importantee: Si el contenedor demysql no se incia, probablemente tengas que cambiar el DB_HOST=127.0.0.1 a DB_HOST=mysql
