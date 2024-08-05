@@ -21,6 +21,8 @@ composer install
 
 ## Para Ubuntu:
 
+### cambiar el host 127.0.0.1 por mysql
+
 ### Si necesitas instalar o habilitar las extensiones xml, dom,gd y zip en un entorno Ubuntu, puedes utilizar los siguientes comandos:
 
 ```bash
