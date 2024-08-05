@@ -214,7 +214,7 @@ return [
     */
 
     'sidebar_mini' => 'null', // /xs,lg ...cuando se minimiza aparece un mini sidebar
-    'sidebar_collapse' => true,
+    'sidebar_collapse' => false,
     'sidebar_collapse_auto_size' => false,
     'sidebar_collapse_remember' => true,
     'sidebar_collapse_remember_no_transition' => false,
